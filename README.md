@@ -1,4 +1,5 @@
 # Live Demo
+[![Netlify Status](https://api.netlify.com/api/v1/badges/0f2d992a-f8ee-41dc-a85e-c3dc020e0ccb/deploy-status)](https://app.netlify.com/sites/reactter/deploys) 
 [Checkout](https://reactter.netlify.app/)!
 
 # Getting Started with Create React App

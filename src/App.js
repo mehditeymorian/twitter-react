@@ -3,12 +3,14 @@ import React from "react";
 import './App.css';
 import Auth from "./components/Auth";
 import {BrowserRouter as Router, Route} from "react-router-dom";
+import Main from "./components/Main";
 
 function App() {
     return (
         <Router>
             <div className="App">
-                <Route path={"/auth"} component={Auth} />
+                {/*<Route path={"/auth"} component={Auth} />*/}
+                <Route path={"/"} component={Main} />
             </div>
         </Router>
     );

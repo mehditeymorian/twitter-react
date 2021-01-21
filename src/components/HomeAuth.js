@@ -44,7 +44,7 @@ export const useStyles = makeStyles((theme) => ({
 
 export default function HomeAuth() {
     const classes = useStyles();
-    const {path, url} = useRouteMatch();
+    const {url} = useRouteMatch();
 
     return (
         <Grid container component="main" className={classes.root}>

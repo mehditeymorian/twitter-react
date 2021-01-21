@@ -6,7 +6,6 @@ import {Switch, Route, Link, useRouteMatch} from 'react-router-dom'
 import SignIn from './SignIn'
 import SignUp from "./SignUp";
 import {makeStyles} from '@material-ui/core/styles';
-import './HomeAuth.css'
 
 
 

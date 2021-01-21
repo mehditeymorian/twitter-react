@@ -1,28 +1,44 @@
 import React from 'react';
 import clsx from 'clsx';
-import {makeStyles, useTheme} from '@material-ui/core/styles';
-import Drawer from '@material-ui/core/Drawer';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import List from '@material-ui/core/List';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import Typography from '@material-ui/core/Typography';
-import Divider from '@material-ui/core/Divider';
-import IconButton from '@material-ui/core/IconButton';
-import MenuIcon from '@material-ui/icons/Menu';
-import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
-import ChevronRightIcon from '@material-ui/icons/ChevronRight';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import ListItemText from '@material-ui/core/ListItemText';
-import {Home as HomeIcon, Explore, Notifications, Message, Bookmark, Person} from '@material-ui/icons'
+import {useTheme} from '@material-ui/core/styles';
+import {
+    AppBar,
+    Avatar,
+    Button,
+    CssBaseline,
+    Divider,
+    Drawer,
+    Grid,
+    IconButton,
+    List,
+    ListItem,
+    ListItemIcon,
+    ListItemText,
+    Toolbar,
+    Typography
+} from '@material-ui/core';
+import {
+    Bookmark as BookmarksIcon,
+    Explore as ExploreIcon,
+    Home as HomeIcon,
+    Message as MessageIcon,
+    Notifications as NotificationsIcon,
+    Person as ProfileIcon,
+    Menu as MenuIcon,
+    ChevronLeft as ChevronLeftIcon,
+    ChevronRight as ChevronRightIcon
+} from '@material-ui/icons';
 import {MainStyle} from "./MainStyle";
-import Button from "@material-ui/core/Button";
-import Grid from "@material-ui/core/Grid";
-import Avatar from "@material-ui/core/Avatar";
+import {Switch, Route, Link} from 'react-router-dom';
+import Home from "./Home";
+import Messages from "./Messages";
+import Explore from "./Explore";
+import Notifications from "./Notifications";
+import Bookmarks from "./Bookmarks";
+import Profile from "./Profile";
 
-const menu = ["Main", "Explore", "Notifications", "Messages", "Bookmarks", "Profile"];
-const icons = [<HomeIcon/>, <Explore/>, <Notifications/>, <Message/>, <Bookmark/>, <Person/>];
+const menu = ["Home", "Explore", "Notifications", "Messages", "Bookmarks", "Profile"];
+const icons = [<HomeIcon/>, <ExploreIcon/>, <NotificationsIcon/>, <MessageIcon/>, <BookmarksIcon/>, <ProfileIcon/>];
 
 
 export default function Main() {
@@ -54,7 +70,7 @@ export default function Main() {
                         </Grid>
                         <Grid item xs={2}>
                             <Grid container alignItems={"center"} spacing={2}>
-                                <Grid item><Avatar src={"https://uifaces.co/our-content/donated/gPZwCbdS.jpg"} /></Grid>
+                                <Grid item><Avatar src={"https://uifaces.co/our-content/donated/gPZwCbdS.jpg"}/></Grid>
                                 <Grid item><Typography>Your Profile</Typography></Grid>
                             </Grid>
 
@@ -84,10 +100,12 @@ export default function Main() {
                 <Divider/>
                 <List>
                     {menu.map((text, index) => (
+                        <Link to={`/${menu[index].toLowerCase()}`}>
                         <ListItem button key={text}>
                             <ListItemIcon>{icons[index]}</ListItemIcon>
                             <ListItemText primary={text}/>
                         </ListItem>
+                        </Link>
                     ))}
                 </List>
                 <Divider/>
@@ -95,7 +113,16 @@ export default function Main() {
             </Drawer>
             <main className={classes.content}>
                 <div className={classes.toolbar}/>
-                {/* content goes here*/}
+                <Grid container xs={6} alignItems={"center"} direction={"column"}>
+                    <Switch>
+                        <Route path={`/${menu[0].toLowerCase()}`} component={Home}/>
+                        <Route exact path={`/${menu[1].toLowerCase()}`} component={Explore}/>
+                        <Route exact path={`/${menu[2].toLowerCase()}`} component={Notifications}/>
+                        <Route exact path={`/${menu[3].toLowerCase()}`} component={Messages}/>
+                        <Route exact path={`/${menu[4].toLowerCase()}`} component={Bookmarks}/>
+                        <Route exact path={`/${menu[5].toLowerCase()}`} component={Profile}/>
+                    </Switch>
+                </Grid>
 
             </main>
         </div>

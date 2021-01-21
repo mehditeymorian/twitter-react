@@ -1,19 +1,12 @@
-import Avatar from "@material-ui/core/Avatar";
-import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
-import Typography from "@material-ui/core/Typography";
-import TextField from "@material-ui/core/TextField";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
-import Button from "@material-ui/core/Button";
-import Grid from "@material-ui/core/Grid";
+import {Avatar, Typography, TextField, FormControlLabel, Checkbox, Button, Grid} from "@material-ui/core";
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import React from "react";
-import {Link, useRouteMatch} from 'react-router-dom'
-import {useStyles} from "./HomeAuth.js"
+import {Link} from 'react-router-dom'
+import {AuthStyle} from "./AuthStyle";
 
 
 export default function SignIn() {
-    const classes = useStyles();
-    const {url} = useRouteMatch();
+    const classes = AuthStyle();
 
     return (
         <div className={classes.paper} >
@@ -56,20 +49,10 @@ export default function SignIn() {
                     variant="contained"
                     color="primary"
                     className={classes.submit}
-                >
-                    Sign In
-                </Button>
+                >Sign In</Button>
                 <Grid container>
-                    <Grid item xs>
-                        <Link href="#" variant="body2">
-                            Forgot password?
-                        </Link>
-                    </Grid>
-                    <Grid item>
-                        <Link to={`${url}/sign-up`} variant="body2">
-                            {"Don't have an account? Sign Up"}
-                        </Link>
-                    </Grid>
+                    <Grid item xs><Link to={"#"} variant="body2">Forgot password?</Link></Grid>
+                    <Grid item><Link to={`sign-up`} variant="body2">Don't have an account? Sign Up</Link></Grid>
                 </Grid>
             </form>
         </div>

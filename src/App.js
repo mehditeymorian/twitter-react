@@ -9,8 +9,8 @@ function App() {
     return (
         <Router>
             <div className="App">
-                {/*<Route path={"/auth"} component={Auth} />*/}
-                <Route path={"/"} component={Main} />
+                <Route exact path={"/auth/:section"} component={Auth} />
+                <Route exact path={"/:id"} component={Main} />
             </div>
         </Router>
     );

@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SignUp() {
     const classes = useStyles();
-    const {path, url} = useRouteMatch();
+    const {url} = useRouteMatch();
 
     return (
         <Container component="main" maxWidth="xs">

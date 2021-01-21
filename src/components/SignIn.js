@@ -13,7 +13,7 @@ import {useStyles} from "./HomeAuth.js"
 
 export default function SignIn() {
     const classes = useStyles();
-    const {path, url} = useRouteMatch();
+    const {url} = useRouteMatch();
 
     return (
         <div className={classes.paper} >

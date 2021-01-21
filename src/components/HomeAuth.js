@@ -2,7 +2,7 @@ import React from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
-import {Switch, Route, Link, useRouteMatch} from 'react-router-dom'
+import {Switch, Route, useRouteMatch} from 'react-router-dom'
 import SignIn from './SignIn'
 import SignUp from "./SignUp";
 import {makeStyles} from '@material-ui/core/styles';

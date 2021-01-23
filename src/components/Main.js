@@ -43,6 +43,21 @@ const menu = ["Home", "Explore", "Notifications", "Messages", "Bookmarks", "Prof
 const icons = [<HomeIcon/>, <ExploreIcon/>, <NotificationsIcon/>, <MessageIcon/>, <BookmarksIcon/>, <ProfileIcon/>];
 
 
+function getDrawerClass(classes, open) {
+    return clsx(classes.drawer, {
+        [classes.drawerOpen]: open,
+        [classes.drawerClose]: !open,
+    });
+}
+
+function generateMenuItems() {
+    return menu.map((text, index) => (
+        <ListItem button key={text} component={Link} to={`/${menu[index].toLowerCase()}`}>
+            <ListItemIcon>{icons[index]}</ListItemIcon>
+            <ListItemText primary={text}/>
+        </ListItem>
+    ));
+}
 
 export default function Main() {
     const classes = MainStyle();
@@ -59,73 +74,46 @@ export default function Main() {
             <CssBaseline/>
             <AppBar
                 position="fixed"
-                className={clsx(classes.appBar, {[classes.appBarShift]: open,})}>
+                className={clsx(classes.appBar, {[classes.appBarShift]: open})}>
                 <Toolbar>
-                    <IconButton
-                        color="inherit"
-                        aria-label="open drawer"
-                        onClick={handleDrawerOpen}
-                        edge="start"
-                        className={clsx(classes.menuButton, {[classes.hide]: open,})}>
-                        <MenuIcon/>
-                    </IconButton>
+                    <IconButton color="inherit" aria-label="open drawer"
+                                onClick={handleDrawerOpen} edge="start"
+                                className={clsx(classes.menuButton, {[classes.hide]: open,})}><MenuIcon/></IconButton>
                     <Grid container alignItems={"center"} spacing={3}>
                         <Grid item xs={10}><Typography variant="h6" noWrap>Twitter</Typography></Grid>
-                        <Grid item xs={2}><ProfileMenu /></Grid>
+                        <Grid item xs={2}><ProfileMenu/></Grid>
                     </Grid>
-
-
                 </Toolbar>
             </AppBar>
             <Drawer
                 variant="permanent"
-                className={clsx(classes.drawer, {
-                    [classes.drawerOpen]: open,
-                    [classes.drawerClose]: !open,
-                })}
-                classes={{
-                    paper: clsx({
-                        [classes.drawerOpen]: open,
-                        [classes.drawerClose]: !open,
-                    }),
-                }}>
+                className={getDrawerClass(classes, open)}
+                classes={{paper: getDrawerClass(classes, open)}}>
                 <div className={classes.toolbar}>
                     <IconButton onClick={handleDrawerClose}>
                         {theme.direction === 'rtl' ? <ChevronRightIcon/> : <ChevronLeftIcon/>}
                     </IconButton>
                 </div>
                 <Divider/>
-                <List>
-                    {menu.map((text, index) => (
-                        <ListItem button key={text} component={Link} to={`/${menu[index].toLowerCase()}`}>
-                            <ListItemIcon>{icons[index]}</ListItemIcon>
-                            <ListItemText primary={text}/>
-                        </ListItem>
-                    ))}
-                </List>
+                <List>{generateMenuItems()}</List>
                 <Divider/>
                 {open ? <Button className={classes.tweetButton}>Tweet</Button> : null}
             </Drawer>
-            <main className={classes.content}>
-                <Grid container alignItems={"flex-start"} justify={"center"} spacing={2}>
-                    <Grid item xs={12}>
-                        <div className={classes.toolbar}/>
-                    </Grid>
-                    <Grid item xs={12} md={5}>
-                        <Switch>
-                            <Route exact path={"/"} component={Home}/>
-                            <Route path={`${url}${menu[0].toLowerCase()}`} component={Home}/>
-                            <Route path={`${url}${menu[1].toLowerCase()}`} component={Explore}/>
-                            <Route path={`${url}${menu[2].toLowerCase()}`} component={Notifications}/>
-                            <Route path={`${url}${menu[3].toLowerCase()}`} component={Messages}/>
-                            <Route path={`${url}${menu[4].toLowerCase()}`} component={Bookmarks}/>
-                            <Route path={`${url}${menu[5].toLowerCase()}`} component={Profile}/>
-                        </Switch>
-                    </Grid>
-                    <Grid item xs={false} md={3}><PopHashtagList/></Grid>
+            <Grid container className={classes.content} alignItems={"flex-start"} justify={"center"} spacing={2}>
+                <Grid item xs={12}><div className={classes.toolbar}/></Grid>
+                <Grid item xs={12} md={5}>
+                    <Switch>
+                        <Route exact path={"/"} component={Home}/>
+                        <Route path={`${url}${menu[0].toLowerCase()}`} component={Home}/>
+                        <Route path={`${url}${menu[1].toLowerCase()}`} component={Explore}/>
+                        <Route path={`${url}${menu[2].toLowerCase()}`} component={Notifications}/>
+                        <Route path={`${url}${menu[3].toLowerCase()}`} component={Messages}/>
+                        <Route path={`${url}${menu[4].toLowerCase()}`} component={Bookmarks}/>
+                        <Route path={`${url}${menu[5].toLowerCase()}`} component={Profile}/>
+                    </Switch>
                 </Grid>
-
-            </main>
+                <Grid item xs={false} md={3}><PopHashtagList/></Grid>
+            </Grid>
         </div>
     );
 }

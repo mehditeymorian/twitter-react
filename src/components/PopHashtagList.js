@@ -13,7 +13,7 @@ export default function PopHashtagList() {
         <Paper className={style.root}>
             <Grid container>
                 <Grid item xs={12}>
-                    <Typography variant={"h4"}>What's Happening</Typography>
+                    <Typography variant={"h5"} className={style.title}>What's Happening</Typography>
                     <Grid item><Divider/></Grid>
                 </Grid>
 

@@ -37,6 +37,8 @@ import Notifications from "./Notifications";
 import Bookmarks from "./Bookmarks";
 import Profile from "./Profile";
 import PopHashtagList from "./PopHashtagList";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
 
 const menu = ["Home", "Explore", "Notifications", "Messages", "Bookmarks", "Profile"];
 const icons = [<HomeIcon/>, <ExploreIcon/>, <NotificationsIcon/>, <MessageIcon/>, <BookmarksIcon/>, <ProfileIcon/>];
@@ -50,6 +52,10 @@ export default function Main() {
 
     const handleDrawerOpen = () => setOpen(true);
     const handleDrawerClose = () => setOpen(false);
+
+    const [ProfileMenuAnchor, setProfileMenuAnchor] = React.useState(null);
+    const handleProfileClick = (event) => setProfileMenuAnchor(event.currentTarget);
+    const handleProfileMenuClose = () => setProfileMenuAnchor(null);
 
     return (
         <div className={classes.root}>
@@ -71,10 +77,20 @@ export default function Main() {
                             <Typography variant="h6" noWrap>Twitter</Typography>
                         </Grid>
                         <Grid item xs={2}>
-                            <Grid container alignItems={"center"} spacing={2}>
+                            <Grid container alignItems={"center"} spacing={2} onClick={handleProfileClick}>
                                 <Grid item><Avatar src={"https://uifaces.co/our-content/donated/gPZwCbdS.jpg"}/></Grid>
                                 <Grid item><Typography>Your Profile</Typography></Grid>
                             </Grid>
+                            <Menu
+                                id="profile-menu"
+                                anchorEl={ProfileMenuAnchor}
+                                keepMounted
+                                open={Boolean(ProfileMenuAnchor)}
+                                onClose={handleProfileMenuClose}>
+                                <Link to={`/${menu[5].toLowerCase()}`}><MenuItem onClick={handleProfileMenuClose}>Profile</MenuItem></Link>
+                                <MenuItem onClick={handleProfileMenuClose}>Settings</MenuItem>
+                                <MenuItem onClick={handleProfileMenuClose}>Logout</MenuItem>
+                            </Menu>
 
                         </Grid>
                     </Grid>

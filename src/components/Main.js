@@ -36,7 +36,7 @@ import Explore from "./Explore";
 import Notifications from "./Notifications";
 import Bookmarks from "./Bookmarks";
 import Profile from "./Profile";
-import Paper from "@material-ui/core/Paper";
+import PopHashtagList from "./PopHashtagList";
 
 const menu = ["Home", "Explore", "Notifications", "Messages", "Bookmarks", "Profile"];
 const icons = [<HomeIcon/>, <ExploreIcon/>, <NotificationsIcon/>, <MessageIcon/>, <BookmarksIcon/>, <ProfileIcon/>];
@@ -127,17 +127,7 @@ export default function Main() {
                             <Route path={`${url}${menu[5].toLowerCase()}`} component={Profile}/>
                         </Switch>
                     </Grid>
-                    <Grid item xs={false} md={3} >
-                        <Paper>
-                            <h1>   Popular hastags   </h1>
-                            <ul>
-                                <li>Hashtag1</li>
-                                <li>Hashtag2</li>
-                                <li>Hashtag3</li>
-                                <li>Hashtag4</li>
-                            </ul>
-                        </Paper>
-                    </Grid>
+                    <Grid item xs={false} md={3} ><PopHashtagList /></Grid>
                 </Grid>
 
             </main>

@@ -21,7 +21,8 @@ const style = makeStyles((theme) => ({
         flexDirection: "row"
     },
     profileMenuTitle: {
-        marginLeft: theme.spacing(1)
+        marginLeft: theme.spacing(1),
+        color: "white"
     },
 }));
 

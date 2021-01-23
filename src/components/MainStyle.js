@@ -25,6 +25,20 @@ export const MainStyle = makeStyles((theme) => ({
     menuButton: {
         marginRight: 36,
     },
+    profileMenuLayout: {
+        width: "max-content",
+        backgroundColor: "transparent",
+        borderRadius: "35px"
+    },
+    profileMenuActionArea: {
+        width: "auto",
+        padding: theme.spacing(1),
+        display: "flex",
+        flexDirection: "row"
+    },
+    profileMenuTitle: {
+        marginLeft: theme.spacing(1)
+    },
     hide: {
         display: 'none',
     },

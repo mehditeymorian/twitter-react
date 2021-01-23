@@ -39,9 +39,13 @@ import Profile from "./Profile";
 import PopHashtagList from "./PopHashtagList";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
+import Card from "@material-ui/core/Card";
+import CardActionArea from "@material-ui/core/CardActionArea";
 
 const menu = ["Home", "Explore", "Notifications", "Messages", "Bookmarks", "Profile"];
 const icons = [<HomeIcon/>, <ExploreIcon/>, <NotificationsIcon/>, <MessageIcon/>, <BookmarksIcon/>, <ProfileIcon/>];
+
+const profileMenuLinks = ["/profile","/settings","/logout"];
 
 
 export default function Main() {
@@ -53,7 +57,7 @@ export default function Main() {
     const handleDrawerOpen = () => setOpen(true);
     const handleDrawerClose = () => setOpen(false);
 
-    const [ProfileMenuAnchor, setProfileMenuAnchor] = React.useState(null);
+    const [profileMenuAnchor, setProfileMenuAnchor] = React.useState(null);
     const handleProfileClick = (event) => setProfileMenuAnchor(event.currentTarget);
     const handleProfileMenuClose = () => setProfileMenuAnchor(null);
 
@@ -73,24 +77,23 @@ export default function Main() {
                         <MenuIcon/>
                     </IconButton>
                     <Grid container alignItems={"center"} spacing={3}>
-                        <Grid item xs={10}>
-                            <Typography variant="h6" noWrap>Twitter</Typography>
-                        </Grid>
+                        <Grid item xs={10}><Typography variant="h6" noWrap>Twitter</Typography></Grid>
                         <Grid item xs={2}>
-                            <Grid container alignItems={"center"} spacing={2} onClick={handleProfileClick}>
-                                <Grid item><Avatar src={"https://uifaces.co/our-content/donated/gPZwCbdS.jpg"}/></Grid>
-                                <Grid item><Typography>Your Profile</Typography></Grid>
-                            </Grid>
+                            <Card elevation={0} className={classes.profileMenuLayout} onClick={handleProfileClick}>
+                                <CardActionArea className={classes.profileMenuActionArea}>
+                                <Avatar src={"https://uifaces.co/our-content/donated/gPZwCbdS.jpg"}/>
+                                <Typography display={"inline"} className={classes.profileMenuTitle}>Your Profile</Typography>
+                                </CardActionArea>
+                            </Card>
                             <Menu
                                 id="profile-menu"
-                                anchorEl={ProfileMenuAnchor}
+                                anchorEl={profileMenuAnchor}
                                 keepMounted
-                                open={Boolean(ProfileMenuAnchor)}
+                                open={Boolean(profileMenuAnchor)}
                                 onClose={handleProfileMenuClose}>
-                                <Link to={`/${menu[5].toLowerCase()}`}><MenuItem
-                                    onClick={handleProfileMenuClose}>Profile</MenuItem></Link>
-                                <MenuItem onClick={handleProfileMenuClose}>Settings</MenuItem>
-                                <MenuItem onClick={handleProfileMenuClose}>Logout</MenuItem>
+                                <MenuItem onClick={handleProfileMenuClose} component={Link} to={profileMenuLinks[0]}>Profile</MenuItem>
+                                <MenuItem onClick={handleProfileMenuClose} component={Link} to={profileMenuLinks[1]}>Settings</MenuItem>
+                                <MenuItem onClick={handleProfileMenuClose} component={Link} to={profileMenuLinks[2]}>Logout</MenuItem>
                             </Menu>
 
                         </Grid>

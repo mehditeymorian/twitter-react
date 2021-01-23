@@ -19,7 +19,7 @@ const classes = makeStyles((theme) => ({
 export default function PopHashtag() {
     const style = classes();
     return (
-        <Card elevation={0} square component={Link} to={"#"} className={style.root}>
+        <Card elevation={0} component={Link} to={"#"} className={style.root}>
             <CardActionArea className={style.content}>
             <Typography>12.3k</Typography>
             <Typography>Biden is Fucked up!</Typography>

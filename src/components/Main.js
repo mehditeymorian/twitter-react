@@ -87,7 +87,8 @@ export default function Main() {
                                 keepMounted
                                 open={Boolean(ProfileMenuAnchor)}
                                 onClose={handleProfileMenuClose}>
-                                <Link to={`/${menu[5].toLowerCase()}`}><MenuItem onClick={handleProfileMenuClose}>Profile</MenuItem></Link>
+                                <Link to={`/${menu[5].toLowerCase()}`}><MenuItem
+                                    onClick={handleProfileMenuClose}>Profile</MenuItem></Link>
                                 <MenuItem onClick={handleProfileMenuClose}>Settings</MenuItem>
                                 <MenuItem onClick={handleProfileMenuClose}>Logout</MenuItem>
                             </Menu>
@@ -118,12 +119,10 @@ export default function Main() {
                 <Divider/>
                 <List>
                     {menu.map((text, index) => (
-                        <Link to={`/${menu[index].toLowerCase()}`}>
-                            <ListItem button key={text}>
-                                <ListItemIcon>{icons[index]}</ListItemIcon>
-                                <ListItemText primary={text}/>
-                            </ListItem>
-                        </Link>
+                        <ListItem button key={text} component={Link} to={`/${menu[index].toLowerCase()}`}>
+                            <ListItemIcon>{icons[index]}</ListItemIcon>
+                            <ListItemText primary={text}/>
+                        </ListItem>
                     ))}
                 </List>
                 <Divider/>
@@ -131,7 +130,9 @@ export default function Main() {
             </Drawer>
             <main className={classes.content}>
                 <Grid container alignItems={"flex-start"} justify={"center"} spacing={2}>
-                    <Grid item xs={12}><div className={classes.toolbar}/></Grid>
+                    <Grid item xs={12}>
+                        <div className={classes.toolbar}/>
+                    </Grid>
                     <Grid item xs={12} md={5}>
                         <Switch>
                             <Route exact path={"/"} component={Home}/>
@@ -143,7 +144,7 @@ export default function Main() {
                             <Route path={`${url}${menu[5].toLowerCase()}`} component={Profile}/>
                         </Switch>
                     </Grid>
-                    <Grid item xs={false} md={3} ><PopHashtagList /></Grid>
+                    <Grid item xs={false} md={3}><PopHashtagList/></Grid>
                 </Grid>
 
             </main>

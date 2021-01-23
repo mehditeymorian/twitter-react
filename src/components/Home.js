@@ -1,8 +1,25 @@
 import React from "react";
+import Paper from "@material-ui/core/Paper";
+import TweetWriter from "./TweetWriter";
+import Tweet from "./Tweet";
 
 export default function Home() {
     return (
-       <h1>Home</h1>
+       <Paper>
+           <TweetWriter />
+           <Tweet />
+           <Tweet />
+           <Tweet />
+           <Tweet />
+           <Tweet />
+           <Tweet />
+           <Tweet />
+           <Tweet />
+           <Tweet />
+           <Tweet />
+           <Tweet />
+           <Tweet />
+       </Paper>
     );
 }
 

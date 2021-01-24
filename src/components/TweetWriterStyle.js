@@ -12,5 +12,9 @@ export const TweetWriterStyle = makeStyles((theme) => ({
     },
     field: {
         width: '100%'
-    }
+    },
+    sendButton: {
+        borderRadius: "20px"
+    },
+
 }));

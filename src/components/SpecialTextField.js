@@ -14,6 +14,14 @@ const classes = makeStyles(() => ({
             color: "#434343"
         }
     },
+    tweetText: {
+        width: "100%",
+        position: "absolute",
+        top: "5px",
+        fontSize: "medium",
+        lineHeight: "20px",
+
+    },
     textInputLayout: {
         position: "relative",
         zIndex: "0"
@@ -43,7 +51,7 @@ export default function SpecialTextField() {
                 rows={5}
                 inputProps={{maxLength: 250, className: style.textInput}}
             />
-            <TweetText value={input}/>
+            <TweetText value={input} textStyle={style.tweetText}/>
         </div>
     );
 }

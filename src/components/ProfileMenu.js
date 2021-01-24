@@ -1,4 +1,4 @@
-import React, {Fragment} from "react";
+import React from "react";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import {Avatar, makeStyles, Typography} from "@material-ui/core";
@@ -34,7 +34,7 @@ export default function ProfileMenu() {
 
 
     return (
-        <Fragment>
+        <>
             <Card elevation={0} className={classes.profileMenuLayout} onClick={handleProfileClick}>
                 <CardActionArea className={classes.profileMenuActionArea}>
                     <Avatar src={"https://uifaces.co/our-content/donated/gPZwCbdS.jpg"}/>
@@ -51,7 +51,7 @@ export default function ProfileMenu() {
                 <MenuItem onClick={handleProfileMenuClose} component={Link} to={profileMenuLinks[1]}>Settings</MenuItem>
                 <MenuItem onClick={handleProfileMenuClose} component={Link} to={profileMenuLinks[2]}>Logout</MenuItem>
             </Menu>
-        </Fragment>
+        </>
     );
 
 };

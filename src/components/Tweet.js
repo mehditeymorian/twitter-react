@@ -9,7 +9,9 @@ import {
     Comment as CommentIcon,
     Repeat as RetweetIcon,
     FavoriteBorder as LikeIcon,
-    Bookmark as BookmarkIcon,
+    Favorite as LikeFilledIcon,
+    BookmarkBorder as BookmarkIcon,
+    Bookmark as BookmarkFilledIcon,
     BarChart as StatIcon
 } from '@material-ui/icons';
 import TweetText from "./TweetText";
@@ -22,6 +24,9 @@ export default function Tweet() {
         "                                when an unknown printer took a #galley of type and #scrambled it to make a type specimen\n" +
         "                                book.info";
 
+    const like = false;
+    const bookmarked = false;
+    const retweeted = false;
     return (
         <Fragment>
             <Grid container className={classes.root}>
@@ -41,14 +46,14 @@ export default function Tweet() {
                             <Typography display={"inline"} className={classes.actionText}>12</Typography>
                         </Grid>
                         <Grid item>
-                            <IconButton><RetweetIcon/></IconButton>
+                            <IconButton className={retweeted ? classes.retweetStyle : null}><RetweetIcon/></IconButton>
                             <Typography display={"inline"} className={classes.actionText}>2</Typography>
                         </Grid>
                         <Grid item>
-                            <IconButton><LikeIcon/></IconButton>
+                            <IconButton className={classes.likeStyle}>{like ? <LikeFilledIcon/> : <LikeIcon/>}</IconButton>
                             <Typography display={"inline"} className={classes.actionText}>60</Typography>
                         </Grid>
-                        <Grid item><IconButton><BookmarkIcon/></IconButton></Grid>
+                        <Grid item><IconButton className={classes.bookmarkStyle}>{bookmarked ? <BookmarkFilledIcon/>:<BookmarkIcon/>}</IconButton></Grid>
                         <Grid item><IconButton><StatIcon/></IconButton></Grid>
                     </Grid>
                 </Grid>

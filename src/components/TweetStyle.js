@@ -25,5 +25,14 @@ export const TweetStyle = makeStyles((theme) => ({
     },
     actionText: {
         cursor: "pointer"
-    }
+    },
+    retweetStyle: {
+        color: "#228B22",
+    },
+    likeStyle: {
+        color: "#FF0000"
+    },
+    bookmarkStyle: {
+      color: theme.palette.primary
+    },
 }));

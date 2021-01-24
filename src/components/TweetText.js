@@ -8,8 +8,18 @@ const HASHTAG_REGEX = /#[\w_]+/gi;
 
 
 export default function TweetText({value, textStyle}) {
-    let result = value.replaceAll(HASHTAG_REGEX, oldValue => `<span><a href={"/hashtag"}>${oldValue}</a></span>`);
-    result = result.replaceAll(URL_REGEX, oldValue => `<span><a href={"/url"}>${oldValue}</a></span>`);
+
+    const classes = makeStyles((theme) => ({
+        something: {
+            textDecoration: "none",
+            color: "red"
+        }
+    }));
+
+    /* todo: change style of text links*/
+
+    let result = value.replaceAll(HASHTAG_REGEX, oldValue => `<a className={"${classes.something}"} href={"/hashtag"}>${oldValue}</a>`);
+    result = result.replaceAll(URL_REGEX, oldValue => `<a className={"${classes.something}"} href={"/url"}>${oldValue}</a>`);
     return (<div className={textStyle} dangerouslySetInnerHTML={{__html: result}}/>);
 
 }

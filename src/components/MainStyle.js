@@ -22,6 +22,12 @@ export const MainStyle = makeStyles((theme) => ({
             duration: theme.transitions.duration.enteringScreen,
         }),
     },
+    bottomNav: {
+        width: "100%",
+        height: "10%",
+        position: "fixed",
+        top: "90%"
+    },
     menuButton: {
         marginRight: 36,
     },

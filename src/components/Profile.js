@@ -19,13 +19,14 @@ export default function Profile() {
         <Paper className={classes.root}>
 
 
-            <Grid container spacing={0}>
+            <Grid container spacing={0} >
                 <Grid item xs={12}><img src={"https://source.unsplash.com/random"} className={classes.image}
                                         alt={"Header Image"}/></Grid>
-                <Grid item xs={9}><Avatar src={"https://uifaces.co/our-content/donated/gPZwCbdS.jpg"}
-                                          className={classes.profileImage}/></Grid>
-                <Grid item xs={3}><Button className={classes.editButton} variant={"outlined"}>Edit
-                    profile</Button></Grid>
+                <Grid item xs={1} sm={8}><Avatar src={"https://uifaces.co/our-content/donated/gPZwCbdS.jpg"}
+                                                 className={classes.profileImage}/></Grid>
+                <Grid container xs={11} sm={4} justify={"flex-end"} spacing={2}>
+                    <Grid item><Button className={classes.editButton} variant={"outlined"}>Edit profile</Button></Grid>
+                </Grid>
                 <Grid item xs={12}><Typography className={classes.userName}>Mehdi</Typography></Grid>
                 <Grid item xs={12}><Typography className={classes.bio} variant={"caption"}>@meyti_T</Typography></Grid>
                 <Grid item xs={12}>
@@ -36,18 +37,23 @@ export default function Profile() {
                     </Typography>
                 </Grid>
                 <Grid container xs={12} className={classes.bioInfoLayout}>
-                    <Typography display={"inline"} className={classes.bioInfo}><LocationIcon className={classes.bioInfoIcon}/>Mars</Typography>
-                    <Typography display={"inline"} className={classes.bioInfo}><BirthdayIcon className={classes.bioInfoIcon}/>Born December 13, 1999</Typography>
-                    <Typography display={"inline"} className={classes.bioInfo}><JoinDateIcon className={classes.bioInfoIcon}/>Joined August 2016</Typography>
+                    <Typography display={"inline"} className={classes.bioInfo}><LocationIcon
+                        className={classes.bioInfoIcon}/>Mars</Typography>
+                    <Typography display={"inline"} className={classes.bioInfo}><BirthdayIcon
+                        className={classes.bioInfoIcon}/>Born December 13, 1999</Typography>
+                    <Typography display={"inline"} className={classes.bioInfo}><JoinDateIcon
+                        className={classes.bioInfoIcon}/>Joined August 2016</Typography>
                 </Grid>
                 <Grid container xs={12} className={classes.bioInfoLayout}>
-                    <Typography component={Link} to={"/followings"} className={classes.bioInfo}>192 Followings</Typography>
-                    <Typography component={Link} to={"/followers"} className={classes.bioInfo}>173 Followers</Typography>
+                    <Typography component={Link} to={"/followings"} className={classes.bioInfo}>192
+                        Followings</Typography>
+                    <Typography component={Link} to={"/followers"} className={classes.bioInfo}>173
+                        Followers</Typography>
                 </Grid>
                 <Grid item xs={12}>
                     <Fragment>
                         <Tabs value={value} onChange={handleChange}
-                              indicatorColor="primary" textColor="primary" centered>
+                              indicatorColor="primary" textColor="primary" variant={"scrollable"} scrollButtons="auto" centered>
                             <Tab label="Tweets" component={Link} to={`${url}`}/>
                             <Tab label="Tweets & replies" component={Link} to={`${url}/with_replies`}/>
                             <Tab label="Media" component={Link} to={`${url}/media`}/>

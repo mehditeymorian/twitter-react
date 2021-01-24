@@ -24,8 +24,6 @@ import {
     Notifications as NotificationsIcon,
     Person as ProfileIcon,
     Menu as MenuIcon,
-    ChevronLeft as ChevronLeftIcon,
-    ChevronRight as ChevronRightIcon
 } from '@material-ui/icons';
 import {MainStyle} from "./MainStyle";
 import {Switch, Route, Link, useRouteMatch} from 'react-router-dom';
@@ -37,23 +35,13 @@ import Bookmarks from "./Bookmarks";
 import Profile from "./Profile";
 import PopHashtagList from "./PopHashtagList";
 import ProfileMenu from "./ProfileMenu";
-import BottomNavigation from "@material-ui/core/BottomNavigation";
-import BottomNavigationAction from "@material-ui/core/BottomNavigationAction";
+import Hidden from "@material-ui/core/Hidden";
 
 const menu = ["Home", "Explore", "Notifications", "Messages", "Bookmarks", "Profile"];
 const icons = [<HomeIcon/>, <ExploreIcon/>, <NotificationsIcon/>, <MessageIcon/>, <BookmarksIcon/>, <ProfileIcon/>];
 
-const bottomNavMenu = ["Home", "Explore", "Notifications", "Messages", "Profile"];
-const bottomNavIcons = [<HomeIcon/>, <ExploreIcon/>, <NotificationsIcon/>, <MessageIcon/>, <ProfileIcon/>];
 
-const MENU_SWAP_BREAKPOINT = 600;
 
-function getDrawerClass(classes, open) {
-    return clsx(classes.drawer, {
-        [classes.drawerOpen]: open,
-        [classes.drawerClose]: !open,
-    });
-}
 
 function generateMenuItems() {
     return menu.map((text, index) => (
@@ -64,63 +52,69 @@ function generateMenuItems() {
     ));
 }
 
-function generateNavMenuItems() {
-    return bottomNavMenu.map((text, index) => (
-        <BottomNavigationAction label={text} icon={bottomNavIcons[index]} component={Link} to={`/${text.toLowerCase()}`} />
-    ));
-}
 
-export default function Main() {
+export default function Main(props) {
+    const { window } = props;
     const classes = MainStyle();
     const theme = useTheme();
-    const [open, setOpen] = React.useState(false);
     let {url} = useRouteMatch();
 
-    const handleDrawerOpen = () => setOpen(true);
-    const handleDrawerClose = () => setOpen(false);
+    const [mobileOpen, setMobileOpen] = React.useState(false);
 
-    const [bottomMenuValue, setBottomMenuValue] = React.useState(0);
+    const handleDrawerToggle = () => {
+        setMobileOpen(!mobileOpen);
+    };
 
+    const drawer = (
+        <div>
+            <div className={classes.toolbar}>
+            </div>
+            <Divider/>
+            <List>{generateMenuItems()}</List>
+            <Divider/>
+            <Button className={classes.tweetButton}>Tweet</Button>
+        </div>);
 
-    const [screenWidth, setScreenWidth] = useState(window.innerWidth);
-    window.addEventListener("resize", ev => setScreenWidth(window.innerWidth));
+    const container = window !== undefined ? () => window().document.body : undefined;
 
     return (
         <div className={classes.root}>
-            {screenWidth > MENU_SWAP_BREAKPOINT ?
                 <div>
                     <CssBaseline/>
-                    <AppBar
-                        position="fixed"
-                        className={clsx(classes.appBar, {[classes.appBarShift]: open})}>
+                    <AppBar position="fixed" className={classes.appBar}>
                         <Toolbar>
-                            <IconButton color="inherit" aria-label="open drawer"
-                                        onClick={handleDrawerOpen} edge="start"
-                                        className={clsx(classes.menuButton, {[classes.hide]: open,})}><MenuIcon/></IconButton>
-                            <Grid container alignItems={"center"} spacing={3}>
-                                <Grid item xs={10}><Typography variant="h6" noWrap>Twitter</Typography></Grid>
-                                <Grid item xs={2}><ProfileMenu/></Grid>
+                            <IconButton color="inherit" aria-label="open drawer" edge="start"
+                                        onClick={handleDrawerToggle} className={classes.menuButton}><MenuIcon/></IconButton>
+                            <Grid container alignItems={"center"} justify={"space-between"} spacing={3}>
+                                <Grid item><Typography variant="h6" noWrap>Twitter</Typography></Grid>
+                                <Grid item><ProfileMenu/></Grid>
                             </Grid>
                         </Toolbar>
                     </AppBar>
-                    <Drawer
-                        variant="permanent"
-                        className={getDrawerClass(classes, open)}
-                        classes={{paper: getDrawerClass(classes, open)}}>
-                        <div className={classes.toolbar}>
-                            <IconButton onClick={handleDrawerClose}>
-                                {theme.direction === 'rtl' ? <ChevronRightIcon/> : <ChevronLeftIcon/>}
-                            </IconButton>
-                        </div>
-                        <Divider/>
-                        <List>{generateMenuItems()}</List>
-                        <Divider/>
-                        {open ? <Button className={classes.tweetButton}>Tweet</Button> : null}
-                    </Drawer>
-                </div>: null}
+                    <nav className={classes.drawer} aria-label="mailbox folders">
+                        {/* The implementation can be swapped with js to avoid SEO duplication of links. */}
+                        <Hidden smUp implementation="css">
+                            <Drawer
+                                container={container}
+                                variant="temporary"
+                                anchor={theme.direction === 'rtl' ? 'right' : 'left'}
+                                open={mobileOpen}
+                                onClose={handleDrawerToggle}
+                                classes={{paper: classes.drawerPaper,}}
+                                ModalProps={{keepMounted: true,/* // Better open performance on mobile.*/}}>
+                                {drawer}
+                            </Drawer>
+                        </Hidden>
+                        <Hidden xsDown implementation="css">
+                            <Drawer classes={{paper: classes.drawerPaper,}} variant="permanent" open>{drawer}</Drawer>
+                        </Hidden>
+                    </nav>
+                </div>
             <Grid container className={classes.content} alignItems={"flex-start"} justify={"center"} spacing={2}>
-                <Grid item xs={12}><div className={classes.toolbar}/></Grid>
-                <Grid item xs={12} lg={7} xl={5}>
+                <Grid item xs={12}>
+                    <div className={classes.toolbar}/>
+                </Grid>
+                <Grid item xs={11} md={9} lg={7} xl={5}>
                     <Switch>
                         <Route exact path={"/"} component={Home}/>
                         <Route path={`${url}${menu[0].toLowerCase()}`} component={Home}/>
@@ -131,19 +125,9 @@ export default function Main() {
                         <Route path={`${url}${menu[5].toLowerCase()}`} component={Profile}/>
                     </Switch>
                 </Grid>
-                <Grid item xs={false} md={3}><PopHashtagList/></Grid>
+                <Grid item md={false} lg={3} xl={3}><PopHashtagList/></Grid>
             </Grid>
 
-            {
-                screenWidth < MENU_SWAP_BREAKPOINT ?
-                    <BottomNavigation
-                        value={bottomMenuValue}
-                        onChange={(event, newValue) => setBottomMenuValue(newValue)}
-                        showLabels
-                        className={classes.bottomNav}>
-                        {generateNavMenuItems()}
-                    </BottomNavigation>: null }
-            }
         </div>
     );
 }

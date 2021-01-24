@@ -35,6 +35,7 @@ import Profile from "./Profile";
 import PopHashtagList from "./PopHashtagList";
 import ProfileMenu from "./ProfileMenu";
 import Hidden from "@material-ui/core/Hidden";
+import TweetDetail from "./TweetDetail";
 
 const menu = ["Home", "Explore", "Notifications", "Messages", "Bookmarks", "Profile"];
 const icons = [<HomeIcon/>, <ExploreIcon/>, <NotificationsIcon/>, <MessageIcon/>, <BookmarksIcon/>, <ProfileIcon/>];
@@ -60,9 +61,7 @@ export default function Main(props) {
 
     const [mobileOpen, setMobileOpen] = React.useState(false);
 
-    const handleDrawerToggle = () => {
-        setMobileOpen(!mobileOpen);
-    };
+    const handleDrawerToggle = () => setMobileOpen(!mobileOpen);
 
     const drawer = (
         <div>
@@ -109,11 +108,9 @@ export default function Main(props) {
                         </Hidden>
                     </nav>
                 </div>
-            <Grid container className={classes.content} alignItems={"flex-start"} justify={"center"} spacing={2}>
-                <Grid item xs={12}>
-                    <div className={classes.toolbar}/>
-                </Grid>
-                <Grid item xs={11} md={9} lg={7} xl={5}>
+            <Grid container className={classes.content} alignItems={"flex-start"} justify={"center"} xs={12}>
+                <Grid item xs={12}><div className={classes.toolbar}/></Grid>
+                <Grid item xs={11} md={9} lg={7} xl={5} className={classes.timeline}>
                     <Switch>
                         <Route exact path={"/"} component={Home}/>
                         <Route path={`${url}${menu[0].toLowerCase()}`} component={Home}/>
@@ -122,6 +119,7 @@ export default function Main(props) {
                         <Route path={`${url}${menu[3].toLowerCase()}`} component={Messages}/>
                         <Route path={`${url}${menu[4].toLowerCase()}`} component={Bookmarks}/>
                         <Route path={`${url}${menu[5].toLowerCase()}`} component={Profile}/>
+                        <Route path={`${url}tweet-detail/:id`} component={TweetDetail} />
                     </Switch>
                 </Grid>
                 <Grid item md={false} lg={3} xl={3}><PopHashtagList/></Grid>

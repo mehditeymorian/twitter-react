@@ -14,7 +14,8 @@ export const TweetWriterStyle = makeStyles((theme) => ({
         width: '100%'
     },
     sendButton: {
-        borderRadius: "20px"
+        borderRadius: "20px",
+        marginBottom: theme.spacing(1)
     },
 
 }));

@@ -24,25 +24,19 @@ export default function TweetWriter() {
     return (
         <>
             <Grid container className={style.root}>
-                <Grid item xs={1}><Avatar src={"https://uifaces.co/our-content/donated/gPZwCbdS.jpg"}/></Grid>
-                <Grid item xs={11}>
-                    <Grid container>
-                        <Grid item xs={12}><SpecialTextField/></Grid>
-                        <Grid container alignItems={"center"} className={style.actionsLayout}>
-                            <Grid container xs={10}>
-                                <Grid item><IconButton><MediaIcon/></IconButton></Grid>
-                                <Grid item><IconButton><GifIcon/></IconButton></Grid>
-                                <Grid item><IconButton><PollIcon/></IconButton></Grid>
-                                <Grid item><IconButton><EmojiIcon/></IconButton></Grid>
-                                <Grid item><IconButton><ScheduleIcon/></IconButton></Grid>
-                            </Grid>
-                            <Grid item xs={2}>
-                                <Button variant={"contained"}
-                                        disableElevation
-                                        color={"secondary"}
-                                        className={style.sendButton}
-                                >Tweet</Button>
-                            </Grid>
+                <Grid item xs={2} md={1}><Avatar src={"https://uifaces.co/our-content/donated/gPZwCbdS.jpg"}/></Grid>
+                <Grid container xs={10} md={11}>
+                    <Grid item xs={12}><SpecialTextField/></Grid>
+                    <Grid container alignItems={"center"} justify={"space-between"} className={style.actionsLayout}>
+                        <Grid container  xs>
+                            <Grid item><IconButton><MediaIcon/></IconButton></Grid>
+                            <Grid item><IconButton><GifIcon/></IconButton></Grid>
+                            <Grid item><IconButton><PollIcon/></IconButton></Grid>
+                            <Grid item><IconButton><EmojiIcon/></IconButton></Grid>
+                            <Grid item><IconButton><ScheduleIcon/></IconButton></Grid>
+                        </Grid>
+                        <Grid item xs={3} sm={3} md={2} lg={2}>
+                            <Button variant={"contained"} disableElevation color={"secondary"} className={style.sendButton}>Tweet</Button>
                         </Grid>
                     </Grid>
                 </Grid>

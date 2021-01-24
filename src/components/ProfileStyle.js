@@ -3,7 +3,6 @@ import {makeStyles} from "@material-ui/core";
 
 export const ProfileStyle =  makeStyles((theme) => ({
     root: {
-        width: "100%",
         position: "relative",
         borderRadius: "8px"
     },

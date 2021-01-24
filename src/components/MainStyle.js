@@ -8,7 +8,8 @@ export const MainStyle = makeStyles((theme) => ({
         backgroundImage: `url(/assets/wallpaper.jpg)`,
         backgroundSize: "cover",
         backgroundAttachment: "fixed",
-        backgroundRepeat: "no-repeat"
+        backgroundRepeat: "no-repeat",
+        backgroundPosition: "center center"
     },
     drawer: {
         [theme.breakpoints.up('sm')]: {

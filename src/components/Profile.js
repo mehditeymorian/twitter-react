@@ -20,8 +20,7 @@ export default function Profile() {
 
 
             <Grid container spacing={0} >
-                <Grid item xs={12}><img src={"https://source.unsplash.com/random"} className={classes.image}
-                                        alt={"Header Image"}/></Grid>
+                <Grid item xs={12}><img src={"https://source.unsplash.com/random"} className={classes.image} alt={"random"}/></Grid>
                 <Grid item xs={1} sm={8}><Avatar src={"https://uifaces.co/our-content/donated/gPZwCbdS.jpg"}
                                                  className={classes.profileImage}/></Grid>
                 <Grid container xs={11} sm={4} justify={"flex-end"} spacing={2}>

@@ -1,7 +1,7 @@
 import React, {Fragment} from "react";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
-import {Avatar, Grid, makeStyles, Typography} from "@material-ui/core";
+import {Avatar, makeStyles, Typography} from "@material-ui/core";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import {Link} from "react-router-dom";

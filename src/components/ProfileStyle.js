@@ -18,7 +18,7 @@ export const ProfileStyle =  makeStyles((theme) => ({
         height: theme.spacing(12),
         zIndex: 20,
         position: "absolute",
-        top: "200px",
+        top: "13.5%",
         left: "5%"
     },
     editButton: {

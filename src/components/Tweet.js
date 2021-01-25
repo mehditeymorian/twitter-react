@@ -31,10 +31,13 @@ const getTopDateVisibility = (type) => type === TWEET_DETAIL ? "none" : "block";
 
 export default function Tweet({type = TWEET_NORMAL}) {
     const classes = TweetStyle();
-    const tweetText = "Lorem Ipsum is simply #dummy text of the printing and typesetting.com industry.\n" +
-        "                                Lorem Ipsum has been the #industry's standard dummy text.ir ever since the 1500s,\n" +
-        "                                when an unknown printer took a #galley of type and #scrambled it to make a type specimen\n" +
-        "                                book.info";
+    const tweetText = `
+    Lorem @Ipsum is simply #dummy text of the printing and typesetting industry. 
+    Lorem Ipsum has been the industry's #standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five @centuries, but also the leap into @electronic typesetting,
+        remaining essentially unchanged. It was popularised in the 1960s with
+         the release of Letraset sheets containing Lorem.ir Ipsum passages, and more recently
+          with desktop publishing software like Aldus PageMaker.com including versions of Lorem Ipsum.
+    `;
 
     const like = false;
     const bookmarked = false;

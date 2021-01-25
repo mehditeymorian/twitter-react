@@ -1,6 +1,6 @@
 import {makeStyles} from "@material-ui/core/styles";
 
-const drawerWidth = 200;
+const drawerWidth = 220;
 
 export const MainStyle = makeStyles((theme) => ({
     root: {
@@ -46,8 +46,7 @@ export const MainStyle = makeStyles((theme) => ({
         marginRight: theme.spacing(2)
     },
     tweetButton: {
-        backgroundColor: theme.palette.primary.main,
-        margin: theme.spacing(2,2),
-        color: "white"
+        backgroundColor: theme.palette.primary,
+        borderRadius: "20px"
     }
 }));

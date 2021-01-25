@@ -36,6 +36,7 @@ import PopHashtagList from "./PopHashtagList";
 import ProfileMenu from "./ProfileMenu";
 import Hidden from "@material-ui/core/Hidden";
 import TweetDetail from "./TweetDetail";
+import TweetDialog from "./TweetDialog";
 
 const menu = ["Home", "Explore", "Notifications", "Messages", "Bookmarks", "Profile"];
 const icons = [<HomeIcon/>, <ExploreIcon/>, <NotificationsIcon/>, <MessageIcon/>, <BookmarksIcon/>, <ProfileIcon/>];
@@ -63,6 +64,9 @@ export default function Main(props) {
 
     const handleDrawerToggle = () => setMobileOpen(!mobileOpen);
 
+    const [openTweetDialog, setOpenTweetDialog] = React.useState(false);
+
+
     const drawer = (
         <div>
             <div className={classes.toolbar}>
@@ -70,13 +74,15 @@ export default function Main(props) {
             <Divider/>
             <List>{generateMenuItems()}</List>
             <Divider/>
-            <Button className={classes.tweetButton}>Tweet</Button>
+            <Button className={classes.tweetButton} variant={"contained"} fullWidth
+                    color={"primary"} onClick={() => setOpenTweetDialog(true)}>Tweet</Button>
         </div>);
 
     const container = window !== undefined ? () => window().document.body : undefined;
 
     return (
         <div className={classes.root}>
+            <TweetDialog open={openTweetDialog} setOpen={setOpenTweetDialog} />
                 <div>
                     <CssBaseline/>
                     <AppBar position="fixed" className={classes.appBar}>

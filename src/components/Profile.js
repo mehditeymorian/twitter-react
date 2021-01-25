@@ -1,6 +1,6 @@
 import React, {Fragment} from "react";
 import {useState} from "react";
-import {Grid, Avatar, Button, Paper, Typography, Tabs, Tab, Divider} from "@material-ui/core";
+import {Grid, Avatar, Button, Paper, Typography, Tabs, Tab, Divider, Link as UILink} from "@material-ui/core";
 import {ProfileStyle} from "./ProfileStyle";
 import {Switch, Route, Link, useRouteMatch} from "react-router-dom";
 import {
@@ -9,14 +9,18 @@ import {
     CalendarToday as JoinDateIcon
 } from "@material-ui/icons";
 import Tweet from "./Tweet";
+import FollowDialog from "./FollowDialog";
 
 export default function Profile() {
     const classes = ProfileStyle();
     const [value, setValue] = useState(0);
     const handleChange = (event, newValue) => setValue(newValue);
     let {url} = useRouteMatch();
+
+    const [open, setOpen] = React.useState(false);
     return (
         <Paper className={classes.root}>
+            <FollowDialog open={open} setOpen={setOpen} />
 
 
             <Grid container spacing={0} >
@@ -44,10 +48,8 @@ export default function Profile() {
                         className={classes.bioInfoIcon}/>Joined August 2016</Typography>
                 </Grid>
                 <Grid container xs={12} className={classes.bioInfoLayout}>
-                    <Typography component={Link} to={"/followings"} className={classes.bioInfo}>192
-                        Followings</Typography>
-                    <Typography component={Link} to={"/followers"} className={classes.bioInfo}>173
-                        Followers</Typography>
+                    <Typography component={UILink} onClick={() => setOpen(true)} className={classes.bioInfo}>192 Followings</Typography>
+                    <Typography component={UILink} onClick={() => setOpen(true)} className={classes.bioInfo}>173 Followers</Typography>
                 </Grid>
                 <Grid item xs={12}>
                     <Fragment>

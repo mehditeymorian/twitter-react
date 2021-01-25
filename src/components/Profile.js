@@ -17,10 +17,10 @@ export default function Profile() {
     const handleChange = (event, newValue) => setValue(newValue);
     let {url} = useRouteMatch();
 
-    const [open, setOpen] = React.useState(false);
+    const [openFollowDialog, setOpenFollowDialog] = React.useState(false);
     return (
         <Paper className={classes.root}>
-            <FollowDialog open={open} setOpen={setOpen} />
+            <FollowDialog open={openFollowDialog} setOpen={setOpenFollowDialog} />
 
 
             <Grid container spacing={0} >
@@ -48,8 +48,8 @@ export default function Profile() {
                         className={classes.bioInfoIcon}/>Joined August 2016</Typography>
                 </Grid>
                 <Grid container xs={12} className={classes.bioInfoLayout}>
-                    <Typography component={UILink} onClick={() => setOpen(true)} className={classes.bioInfo}>192 Followings</Typography>
-                    <Typography component={UILink} onClick={() => setOpen(true)} className={classes.bioInfo}>173 Followers</Typography>
+                    <Typography component={UILink} onClick={() => setOpenFollowDialog(true)} className={classes.bioInfo}>192 Followings</Typography>
+                    <Typography component={UILink} onClick={() => setOpenFollowDialog(true)} className={classes.bioInfo}>173 Followers</Typography>
                 </Grid>
                 <Grid item xs={12}>
                     <Fragment>

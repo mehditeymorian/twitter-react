@@ -1,8 +1,13 @@
 import React from "react";
+import Paper from "@material-ui/core/Paper";
+import {NotificationsStyle} from "./NotificationsStyle";
 
 export default function Notifications() {
+    const style = NotificationsStyle();
     return (
-        <h1>Notifications</h1>
+        <Paper className={style.root}>
+
+        </Paper>
     );
 }
 

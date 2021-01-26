@@ -1,14 +1,14 @@
 import axios from "axios";
 
-export const AUTH_NULL = -1;
-export const AUTH_LOADING = 0;
-export const AUTH_SUCCESS = 1;
+export const STATE_NULL = -1;
+export const STATE_LOADING = 0;
+export const STATE_SUCCESS = 1;
 
 export const SIGNUP_INIT = "SIGN_UP_INIT";
 export const signup_init = () => ({
     type: SIGNUP_INIT,
     payload: {
-        code: AUTH_LOADING
+        code: STATE_LOADING
     }
 });
 
@@ -16,7 +16,7 @@ export const SIGNUP_SUCCESS = "SIGN_UP_SUCCESS";
 export const signup_success = result => ({
     type: SIGNUP_SUCCESS,
     payload: {
-        code: AUTH_SUCCESS,
+        code: STATE_SUCCESS,
         user: result
     }
 });
@@ -63,7 +63,7 @@ export const SIGNIN_INIT = "SIGNIN_INIT";
 export const signin_init = () => ({
     type: SIGNIN_INIT,
     payload: {
-        code: AUTH_LOADING
+        code: STATE_LOADING
     }
 });
 
@@ -71,7 +71,7 @@ export const SIGNIN_SUCCESS = "SIGNIN_SUCCESS";
 export const signin_success = result => ({
     type: SIGNIN_SUCCESS,
     payload: {
-        code: AUTH_SUCCESS,
+        code: STATE_SUCCESS,
         user: result
     }
 });
@@ -116,6 +116,62 @@ export const LOGOUT = "LOGOUT";
 export const logoutUser = () => ({
     type: LOGOUT
 });
+
+
+export const CREATE_TWEET__INIT = "CREATE_TWEET__INIT";
+export const createTweet_init = () => ({
+    type: CREATE_TWEET__INIT,
+    payload: {
+        code: STATE_LOADING
+    }
+});
+
+export const CREATE_TWEET_SUCCESS = "CREATE_TWEET_SUCCESS";
+export const createTweet_success = result => ({
+    type: CREATE_TWEET_SUCCESS,
+    payload: {
+        code: STATE_SUCCESS,
+        tweet: result
+    }
+});
+
+export const CREATE_TWEET_FAIL = "CREATE_TWEET_FAIL";
+export const createTweet_fail = code => ({
+    type: CREATE_TWEET_FAIL,
+    payload: {
+        code: code,
+    }
+});
+
+export const createTweet = (tweet) => async (dispatch, getState) => {
+    dispatch(createTweet_init());
+
+    const bodyFormData = new FormData();
+    bodyFormData.append("text", tweet.text);
+    bodyFormData.append("media", tweet.media);
+    bodyFormData.append("parent", tweet.parent);
+
+    await axios({
+        baseURL: 'http://127.0.0.1:8585',
+        method: 'post',
+        url: '/login',
+        data: bodyFormData,
+        headers: {
+            'Content-Type': 'multipart/form-data',
+            "Authorization": `Token ${getState.user.token}`
+        }
+    })
+        .then(value => {
+            const result = {
+                ...value.data.tweet
+            }
+            dispatch(createTweet_success(result));
+        })
+        .catch(error => {
+            printError(error);
+            dispatch(createTweet_fail(error.response.status));
+        });
+};
 
 
 function printError(error) {

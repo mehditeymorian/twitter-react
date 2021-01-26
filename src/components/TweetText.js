@@ -20,9 +20,9 @@ function mapEach(value, level) {
             {mapEach(value.slice(result.index+1),1)}
         </span>;
     } else {
-        if (HASHTAG_REGEX.test(value)) return <span>{' '}<Link display={"inline"} color={"secondary"} href={"/hashtag"}>{`${value}`}</Link></span>;
-        else if (HANDLER_REGEX.test(value)) return <span>{' '}<Link display={"inline"} color={"secondary"} href={"/handler"}>{`${value}`}</Link></span>;
-        else if (URL_REGEX.test(value)) return <span>{' '}<Link display={"inline"} color={"secondary"} href={"/url"}>{`${value}`}</Link></span>;
+        if (HASHTAG_REGEX.test(value)) return <span>{' '}<Link display={"inline"} onClick={event => event.stopPropagation()} color={"secondary"} href={"/explore/hashtag"}>{`${value}`}</Link></span>;
+        else if (HANDLER_REGEX.test(value)) return <span>{' '}<Link display={"inline"} onClick={event => event.stopPropagation()} color={"secondary"} href={`/profile/${value.slice(1)}`}>{`${value}`}</Link></span>;
+        else if (URL_REGEX.test(value)) return <span>{' '}<Link display={"inline"} onClick={event => event.stopPropagation()} color={"secondary"} href={"/url"}>{`${value}`}</Link></span>;
         else return <a>{` ${value}`}</a>;
     }
 }

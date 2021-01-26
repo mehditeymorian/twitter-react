@@ -2,7 +2,7 @@ import React, {Fragment} from "react";
 import {useState} from "react";
 import {Grid, Avatar, Button, Paper, Typography, Tabs, Tab, Divider, Link as UILink} from "@material-ui/core";
 import {ProfileStyle} from "./ProfileStyle";
-import {Switch, Route, Link, useRouteMatch} from "react-router-dom";
+import {Switch, Route, Link, useRouteMatch, useParams} from "react-router-dom";
 import {
     LocationOn as LocationIcon,
     Cake as BirthdayIcon,
@@ -17,6 +17,8 @@ export default function Profile() {
     const [value, setValue] = useState(0);
     const handleChange = (event, newValue) => setValue(newValue);
     let {url} = useRouteMatch();
+    let {id} = useParams();
+    console.log(id);
 
     const [openFollowDialog, setOpenFollowDialog] = React.useState(false);
     return (

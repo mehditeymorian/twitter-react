@@ -46,7 +46,7 @@ const icons = [<HomeIcon/>, <ExploreIcon/>, <NotificationsIcon/>, <MessageIcon/>
 
 function generateMenuItems() {
     return menu.map((text, index) => (
-        <ListItem button key={text} component={Link} to={`/${menu[index].toLowerCase()}`}>
+        <ListItem button key={text} component={Link} to={`/${menu[index].toLowerCase()}${index === 5 ? '/mehdi' : ''}`}>
             <ListItemIcon>{icons[index]}</ListItemIcon>
             <ListItemText primary={text}/>
         </ListItem>
@@ -124,7 +124,7 @@ export default function Main(props) {
                         <Route path={`${url}${menu[2].toLowerCase()}`} component={Notifications}/>
                         <Route path={`${url}${menu[3].toLowerCase()}`} component={Messages}/>
                         <Route path={`${url}${menu[4].toLowerCase()}`} component={Bookmarks}/>
-                        <Route path={`${url}${menu[5].toLowerCase()}`} component={Profile}/>
+                        <Route path={`${url}${menu[5].toLowerCase()}/:id`} component={Profile}/>
                         <Route path={`${url}tweet-detail/:id`} component={TweetDetail} />
                     </Switch>
                 </Grid>

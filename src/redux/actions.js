@@ -1,6 +1,6 @@
 import axios from "axios";
-import {API_CALL} from "./ApiCall";
 
+export const AUTH_NULL = -1;
 export const AUTH_LOADING = 0;
 export const AUTH_SUCCESS = 1;
 

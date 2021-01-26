@@ -33,12 +33,11 @@ const classes = makeStyles(() => ({
 
 
 
-export default function SpecialTextField() {
+export default function SpecialTextField({text,setText}) {
     const style = classes();
-    const [input, setInput] = useState("");
 
 
-    const onInputChange = input => setInput(input.target.value);
+    const onInputChange = input => setText(input.target.value);
 
     return (
         <div className={style.textInputLayout}>
@@ -51,7 +50,7 @@ export default function SpecialTextField() {
                 rows={5}
                 inputProps={{maxLength: 250, className: style.textInput}}
             />
-            <TweetText value={input} textStyle={style.tweetText}/>
+            <TweetText value={text} textStyle={style.tweetText}/>
         </div>
     );
 }

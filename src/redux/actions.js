@@ -39,6 +39,7 @@ export const signup = (user) => async (dispatch, getState) => {
         accept: '*/*',
         data: {
             user: {
+                name: `${user.firstName} ${user.lastName}`,
                 username: user.username,
                 email: user.email,
                 password: user.password
@@ -48,9 +49,8 @@ export const signup = (user) => async (dispatch, getState) => {
         .then(value => {
             const result = {
                 ...value.data.user
-            }
+            };
             dispatch(signup_success(result));
-            console.log(value.cookies);
         })
         .catch(error => {
             printError(error);
@@ -101,11 +101,9 @@ export const signin = (user) => async (dispatch, getState) => {
     })
         .then(value => {
             const result = {
-                ...user,
-                token: value.data.user.token
+                ...value.data.user
             }
             dispatch(signin_success(result));
-            console.log(value.cookies);
         })
         .catch(error => {
             printError(error);

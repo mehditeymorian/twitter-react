@@ -47,8 +47,7 @@ export const signup = (user) => async (dispatch, getState) => {
     })
         .then(value => {
             const result = {
-                ...user,
-                token: value.data.user.token
+                ...value.data.user
             }
             dispatch(signup_success(result));
             console.log(value.cookies);
@@ -102,7 +101,8 @@ export const signin = (user) => async (dispatch, getState) => {
     })
         .then(value => {
             const result = {
-                ...value.user
+                ...user,
+                token: value.data.user.token
             }
             dispatch(signin_success(result));
             console.log(value.cookies);

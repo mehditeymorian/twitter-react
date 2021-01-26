@@ -1,7 +1,7 @@
 import {makeStyles} from "@material-ui/core";
 
 
-export const NotificationsStyle = makeStyles((theme) => ({
+export const LogsStyle = makeStyles((theme) => ({
 	root: {},
 	header: {
 		borderRadius: "15px 15px 0 0",
@@ -49,6 +49,5 @@ export const NotificationsStyle = makeStyles((theme) => ({
 	},
 	sourceName: {
 		fontWeight: "bold",
-		paddingRight: theme.spacing(0.5)
 	},
 }));

@@ -10,6 +10,7 @@ import {
 } from "@material-ui/icons";
 import Tweet from "./Tweet";
 import FollowDialog from "./FollowDialog";
+import Logs from "./Logs";
 
 export default function Profile() {
     const classes = ProfileStyle();
@@ -54,11 +55,11 @@ export default function Profile() {
                 <Grid item xs={12}>
                     <Fragment>
                         <Tabs value={value} onChange={handleChange}
-                              indicatorColor="primary" textColor="primary" variant={"scrollable"} scrollButtons="auto" centered>
+                              indicatorColor="primary" textColor="primary" variant={"fullWidth"}>
                             <Tab label="Tweets" component={Link} to={`${url}`}/>
                             <Tab label="Tweets & replies" component={Link} to={`${url}/with_replies`}/>
                             <Tab label="Media" component={Link} to={`${url}/media`}/>
-                            <Tab label="Likes" component={Link} to={`${url}/likes`}/>
+                            <Tab label="Logs" component={Link} to={`${url}/logs`}/>
                         </Tabs>
                         <Divider/>
                         <Switch>
@@ -71,7 +72,7 @@ export default function Profile() {
                             </Route>
                             <Route path={`${url}/with_replies`}><h1>With Replies</h1></Route>
                             <Route path={`${url}/media`}><h1>Media</h1></Route>
-                            <Route path={`${url}/likes`}><h1>Like</h1></Route>
+                            <Route path={`${url}/logs`}>{Logs()}</Route>
                         </Switch>
 
                     </Fragment>

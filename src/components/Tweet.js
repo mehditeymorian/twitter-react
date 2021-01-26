@@ -29,49 +29,55 @@ const getNameBP = (type) => type === TWEET_DETAIL ? 12 : "auto";
 
 const getTopDateVisibility = (type) => type === TWEET_DETAIL ? "none" : "block";
 
-export default function Tweet({type = TWEET_NORMAL}) {
+export default function Tweet({type = TWEET_NORMAL, tweet, username}) {
     const classes = TweetStyle();
-    const tweetText = `
-    Lorem @Ipsum is simply #dummy text of the printing and typesetting industry. 
-    Lorem Ipsum has been the industry's #standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five @centuries, but also the leap into @electronic typesetting,
-        remaining essentially unchanged. It was popularised in the 1960s with
-         the release of Letraset sheets containing Lorem.ir Ipsum passages, and more recently
-          with desktop publishing software like Aldus PageMaker.com including versions of Lorem Ipsum.
-    `;
-
-    const like = false;
+    /*
+    What does each tweet have:
+        liked? (by me),
+        likeCount
+        media,
+        owner -> bio, name, profile_picture, username
+        parents
+        retweeted? (by me),
+        retweetCount
+        text
+        time
+     */
+    
+    const tweetText = tweet.text;
+    const like = tweet.liked;
     const bookmarked = false;
-    const retweeted = false;
-    const myTweet = false;
+    const retweeted = tweet.retweeted;
+    const myTweet = username === tweet.owner.username;
     return (
         <Card square>
-            <CardActionArea disabled={type === TWEET_DETAIL} component={Link} to={"/tweet-detail/454534"}>
+            <CardActionArea disabled={type === TWEET_DETAIL} component={Link} to={`/tweet-detail/${tweet.id}`}>
                 <Grid container className={classes.root}>
                     <Grid item xs={2} md={1}><Avatar
-                        src={"https://uifaces.co/our-content/donated/gPZwCbdS.jpg"}/></Grid>
+                        src={tweet.owner.profile_picture}/></Grid>
                     <Grid container className={classes.tweetHeader} xs={10} md={11} spacing={1}>
                         <Grid container xs={12} alignItems={"flex-start"}>
-                            <Grid item xs={getNameBP(type)}><Typography display={"inline"} className={classes.name}>Meyti</Typography></Grid>
-                            <Grid item><Typography display={"inline"} className={classes.id}>@meyti_t</Typography></Grid>
-                            <Grid item><Typography display={"inline"} style={{display: getTopDateVisibility(type)}} className={classes.date}>. Jan 20</Typography></Grid>
+                            <Grid item xs={getNameBP(type)}><Typography display={"inline"} className={classes.name}>{tweet.owner.name}</Typography></Grid>
+                            <Grid item><Typography display={"inline"} className={classes.id}>@{tweet.owner.username}</Typography></Grid>
+                            <Grid item><Typography display={"inline"} style={{display: getTopDateVisibility(type)}} className={classes.date}>{tweet.date}</Typography></Grid>
                         </Grid>
                         <Grid item xs={12}><TweetText value={tweetText} textStyle={classes.tweetText}/></Grid>
-                        {type === TWEET_DETAIL ? <Grid item xs={12}><Typography>9:34 PM · Jan 24, 2021</Typography></Grid>: null}
+                        {type === TWEET_DETAIL ? <Grid item xs={12}><Typography>{tweet.date}</Typography></Grid>: null}
                         {type === TWEET_DETAIL ? <Divider/>: null}
                         <Grid container justify={"space-between"} className={classes.tweetActions} xs={12}>
                             <Grid item>
                                 <IconButton><CommentIcon/></IconButton>
-                                <Typography display={"inline"} className={classes.actionText}>12</Typography>
+                                <Typography display={"inline"} className={classes.actionText}>{tweet.comments.length}</Typography>
                             </Grid>
                             <Grid item>
                                 <IconButton
                                     className={retweeted ? classes.retweetStyle : null}><RetweetIcon/></IconButton>
-                                <Typography display={"inline"} className={classes.actionText}>2</Typography>
+                                <Typography display={"inline"} className={classes.actionText}>{tweet.retweets_count}</Typography>
                             </Grid>
                             <Grid item>
                                 <IconButton className={classes.likeStyle}>{like ? <LikeFilledIcon/> :
                                     <LikeIcon/>}</IconButton>
-                                <Typography display={"inline"} className={classes.actionText}>60</Typography>
+                                <Typography display={"inline"} className={classes.actionText}>{tweet.likes_count}</Typography>
                             </Grid>
                             <Grid item><IconButton className={classes.bookmarkStyle}>{bookmarked ?
                                 <BookmarkFilledIcon/> : <BookmarkIcon/>}</IconButton></Grid>

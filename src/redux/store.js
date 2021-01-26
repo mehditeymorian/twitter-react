@@ -15,13 +15,12 @@ const reducers = combineReducers({
 const persistConfig = {
     key: 'twitter',
     blacklist: [
-        profile,
+        "profile",
     ],
     storage,
     stateReconciler : autoMergeLevel2
 };
 
 const persistedReducer = persistReducer(persistConfig, reducers);
-
 const devTool = composeWithDevTools(applyMiddleware(thunk));
 export const getStore = () => createStore(persistedReducer, devTool);

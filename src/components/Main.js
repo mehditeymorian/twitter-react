@@ -48,7 +48,6 @@ const icons = [<HomeIcon/>, <ExploreIcon/>, <NotificationsIcon/>, <MessageIcon/>
 
 
 function Main({userState,window}) {
-    console.log(userState);
     const classes = MainStyle();
     const theme = useTheme();
     let {url} = useRouteMatch();

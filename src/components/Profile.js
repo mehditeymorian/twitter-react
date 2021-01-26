@@ -22,53 +22,50 @@ import FollowDialog from "./FollowDialog";
 import Logs from "./Logs";
 import EditProfile from "./EditProfile";
 import {getProfile} from "../redux/actions";
-import connect from "react-redux/lib/connect/connect";
+import {connect} from "react-redux";
 
-function Profile({profile, token, getProfile}) {
+function Profile({profile, token, getUserProfile}) {
     const classes = ProfileStyle();
     const [value, setValue] = useState(0);
     const handleChange = (event, newValue) => setValue(newValue);
     let {url} = useRouteMatch();
     let {username} = useParams();
-    console.log(username);
     
-    if (profile === null) {
-        const result = getProfile(token, username)
-        console.log(result)
+    if (profile.state === -1) {
+        const result = getUserProfile(token, username);
+        console.log("GETTING IT");
     }
 
-    const [openFollowDialog, setOpenFollowDialog] = React.useState(false);
-    const [openEditDialog, setOpenEditDialog] = React.useState(false);
+    const [openFollowDialog, setOpenFollowDialog] = useState(false);
+    const [openEditDialog, setOpenEditDialog] = useState(false);
     
     const userProfile = {
-        profilePicture: "https://i.kym-cdn.com/entries/icons/mobile/000/013/564/doge.jpg",
-        header: "https://i.kym-cdn.com/entries/icons/mobile/000/013/564/doge.jpg",
-        name: "Doge",
-        bio: "doge doge"
+        username: profile.username,
+        name: profile.name,
+        bio:profile.bio,
+        profilePicture: profile.profile_picture === "" ? "https://i.stack.imgur.com/34AD2.jpg" : profile.profile_picture,
+        header: profile.header_picture === "" ? "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAW8AAACJCAMAAADUiEkNAAAAA1BMVEVpo7nX6yl3AAAASElEQVR4nO3BMQEAAADCoPVPbQsvoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAICXAcTwAAG9LRdQAAAAAElFTkSuQmCC" : profile.header_picture
     }
     
+    console.log(profile);
     return (
         <Paper className={classes.root}>
             <FollowDialog open={openFollowDialog} setOpen={setOpenFollowDialog} />
 
             <Grid container spacing={0} >
-                <Grid item xs={12}><img src={"https://source.unsplash.com/random"} className={classes.image} alt={"random"}/></Grid>
-                <Grid item xs={1} sm={8}><Avatar src={"https://uifaces.co/our-content/donated/gPZwCbdS.jpg"}
+                <Grid item xs={12}><img src={userProfile.header} className={classes.image} alt={"random"}/></Grid>
+                <Grid item xs={1} sm={8}><Avatar src={userProfile.profilePicture}
                                                  className={classes.profileImage}/></Grid>
                 <Grid container xs={11} sm={4} justify={"flex-end"} spacing={2}>
                     <Grid item><Button className={classes.editButton} variant={"outlined"} component={Link} to={`${url}/edit`} onClick={() => setOpenEditDialog(true)}>Edit profile</Button></Grid>
                     <Route path={`${url}/edit`}>
-                        <EditProfile profile={userProfile} open={openEditDialog} setOpen={setOpenEditDialog}/>
+                        {/*<EditProfile profile={userProfile} open={openEditDialog} setOpen={setOpenEditDialog}/>*/}
                     </Route>
                 </Grid>
-                <Grid item xs={12}><Typography className={classes.userName}>Mehdi</Typography></Grid>
-                <Grid item xs={12}><Typography className={classes.bio} variant={"caption"}>@meyti_T</Typography></Grid>
+                <Grid item xs={12}><Typography className={classes.userName}>{userProfile.name}</Typography></Grid>
+                <Grid item xs={12}><Typography className={classes.bio} variant={"caption"}>@{userProfile.username}</Typography></Grid>
                 <Grid item xs={12}>
-                    <Typography className={classes.bio}>
-                        Lorem Ipsum is simply dummy text of the printing and typesetting industry.
-                        Lorem Ipsum has been the industry's standard dummy text ever since the 1500s,
-                        when an unknown printer took a galley of type and scrambled it to make a type specimen book.
-                    </Typography>
+                    <Typography className={classes.bio}>{userProfile.bio}</Typography>
                 </Grid>
                 <Grid container xs={12} className={classes.bioInfoLayout}>
                     <Typography display={"inline"} className={classes.bioInfo}><LocationIcon
@@ -79,8 +76,8 @@ function Profile({profile, token, getProfile}) {
                         className={classes.bioInfoIcon}/>Joined August 2016</Typography>
                 </Grid>
                 <Grid container xs={12} className={classes.bioInfoLayout}>
-                    <Typography component={UILink} onClick={() => setOpenFollowDialog(true)} className={classes.bioInfo}>192 Followings</Typography>
-                    <Typography component={UILink} onClick={() => setOpenFollowDialog(true)} className={classes.bioInfo}>173 Followers</Typography>
+                    <Typography component={UILink} onClick={() => setOpenFollowDialog(true)} className={classes.bioInfo}>{"followings" in profile ? profile.followings.length : 0} Followings</Typography>
+                    <Typography component={UILink} onClick={() => setOpenFollowDialog(true)} className={classes.bioInfo}>{"followers" in profile ? profile.followers.length : 0} Followers</Typography>
                 </Grid>
                 <Grid item xs={12}>
                     <Fragment>
@@ -94,11 +91,9 @@ function Profile({profile, token, getProfile}) {
                         <Divider/>
                         <Switch>
                             <Route exact path={`${url}`}>
-                                <Tweet/>
-                                <Tweet/>
-                                <Tweet/>
-                                <Tweet/>
-                                <Tweet/>
+                                {"Tweets" in profile ? profile.Tweets.tweets.map((t) => {
+                                    return <Tweet tweet={t}/>
+                                }) : null}
                             </Route>
                             <Route path={`${url}/with_replies`}><h1>With Replies</h1></Route>
                             <Route path={`${url}/media`}><h1>Media</h1></Route>
@@ -118,7 +113,7 @@ const mapStateToProp = state => ({
 });
 
 const mapActionsToProp = dispatch => ({
-    getProfile: (token, username) => dispatch(getProfile(token, username)),
+    getUserProfile: (token, username) => dispatch(getProfile(token, username)),
 });
 
 export default connect(mapStateToProp, mapActionsToProp)(Profile);

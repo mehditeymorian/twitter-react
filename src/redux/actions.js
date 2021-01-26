@@ -8,7 +8,7 @@ export const PROFILE_NULL = -1;
 export const PROFILE_LOADING = 0;
 export const PROFILE_SUCCESS = 1;
 
-
+// ****************** SIGN UP ************************
 export const SIGNUP_INIT = "SIGN_UP_INIT";
 export const signup_init = () => ({
 	type: SIGNUP_INIT,
@@ -61,35 +61,9 @@ export const signup = (user) => async (dispatch, getState) => {
             printError(error);
             dispatch(signup_fail(error.response.status));
         });
-	dispatch(signup_init());
-	await axios({
-		baseURL: 'http://127.0.0.1:8585',
-		method: 'post',
-		url: '/signup',
-		contentType: 'application/json',
-		data: {
-			user: {
-				username: user.username,
-				name: user.name,
-				email: user.email,
-				password: user.password
-			}
-		}
-	})
-		.then(value => {
-			const result = {
-				...user,
-				token: value.data.user.token
-			}
-			dispatch(signup_success(result));
-		})
-		.catch(error => {
-			printError(error);
-			dispatch(signup_fail(error.status));
-		});
 };
 
-
+// ****************** SIGN IN ************************
 export const SIGNIN_INIT = "SIGNIN_INIT";
 export const signin_init = () => ({
 	type: SIGNIN_INIT,
@@ -144,16 +118,16 @@ export const signin = (user) => async (dispatch, getState) => {
         });
 };
 
-
+// ****************** LOG OUT ************************
 export const LOGOUT = "LOGOUT";
 export const logoutUser = () => ({
 	type: LOGOUT
 });
 
-
+// ****************** GET PROFILE ************************
 export const GET_PROFILE_INIT = "GET_PROFILE_INIT";
 export const getUserProfileInit = () => ({
-	type: PROFILE_NULL,
+	type: GET_PROFILE_INIT,
 	payload: {
 		code: PROFILE_LOADING,
 	}
@@ -161,16 +135,16 @@ export const getUserProfileInit = () => ({
 
 export const GET_PROFILE_SUCCESS = "GET_PROFILE_SUCCESS";
 export const getUserProfileSuccess = result => ({
-	type: PROFILE_NULL,
+	type: GET_PROFILE_SUCCESS,
 	payload: {
-		code: PROFILE_LOADING,
+		code: PROFILE_SUCCESS,
 		profile: result,
 	}
 });
 
 export const GET_PROFILE_FAIL = "GET_PROFILE_FAIL";
 export const getUserProfileFail = code => ({
-	type: PROFILE_NULL,
+	type: GET_PROFILE_FAIL,
 	payload: {
 		code: code,
 	}
@@ -185,8 +159,9 @@ export const getProfile = (token, username) => async (dispatch, getState) => {
 		contentType: 'application/json',
         headers: {"Authorization": "Token " + token},
 	}).then(value => {
+		console.log(value);
 		const result = {
-			profile: value.data.profile,
+			...value.data.profile,
 		}
 		dispatch(getUserProfileSuccess(result));
 	}).catch(error => {

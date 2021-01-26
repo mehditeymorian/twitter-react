@@ -2,18 +2,19 @@ import {
     AUTH_LOADING,
     AUTH_NULL,
     AUTH_SUCCESS,
+    GET_PROFILE_FAIL,
+    GET_PROFILE_INIT,
+    GET_PROFILE_SUCCESS,
     LOGOUT,
+    PROFILE_LOADING,
+    PROFILE_NULL,
+    PROFILE_SUCCESS,
     SIGNIN_FAIL,
     SIGNIN_INIT,
     SIGNIN_SUCCESS,
     SIGNUP_FAIL,
     SIGNUP_INIT,
-    SIGNUP_SUCCESS,
-    PROFILE_NULL,
-    GET_PROFILE_INIT,
-    GET_PROFILE_SUCCESS,
-    GET_PROFILE_FAIL,
-    PROFILE_LOADING, PROFILE_SUCCESS
+    SIGNUP_SUCCESS
 } from "./actions";
 
 const initUser = {
@@ -105,4 +106,4 @@ export const profileReducer = (profileState = initProfile, action) => {
         default:
             return profileState;
     }
-}
+};

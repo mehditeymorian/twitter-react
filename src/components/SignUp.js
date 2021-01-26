@@ -1,12 +1,13 @@
+import React from 'react';
 import {Avatar, Typography, Container, CssBaseline, TextField, FormControlLabel, Checkbox, Button, Grid} from "@material-ui/core";
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import React from 'react';
 import {Link} from 'react-router-dom'
 import {AuthStyle} from "./AuthStyle";
+import {connect} from 'react-redux';
+import {signUpUser} from "../redux/actions";
 
 
-
-export default function SignUp() {
+function SignUp({userState,signUpUser}) {
     const classes = AuthStyle();
 
     return (
@@ -95,3 +96,13 @@ export default function SignUp() {
         </Container>
     );
 }
+
+const mapStateToProp = state => ({
+    userState: state.user
+});
+
+const mapActionsToProp = dispatch => ({
+    signUpUser: user => dispatch(signUpUser(user)),
+});
+
+export default connect(mapStateToProp, mapActionsToProp)(SignUp);

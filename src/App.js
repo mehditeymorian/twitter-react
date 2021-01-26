@@ -5,11 +5,12 @@ import Auth from "./components/Auth";
 import {BrowserRouter as Router, Route, Switch, Redirect} from "react-router-dom";
 import Main from "./components/Main";
 import {connect} from "react-redux";
+import {isUserPresent} from "./redux/stateUtils";
 
 
 function App({userState}) {
 
-    const logged = userState !== null;
+    const logged = isUserPresent(userState);
 
     return (
         <Router>

@@ -7,13 +7,14 @@ import SignIn from './SignIn'
 import SignUp from "./SignUp";
 import {AuthStyle} from "./AuthStyle";
 import {connect} from "react-redux";
+import {isUserPresent} from "../redux/stateUtils";
 
 
 
 function Auth({userState}) {
     const classes = AuthStyle();
     let {url} = useRouteMatch();
-    let logged = userState !== null;
+    let logged = isUserPresent(userState);
 
     return (
         <Grid container component="main" className={classes.root}>

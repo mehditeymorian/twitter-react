@@ -1,13 +1,20 @@
-import React, {useState} from 'react';
+import React, { useState} from 'react';
 import {Avatar, Typography, Container, CssBaseline, TextField, Button, Grid} from "@material-ui/core";
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import {Link} from 'react-router-dom'
 import {AuthStyle} from "./AuthStyle";
 import {connect} from 'react-redux';
-import {signup, signup_init} from "../redux/actions";
+import {signup} from "../redux/actions";
+import LinearProgress from "@material-ui/core/LinearProgress";
+import {isUserFailed, isUserLoading} from "../redux/stateUtils";
+import Dialog from "@material-ui/core/Dialog";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogActions from "@material-ui/core/DialogActions";
 
 
-function SignUp({signupUser}) {
+function SignUp({userState, signupUser}) {
     const classes = AuthStyle();
     const [fNameInput, setFName] = useState("");
     const [lNameInput, setLName] = useState("");
@@ -28,10 +35,19 @@ function SignUp({signupUser}) {
         signupUser(user);
     };
 
+    const [dialogOpen, setDialogOpen] = React.useState(isUserFailed(userState));
+
+    const handleDialogOpen = () => setDialogOpen(true);
+
+    const handleDialogClose = () => setDialogOpen(false);
+
+
+
     return (
         <Container component="main" maxWidth="xs">
             <CssBaseline/>
             <div className={classes.paper}>
+                {isUserLoading(userState) ? <LinearProgress className={classes.progress}/> : null}
                 <Avatar className={classes.avatar}>
                     <LockOutlinedIcon/>
                 </Avatar>
@@ -66,18 +82,31 @@ function SignUp({signupUser}) {
                                        onChange={event => setPassword(event.target.value)}/>
                         </Grid>
                     </Grid>
-                    <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>Sign
-                        Up</Button>
+                    <Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>Sign Up</Button>
                     <Grid container justify="flex-end">
                         <Grid item><Link to={`sign-in`} variant="body2">Already have an account? Sign in</Link></Grid>
                     </Grid>
                 </form>
             </div>
+            <Dialog
+                open={dialogOpen}
+                onClose={handleDialogClose}
+                aria-labelledby="alert-dialog-title"
+                aria-describedby="alert-dialog-description">
+                <DialogTitle id="alert-dialog-title">{"Failed to Sign Up"}</DialogTitle>
+                <DialogContent>
+                    <DialogContentText id="alert-dialog-description">There was an error in sign-up.</DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleDialogClose} color="primary">Close</Button>
+                </DialogActions>
+            </Dialog>
         </Container>
     );
 }
 
 const mapStateToProp = state => ({
+    userState: state.user
 });
 
 const mapActionsToProp = dispatch => ({

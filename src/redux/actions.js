@@ -106,7 +106,6 @@ export const signin = (user) => async (dispatch, getState) => {
         })
         .catch(error => {
             printError(error);
-            // todo: fix the fail code
             dispatch(signin_fail(error.response.status));
         });
 };

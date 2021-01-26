@@ -58,11 +58,58 @@ export const signup = (user) => async (dispatch, getState) => {
 };
 
 
-export const LOGIN = "LOGIN";
-export const loginUser = user => ({
-    type: LOGIN,
-    payload: {user}
+export const SIGNIN_INIT = "SIGNIN_INIT";
+export const signin_init = () => ({
+    type: SIGNIN_INIT,
+    payload: {
+        code: AUTH_LOADING
+    }
 });
+
+export const SIGNIN_SUCCESS = "SIGNIN_SUCCESS";
+export const signin_success = result => ({
+    type: SIGNIN_SUCCESS,
+    payload: {
+        code: AUTH_SUCCESS,
+        user: result
+    }
+});
+
+export const SIGNIN_FAIL = "SIGNIN_FAIL";
+export const signin_fail = code => ({
+    type: SIGNIN_FAIL,
+    payload: {
+        code: code,
+    }
+});
+
+export const signin = (user) => async (dispatch, getState) => {
+    dispatch(signin_init());
+    await axios({
+        baseURL: 'http://127.0.0.1:8585',
+        method: 'post',
+        url: '/login',
+        contentType: 'application/json',
+        data: {
+            user: {
+                email: user.email,
+                password: user.password
+            }
+        }
+    })
+        .then(value => {
+            const result = {
+                ...user,
+                token: value.data.user.token
+            }
+            dispatch(signin_success(result));
+        })
+        .catch(error => {
+            printError(error);
+            dispatch(signin_fail(error.status));
+        });
+};
+
 
 export const LOGOUT = "LOGOUT";
 export const logoutUser = () => ({

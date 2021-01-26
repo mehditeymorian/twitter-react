@@ -45,7 +45,7 @@ function ProfileMenu({userState, logout}) {
             <Card elevation={0} className={classes.profileMenuLayout} onClick={handleProfileClick}>
                 <CardActionArea className={classes.profileMenuActionArea}>
                     <Avatar src={"https://uifaces.co/our-content/donated/gPZwCbdS.jpg"} alt={userState.username}/>
-                    <Typography display={"inline"} className={classes.profileMenuTitle}>{userState.firstName}</Typography>
+                    <Typography display={"inline"} className={classes.profileMenuTitle}>{userState.name}</Typography>
                 </CardActionArea>
             </Card>
             <Menu
@@ -54,7 +54,7 @@ function ProfileMenu({userState, logout}) {
                 keepMounted
                 open={Boolean(profileMenuAnchor)}
                 onClose={() => handleProfileMenuClose()}>
-                <MenuItem onClick={() => handleProfileMenuClose(0)} component={Link} to={profileMenuLinks[0]}>Profile</MenuItem>
+                <MenuItem onClick={() => handleProfileMenuClose(0)} component={Link} to={`${profileMenuLinks[0]}/${userState.username}`}>Profile</MenuItem>
                 <MenuItem onClick={() => handleProfileMenuClose(1)} component={Link} to={profileMenuLinks[1]}>Settings</MenuItem>
                 <MenuItem onClick={() => handleProfileMenuClose(2)} component={Link} to={profileMenuLinks[2]}>Logout</MenuItem>
             </Menu>

@@ -53,7 +53,7 @@ export const signup = (user) => async (dispatch, getState) => {
         })
         .catch(error => {
             printError(error);
-            dispatch(signup_fail(error.status));
+            dispatch(signup_fail(error.response.status));
         });
 };
 
@@ -106,7 +106,8 @@ export const signin = (user) => async (dispatch, getState) => {
         })
         .catch(error => {
             printError(error);
-            dispatch(signin_fail(error.status));
+            // todo: fix the fail code
+            dispatch(signin_fail(error.response.status));
         });
 };
 

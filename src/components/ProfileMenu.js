@@ -5,8 +5,10 @@ import {Avatar, makeStyles, Typography} from "@material-ui/core";
 import Menu from "@material-ui/core/Menu";
 import MenuItem from "@material-ui/core/MenuItem";
 import {Link} from "react-router-dom";
+import {logoutUser} from "../redux/actions";
+import {connect} from "react-redux";
 
-const profileMenuLinks = ["/profile","/settings","/logout"];
+const profileMenuLinks = ["/profile","/settings"];
 
 const style = makeStyles((theme) => ({
     profileMenuLayout: {
@@ -26,19 +28,24 @@ const style = makeStyles((theme) => ({
     },
 }));
 
-export default function ProfileMenu() {
+function ProfileMenu({userState, logout}) {
     const classes = style();
     const [profileMenuAnchor, setProfileMenuAnchor] = React.useState(null);
     const handleProfileClick = (event) => setProfileMenuAnchor(event.currentTarget);
-    const handleProfileMenuClose = () => setProfileMenuAnchor(null);
+    const handleProfileMenuClose = (which=-1) => {
+        setProfileMenuAnchor(null);
+        if (which === 2){ // logout
+            logout();
+        }
+    }
 
 
     return (
         <>
             <Card elevation={0} className={classes.profileMenuLayout} onClick={handleProfileClick}>
                 <CardActionArea className={classes.profileMenuActionArea}>
-                    <Avatar src={"https://uifaces.co/our-content/donated/gPZwCbdS.jpg"}/>
-                    <Typography display={"inline"} className={classes.profileMenuTitle}>Your Profile</Typography>
+                    <Avatar src={"https://uifaces.co/our-content/donated/gPZwCbdS.jpg"} alt={userState.username}/>
+                    <Typography display={"inline"} className={classes.profileMenuTitle}>{userState.firstName}</Typography>
                 </CardActionArea>
             </Card>
             <Menu
@@ -46,12 +53,22 @@ export default function ProfileMenu() {
                 anchorEl={profileMenuAnchor}
                 keepMounted
                 open={Boolean(profileMenuAnchor)}
-                onClose={handleProfileMenuClose}>
-                <MenuItem onClick={handleProfileMenuClose} component={Link} to={profileMenuLinks[0]}>Profile</MenuItem>
-                <MenuItem onClick={handleProfileMenuClose} component={Link} to={profileMenuLinks[1]}>Settings</MenuItem>
-                <MenuItem onClick={handleProfileMenuClose} component={Link} to={profileMenuLinks[2]}>Logout</MenuItem>
+                onClose={() => handleProfileMenuClose()}>
+                <MenuItem onClick={() => handleProfileMenuClose(0)} component={Link} to={profileMenuLinks[0]}>Profile</MenuItem>
+                <MenuItem onClick={() => handleProfileMenuClose(1)} component={Link} to={profileMenuLinks[1]}>Settings</MenuItem>
+                <MenuItem onClick={() => handleProfileMenuClose(2)} component={Link} to={profileMenuLinks[2]}>Logout</MenuItem>
             </Menu>
         </>
     );
 
 };
+
+const mapStateToProp = state => ({
+    userState: state.user
+});
+
+const mapActionsToProp = dispatch => ({
+    logout: () => dispatch(logoutUser())
+});
+
+export default connect(mapStateToProp,mapActionsToProp)(ProfileMenu);

@@ -6,7 +6,7 @@ import {AuthStyle} from "./AuthStyle";
 import {connect} from 'react-redux';
 import {signup} from "../redux/actions";
 import LinearProgress from "@material-ui/core/LinearProgress";
-import {isUserFailed, isUserLoading} from "../redux/stateUtils";
+import {isStateFailed, isStateLoading} from "../redux/stateUtils";
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -35,7 +35,7 @@ function SignUp({userState, signupUser}) {
         signupUser(user);
     };
 
-    const [dialogOpen, setDialogOpen] = React.useState(isUserFailed(userState));
+    const [dialogOpen, setDialogOpen] = React.useState(isStateFailed(userState));
 
     const handleDialogOpen = () => setDialogOpen(true);
 
@@ -47,7 +47,7 @@ function SignUp({userState, signupUser}) {
         <Container component="main" maxWidth="xs">
             <CssBaseline/>
             <div className={classes.paper}>
-                {isUserLoading(userState) ? <LinearProgress className={classes.progress}/> : null}
+                {isStateLoading(userState) ? <LinearProgress className={classes.progress}/> : null}
                 <Avatar className={classes.avatar}>
                     <LockOutlinedIcon/>
                 </Avatar>

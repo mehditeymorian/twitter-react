@@ -29,7 +29,7 @@ const getNameBP = (type) => type === TWEET_DETAIL ? 12 : "auto";
 
 const getTopDateVisibility = (type) => type === TWEET_DETAIL ? "none" : "block";
 
-export default function Tweet({type = TWEET_NORMAL}) {
+export default function Tweet({type = TWEET_NORMAL,tweet}) {
     const classes = TweetStyle();
     const tweetText = `
     Lorem @Ipsum is simply #dummy text of the printing and typesetting industry. 

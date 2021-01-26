@@ -1,37 +1,65 @@
-import React, {Fragment} from "react";
-import {useState} from "react";
-import {Grid, Avatar, Button, Paper, Typography, Tabs, Tab, Divider, Link as UILink} from "@material-ui/core";
-import {ProfileStyle} from "./ProfileStyle";
-import {Switch, Route, Link, useRouteMatch, useParams} from "react-router-dom";
+import React, {Fragment, useState} from "react";
 import {
-    LocationOn as LocationIcon,
+    Avatar,
+    Button,
+    Divider,
+    Grid,
+    Link as UILink,
+    Paper,
+    Tab,
+    Tabs,
+    Typography
+} from "@material-ui/core";
+import {ProfileStyle} from "./ProfileStyle";
+import {Link, Route, Switch, useParams, useRouteMatch} from "react-router-dom";
+import {
     Cake as BirthdayIcon,
-    CalendarToday as JoinDateIcon
+    CalendarToday as JoinDateIcon,
+    LocationOn as LocationIcon
 } from "@material-ui/icons";
 import Tweet from "./Tweet";
 import FollowDialog from "./FollowDialog";
 import Logs from "./Logs";
+import EditProfile from "./EditProfile";
+import {getProfile} from "../redux/actions";
+import connect from "react-redux/lib/connect/connect";
 
-export default function Profile() {
+function Profile({profile, token, getProfile}) {
     const classes = ProfileStyle();
     const [value, setValue] = useState(0);
     const handleChange = (event, newValue) => setValue(newValue);
     let {url} = useRouteMatch();
-    let {id} = useParams();
-    console.log(id);
+    let {username} = useParams();
+    console.log(username);
+    
+    if (profile === null) {
+        const result = getProfile(token, username)
+        console.log(result)
+    }
 
     const [openFollowDialog, setOpenFollowDialog] = React.useState(false);
+    const [openEditDialog, setOpenEditDialog] = React.useState(false);
+    
+    const userProfile = {
+        profilePicture: "https://i.kym-cdn.com/entries/icons/mobile/000/013/564/doge.jpg",
+        header: "https://i.kym-cdn.com/entries/icons/mobile/000/013/564/doge.jpg",
+        name: "Doge",
+        bio: "doge doge"
+    }
+    
     return (
         <Paper className={classes.root}>
             <FollowDialog open={openFollowDialog} setOpen={setOpenFollowDialog} />
-
 
             <Grid container spacing={0} >
                 <Grid item xs={12}><img src={"https://source.unsplash.com/random"} className={classes.image} alt={"random"}/></Grid>
                 <Grid item xs={1} sm={8}><Avatar src={"https://uifaces.co/our-content/donated/gPZwCbdS.jpg"}
                                                  className={classes.profileImage}/></Grid>
                 <Grid container xs={11} sm={4} justify={"flex-end"} spacing={2}>
-                    <Grid item><Button className={classes.editButton} variant={"outlined"}>Edit profile</Button></Grid>
+                    <Grid item><Button className={classes.editButton} variant={"outlined"} component={Link} to={`${url}/edit`} onClick={() => setOpenEditDialog(true)}>Edit profile</Button></Grid>
+                    <Route path={`${url}/edit`}>
+                        <EditProfile profile={userProfile} open={openEditDialog} setOpen={setOpenEditDialog}/>
+                    </Route>
                 </Grid>
                 <Grid item xs={12}><Typography className={classes.userName}>Mehdi</Typography></Grid>
                 <Grid item xs={12}><Typography className={classes.bio} variant={"caption"}>@meyti_T</Typography></Grid>
@@ -84,3 +112,13 @@ export default function Profile() {
     );
 }
 
+const mapStateToProp = state => ({
+    token: state.user.token,
+    profile: state.profile,
+});
+
+const mapActionsToProp = dispatch => ({
+    getProfile: (token, username) => dispatch(getProfile(token, username)),
+});
+
+export default connect(mapStateToProp, mapActionsToProp)(Profile);

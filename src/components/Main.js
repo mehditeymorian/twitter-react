@@ -48,6 +48,7 @@ const icons = [<HomeIcon/>, <ExploreIcon/>, <NotificationsIcon/>, <MessageIcon/>
 
 
 function Main({userState,window}) {
+    console.log(userState);
     const classes = MainStyle();
     const theme = useTheme();
     let {url} = useRouteMatch();
@@ -125,7 +126,7 @@ function Main({userState,window}) {
                         <Route path={`${url}${menu[2].toLowerCase()}`} component={Notifications}/>
                         <Route path={`${url}${menu[3].toLowerCase()}`} component={Messages}/>
                         <Route path={`${url}${menu[4].toLowerCase()}`} component={Bookmarks}/>
-                        <Route path={`${url}${menu[5].toLowerCase()}/:id`} component={Profile}/>
+                        <Route path={`${url}${menu[5].toLowerCase()}/:username`}><Profile/></Route>
                         <Route path={`${url}tweet-detail/:id`} component={TweetDetail} />
                     </Switch>
                 </Grid>

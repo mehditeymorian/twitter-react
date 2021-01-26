@@ -94,6 +94,8 @@ export const signin = (user) => async (dispatch, getState) => {
         accept: '*/*',
         data: {
             user: {
+            	username: user.username,
+            	name: user.name,
                 email: user.email,
                 password: user.password
             }
@@ -173,6 +175,50 @@ export const createTweet = (tweet) => async (dispatch, getState) => {
         });
 };
 
+
+export const GET_PROFILE_INIT = "GET_PROFILE_INIT";
+export const getUserProfileInit = () => ({
+	type: GET_PROFILE_INIT,
+	payload: {
+		code: STATE_LOADING,
+	}
+});
+
+export const GET_PROFILE_SUCCESS = "GET_PROFILE_SUCCESS";
+export const getUserProfileSuccess = result => ({
+	type: GET_PROFILE_SUCCESS,
+	payload: {
+		code: STATE_SUCCESS,
+		profile: result,
+	}
+});
+
+export const GET_PROFILE_FAIL = "GET_PROFILE_FAIL";
+export const getUserProfileFail = code => ({
+	type: GET_PROFILE_FAIL,
+	payload: {
+		code: code,
+	}
+});
+
+export const getProfile = (token, username) => async (dispatch, getState) => {
+	dispatch(getUserProfileInit());
+	await axios({
+		baseURL: 'http://127.0.0.1:8585',
+		method: 'get',
+		url: '/profiles/' + username,
+		contentType: 'application/json',
+        headers: {"Authorization": "Token " + token},
+	}).then(value => {
+		const result = {
+			profile: value.data.profile,
+		}
+		dispatch(getUserProfileSuccess(result));
+	}).catch(error => {
+		printError(error);
+		dispatch(getUserProfileFail(error.status));
+	});
+};
 
 function printError(error) {
     if (error.response) {

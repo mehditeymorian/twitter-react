@@ -7,11 +7,21 @@ import {
     SIGNIN_SUCCESS,
     SIGNUP_FAIL,
     SIGNUP_INIT,
-    SIGNUP_SUCCESS, CREATE_TWEET__INIT, CREATE_TWEET_SUCCESS, CREATE_TWEET_FAIL
+    SIGNUP_SUCCESS,
+    PROFILE_NULL,
+    GET_PROFILE_INIT,
+    GET_PROFILE_SUCCESS,
+    GET_PROFILE_FAIL,
+    PROFILE_LOADING, PROFILE_SUCCESS,
+    CREATE_TWEET__INIT, CREATE_TWEET_SUCCESS, CREATE_TWEET_FAIL
 } from "./actions";
 
 const initUser = {
     state: STATE_NULL
+};
+
+const initProfile = {
+	state: PROFILE_NULL
 };
 
 export const authReducer = (userState = initUser, action) => {
@@ -98,5 +108,34 @@ export const createTweetReducer = (createTweet = createTweetInit, action) => {
         }
         default:
             return createTweet;
+    }
+}
+
+export const profileReducer = (profileState = initProfile, action) => {
+    const {type, payload} = action;
+
+    switch (type) {
+        case GET_PROFILE_INIT: {
+            return {
+                ...profileState,
+                state: PROFILE_LOADING
+            };
+        }
+        case GET_PROFILE_SUCCESS: {
+            const {profile} = payload;
+            return {
+                ...profile,
+                state: PROFILE_SUCCESS
+            };
+        }
+        case GET_PROFILE_FAIL: {
+            const {code} = payload;
+            return {
+                ...profileState,
+                state: code
+            };
+        }
+        default:
+            return profileState;
     }
 }

@@ -1,12 +1,25 @@
 import {Avatar, Typography, TextField, FormControlLabel, Checkbox, Button, Grid} from "@material-ui/core";
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import React from "react";
+import React, {useState} from "react";
 import {Link} from 'react-router-dom'
 import {AuthStyle} from "./AuthStyle";
+import {connect} from "react-redux";
+import {signin} from "../redux/actions";
 
 
-export default function SignIn() {
+function SignIn({signinUser}) {
     const classes = AuthStyle();
+    const [emailInput, setEmailInput] = useState("");
+    const [passwordInput, setPasswordInput] = useState("");
+
+    const onSubmit = ev => {
+        ev.preventDefault();
+        const user = {
+            email: emailInput,
+            password: passwordInput
+        };
+        signinUser(user);
+    };
 
     return (
         <div className={classes.paper} >
@@ -16,7 +29,7 @@ export default function SignIn() {
             <Typography component="h1" variant="h5">
                 Sign in
             </Typography>
-            <form className={classes.form} noValidate>
+            <form className={classes.form} onSubmit={onSubmit} noValidate>
                 <TextField
                     variant="outlined"
                     margin="normal"
@@ -27,6 +40,7 @@ export default function SignIn() {
                     name="email"
                     autoComplete="email"
                     autoFocus
+                    onChange={event => setEmailInput(event.target.value)}
                 />
                 <TextField
                     variant="outlined"
@@ -38,6 +52,7 @@ export default function SignIn() {
                     type="password"
                     id="password"
                     autoComplete="current-password"
+                    onChange={event => setPasswordInput(event.target.value)}
                 />
                 <FormControlLabel
                     control={<Checkbox value="remember" color="primary"/>}
@@ -58,3 +73,14 @@ export default function SignIn() {
         </div>
     );
 }
+
+
+const mapStateToProp = state => ({
+
+});
+
+const mapActionsToProp = dispatch => ({
+    signinUser: user => dispatch(signin(user)),
+});
+
+export default connect(mapStateToProp, mapActionsToProp)(SignIn);

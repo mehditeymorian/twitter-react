@@ -37,6 +37,7 @@ import ProfileMenu from "./ProfileMenu";
 import Hidden from "@material-ui/core/Hidden";
 import TweetDetail from "./TweetDetail";
 import TweetDialog from "./TweetDialog";
+import {connect} from "react-redux";
 
 const menu = ["Home", "Explore", "Notifications", "Messages", "Bookmarks", "Profile"];
 const icons = [<HomeIcon/>, <ExploreIcon/>, <NotificationsIcon/>, <MessageIcon/>, <BookmarksIcon/>, <ProfileIcon/>];
@@ -44,18 +45,9 @@ const icons = [<HomeIcon/>, <ExploreIcon/>, <NotificationsIcon/>, <MessageIcon/>
 
 
 
-function generateMenuItems() {
-    return menu.map((text, index) => (
-        <ListItem button key={text} component={Link} to={`/${menu[index].toLowerCase()}${index === 5 ? '/mehdi' : ''}`}>
-            <ListItemIcon>{icons[index]}</ListItemIcon>
-            <ListItemText primary={text}/>
-        </ListItem>
-    ));
-}
 
 
-export default function Main(props) {
-    const { window } = props;
+function Main({userState,window}) {
     const classes = MainStyle();
     const theme = useTheme();
     let {url} = useRouteMatch();
@@ -65,6 +57,15 @@ export default function Main(props) {
     const handleDrawerToggle = () => setMobileOpen(!mobileOpen);
 
     const [openTweetDialog, setOpenTweetDialog] = React.useState(false);
+
+    const generateMenuItems = ()=> {
+        return menu.map((text, index) => (
+            <ListItem button key={text} component={Link} to={`/${menu[index].toLowerCase()}${index === 5 ? `/${userState.username}` : ''}`}>
+                <ListItemIcon>{icons[index]}</ListItemIcon>
+                <ListItemText primary={text}/>
+            </ListItem>
+        ));
+    }
 
 
     const drawer = (
@@ -134,3 +135,13 @@ export default function Main(props) {
         </div>
     );
 }
+
+
+const mapStateToProp = state => ({
+    userState: state.user
+});
+
+const mapActionsToProp = dispatch => ({
+});
+
+export default connect(mapStateToProp, mapActionsToProp)(Main);

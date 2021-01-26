@@ -1,6 +1,6 @@
-import {AUTH_SUCCESS} from "./actions";
+import {AUTH_LOADING, AUTH_SUCCESS} from "./actions";
 
 
-export const isUserPresent = user =>{
-    return user.state === AUTH_SUCCESS;
-}
+export const isUserPresent = user => user.state === AUTH_SUCCESS
+export const isUserLoading = user => user.state === AUTH_LOADING;
+export const isUserFailed = user => user.state >= 1;

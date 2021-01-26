@@ -36,6 +36,7 @@ export const signup = (user) => async (dispatch, getState) => {
         method: 'post',
         url: '/signup',
         contentType: 'application/json',
+        accept: '*/*',
         data: {
             user: {
                 username: user.username,
@@ -50,6 +51,7 @@ export const signup = (user) => async (dispatch, getState) => {
                 token: value.data.user.token
             }
             dispatch(signup_success(result));
+            console.log(value.cookies);
         })
         .catch(error => {
             printError(error);
@@ -90,6 +92,7 @@ export const signin = (user) => async (dispatch, getState) => {
         method: 'post',
         url: '/login',
         contentType: 'application/json',
+        accept: '*/*',
         data: {
             user: {
                 email: user.email,
@@ -99,10 +102,10 @@ export const signin = (user) => async (dispatch, getState) => {
     })
         .then(value => {
             const result = {
-                ...user,
-                token: value.data.user.token
+                ...value.user
             }
             dispatch(signin_success(result));
+            console.log(value.cookies);
         })
         .catch(error => {
             printError(error);
@@ -115,7 +118,6 @@ export const LOGOUT = "LOGOUT";
 export const logoutUser = () => ({
     type: LOGOUT
 });
-
 
 
 function printError(error) {

@@ -1,17 +1,17 @@
 import {
-    AUTH_LOADING,
-    AUTH_NULL, AUTH_SUCCESS,
+    STATE_LOADING,
+    STATE_NULL, STATE_SUCCESS,
     LOGOUT,
     SIGNIN_FAIL,
     SIGNIN_INIT,
     SIGNIN_SUCCESS,
     SIGNUP_FAIL,
     SIGNUP_INIT,
-    SIGNUP_SUCCESS
+    SIGNUP_SUCCESS, CREATE_TWEET__INIT, CREATE_TWEET_SUCCESS, CREATE_TWEET_FAIL
 } from "./actions";
 
 const initUser = {
-    state: AUTH_NULL
+    state: STATE_NULL
 };
 
 export const authReducer = (userState = initUser, action) => {
@@ -21,7 +21,7 @@ export const authReducer = (userState = initUser, action) => {
         case SIGNUP_INIT: {
             return {
                 ...userState,
-                state: AUTH_LOADING
+                state: STATE_LOADING
             };
         }
         case SIGNUP_FAIL: {
@@ -35,20 +35,20 @@ export const authReducer = (userState = initUser, action) => {
             const {user} = payload;
             return {
                 ...user,
-                state: AUTH_SUCCESS
+                state: STATE_SUCCESS
             };
         }
         case SIGNIN_INIT: {
             return {
                 ...userState,
-                state: AUTH_LOADING
+                state: STATE_LOADING
             };
         }
         case SIGNIN_SUCCESS: {
             const {user} = payload;
             return {
                 ...user,
-                state: AUTH_SUCCESS
+                state: STATE_SUCCESS
             };
         }
         case SIGNIN_FAIL: {
@@ -60,10 +60,43 @@ export const authReducer = (userState = initUser, action) => {
         }
         case LOGOUT: {
             return {
-                state: AUTH_NULL
+                state: STATE_NULL
             };
         }
         default:
             return userState;
     }
 };
+
+
+const createTweetInit = {
+    state: STATE_NULL
+};
+export const createTweetReducer = (createTweet = createTweetInit, action) => {
+    const {type, payload} = action;
+
+    switch (type) {
+        case CREATE_TWEET__INIT:{
+            return {
+              ...createTweet,
+              state: STATE_LOADING
+            };
+        }
+        case CREATE_TWEET_SUCCESS:{
+            const {tweet} = payload;
+            return {
+                ...tweet,
+                state: STATE_SUCCESS
+            };
+        }
+        case CREATE_TWEET_FAIL:{
+            const {code} = payload;
+            return {
+                ...createTweet,
+                state: code
+            };
+        }
+        default:
+            return createTweet;
+    }
+}

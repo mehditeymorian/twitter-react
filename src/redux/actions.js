@@ -283,6 +283,34 @@ export const retweet = (tweetId) => async (dispatch, getState) => {
         });
 };
 
+// ****************** DELETE RETWEET TWEET ************************
+export const DEL_RETWEET_INIT = "DEL_RETWEET_INIT";
+export const DEL_RETWEET_SUCCESS = "DEL_RETWEET_SUCCESS";
+export const DEL_RETWEET_FAIL = "DEL_RETWEET_FAIL";
+export const deleteRetweet = (tweetId) => async (dispatch, getState) => {
+    dispatch(createInit(DEL_RETWEET_INIT));
+    const {user} = getState();
+
+    await axios({
+        baseURL: 'http://127.0.0.1:8585',
+        method: 'delete',
+        url: `/tweets/${tweetId}/retweet`,
+        headers: {
+            "Authorization": `Token ${user.token}`
+        }
+    })
+        .then(value => {
+            const result = {
+                ...value.data.tweet
+            }
+            dispatch(createSuccess(DEL_RETWEET_SUCCESS,result));
+        })
+        .catch(error => {
+            printError(error);
+            dispatch(createFail(DEL_RETWEET_FAIL,error.response.status));
+        });
+};
+
 // ****************** GET TIMELINE ************************
 
 export const TIMELINE_INIT = "TIMELINE_INIT";

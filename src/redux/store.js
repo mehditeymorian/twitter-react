@@ -12,6 +12,7 @@ import {getLikeRetTweetReducer as likeRetTweet} from "./reducers";
 import {likeTweetReducer as likeTweet} from "./reducers";
 import {unlikeTweetReducer as unlikeTweet} from "./reducers";
 import {retweetReducer as retweet} from "./reducers";
+import {deleteRetweetReducer as deleteRetweet} from "./reducers";
 import thunk from "redux-thunk";
 
 
@@ -26,6 +27,8 @@ const reducers = combineReducers({
     likeTweet,
     unlikeTweet,
     retweet,
+    deleteRetweet,
+
 });
 
 const persistConfig = {
@@ -40,6 +43,7 @@ const persistConfig = {
         'likeTweet',
         'unlikeTweet',
         'retweet',
+        'deleteRetweet'
     ],
     storage,
     stateReconciler : autoMergeLevel2

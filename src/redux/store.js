@@ -16,7 +16,8 @@ const reducers = combineReducers({
 
 const persistConfig = {
     key: 'twitter',
-    blacklist: ['createTweet',
+    blacklist: [
+        'createTweet',
         'profile',
     ],
     storage,

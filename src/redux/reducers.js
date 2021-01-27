@@ -42,7 +42,7 @@ import {
     UPDATE_PROFILE_FAIL,
     UPDATE_USER_INIT,
     UPDATE_USER_SUCCESS,
-    UPDATE_USER_FAIL
+    UPDATE_USER_FAIL, FOLLOW_INIT, FOLLOW_SUCCESS, FOLLOW_FAIL
 } from "./actions";
 
 const createDefault = () => ({
@@ -289,4 +289,8 @@ export const updateProfileReducer = (updateProfileState = createDefault(), actio
 
 export const updateUserReducer = (updateUserState = createDefault(), action) => {
     return generalReducer(updateUserState, action, [UPDATE_USER_INIT, UPDATE_USER_SUCCESS, UPDATE_USER_FAIL]);
+};
+
+export const followReducer = (followState = createDefault(), action) => {
+    return generalReducer(followState, action, [FOLLOW_INIT, FOLLOW_SUCCESS, FOLLOW_FAIL]);
 };

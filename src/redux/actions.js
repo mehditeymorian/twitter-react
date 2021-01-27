@@ -458,6 +458,34 @@ export const updateUser = (updatedUser) => async (dispatch, getState) => {
         });
 };
 
+// ****************** UPDATE USER TWEET ************************
+export const FOLLOW_INIT = "FOLLOW_INIT";
+export const FOLLOW_SUCCESS = "FOLLOW_SUCCESS";
+export const FOLLOW_FAIL = "FOLLOW_FAIL";
+
+export const follow = (otherUser) => async (dispatch, getState) => {
+    dispatch(createInit(FOLLOW_INIT));
+    const {user} = getState();
+    await axios({
+        baseURL: 'http://127.0.0.1:8585',
+        method: 'post',
+        url: `/profiles/${otherUser.username}/follow`,
+        headers: {
+            "Authorization": `Token ${user.token}`
+        }
+    })
+        .then(value => {
+            const result = {
+                ...value.data.profile
+            };
+            dispatch(createSuccess(FOLLOW_SUCCESS,result));
+        })
+        .catch(error => {
+            printError(error);
+            dispatch(createFail(FOLLOW_FAIL,error.response.status));
+        });
+};
+
 function printError(error) {
 	if (error.response) {
 		// The request was made and the server responded with a status code

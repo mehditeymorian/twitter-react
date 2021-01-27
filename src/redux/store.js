@@ -15,6 +15,7 @@ import {retweetReducer as retweet} from "./reducers";
 import {deleteRetweetReducer as deleteRetweet} from "./reducers";
 import {updateProfileReducer as updateProfile} from "./reducers";
 import {updateUserReducer as updateUser} from "./reducers";
+import {followReducer as follow} from "./reducers";
 import thunk from "redux-thunk";
 
 
@@ -32,6 +33,7 @@ const reducers = combineReducers({
     deleteRetweet,
     updateProfile,
     updateUser,
+    follow,
 
 });
 
@@ -50,6 +52,7 @@ const persistConfig = {
         'deleteRetweet',
         'updateProfile',
         'updateUser',
+        'follow',
     ],
     storage,
     stateReconciler : autoMergeLevel2

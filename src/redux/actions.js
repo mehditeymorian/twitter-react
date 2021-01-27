@@ -458,7 +458,7 @@ export const updateUser = (updatedUser) => async (dispatch, getState) => {
         });
 };
 
-// ****************** UPDATE USER TWEET ************************
+// ****************** FOLLOW ************************
 export const FOLLOW_INIT = "FOLLOW_INIT";
 export const FOLLOW_SUCCESS = "FOLLOW_SUCCESS";
 export const FOLLOW_FAIL = "FOLLOW_FAIL";

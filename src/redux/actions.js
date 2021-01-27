@@ -173,8 +173,8 @@ export const getTweet = (tweetId) => async (dispatch, getState) => {
 // ****************** GET TIMELINE ************************
 
 export const TIMELINE_INIT = "TIMELINE_INIT";
-export const TIMELINE_SUCCESS = "TIMELINESUCCESS";
-export const TIMELINE_FAIL = "TIMELINEFAIL";
+export const TIMELINE_SUCCESS = "TIMELINE_SUCCESS";
+export const TIMELINE_FAIL = "TIMELINE_FAIL";
 export const getTimeline = () => async (dispatch, getState) => {
     dispatch(createInit(TIMELINE_INIT));
     const {user} = getState();

@@ -147,20 +147,21 @@ export const createTweet_fail = code => ({
 
 export const createTweet = (tweet) => async (dispatch, getState) => {
     dispatch(createTweet_init());
+    const {user} = getState();
 
     const bodyFormData = new FormData();
     bodyFormData.append("text", tweet.text);
-    bodyFormData.append("media", tweet.media);
-    bodyFormData.append("parent", tweet.parent);
+    if (tweet.media != null) bodyFormData.append("media", tweet.media);
+    if (tweet.parent != null) bodyFormData.append("parent", tweet.parent);
 
     await axios({
         baseURL: 'http://127.0.0.1:8585',
         method: 'post',
-        url: '/login',
+        url: '/tweets',
         data: bodyFormData,
         headers: {
             'Content-Type': 'multipart/form-data',
-            "Authorization": `Token ${getState.user.token}`
+            "Authorization": `Token ${user.token}`
         }
     })
         .then(value => {
@@ -171,6 +172,7 @@ export const createTweet = (tweet) => async (dispatch, getState) => {
         })
         .catch(error => {
             printError(error);
+
             dispatch(createTweet_fail(error.response.status));
         });
 };

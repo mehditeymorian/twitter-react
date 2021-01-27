@@ -22,25 +22,26 @@ const IdentityStyle = makeStyles((theme) => ({
 }));
 
 
-export default function Identity({closeDialog,identity}) {
+export default function Identity({closeDialog, identity}) {
     const classes = IdentityStyle();
 
     const profileImg = identity.profile_picture === "" ? "https://i.stack.imgur.com/34AD2.jpg" : identity.profile_picture;
 
     const onIdentityClick = ev => {
-        closeDialog();
+        if (closeDialog != null)
+            closeDialog();
     };
 
     return (
         <Card square>
             <CardActionArea onClick={onIdentityClick} component={Link} to={`/profile/${identity.username}`}>
                 <Grid container className={classes.root}>
-                    <Grid item xs={2} sm={1} ><Avatar src={profileImg}/></Grid>
+                    <Grid item xs={2} sm={1}><Avatar src={profileImg}/></Grid>
                     <Grid container xs={9} sm={10} direction={"column"} className={classes.infoSection}>
                         <Grid container xs={12}>
                             <Grid item xs={9} sm={10}>
-                                <Typography >{identity.name}</Typography>
-                                <Typography >{identity.username}</Typography>
+                                <Typography>{identity.name}</Typography>
+                                <Typography>{identity.username}</Typography>
                             </Grid>
                             <Grid item xs={3} sm={2}>
                                 <Button size={"small"} color={"secondary"} variant={"contained"}

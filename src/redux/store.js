@@ -5,6 +5,7 @@ import {autoMergeLevel2} from 'redux-persist/lib/stateReconciler/autoMergeLevel2
 import {composeWithDevTools} from 'redux-devtools-extension';
 import {authReducer as user, profileReducer as profile} from "./reducers";
 import {createTweetReducer as createTweet} from "./reducers";
+import {timelineReducer as timeline} from "./reducers";
 import thunk from "redux-thunk";
 
 
@@ -12,6 +13,7 @@ const reducers = combineReducers({
     user,
     createTweet,
     profile,
+    timeline
 });
 
 const persistConfig = {
@@ -19,6 +21,7 @@ const persistConfig = {
     blacklist: [
         'createTweet',
         'profile',
+        'timeline'
     ],
     storage,
     stateReconciler : autoMergeLevel2

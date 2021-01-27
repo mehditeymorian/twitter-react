@@ -19,7 +19,7 @@ import {connect} from "react-redux";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import {isStateLoading} from "../redux/stateUtils";
 
-function TweetWriter({userState, createState, createTweet}) {
+function TweetWriter({userState, createState, createTweet, parent,setDialogClose}) {
     const style = TweetWriterStyle();
     const tweetText = useRef(null);
     // todo : clear output after sending tweet
@@ -32,9 +32,10 @@ function TweetWriter({userState, createState, createTweet}) {
         const tweet = {
             text: tweetText.current.value,
             media: null,
-            parent: null
+            parent: parent
         };
         createTweet(tweet);
+        if (setDialogClose != null) setDialogClose();
 
     };
 

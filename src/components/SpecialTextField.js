@@ -33,21 +33,23 @@ const classes = makeStyles(() => ({
 
 
 
-export default function SpecialTextField({text,setText}) {
+export default function SpecialTextField({textRef, clearInput=false}) {
     const style = classes();
+    const [text, setText] = useState(clearInput);
 
 
-    const onInputChange = input => setText(input.target.value);
+    const onChange = ev => {setText(ev.target.value);};
 
     return (
         <div className={style.textInputLayout}>
             <TextField
                 placeholder={"What's happening?"}
-                onInput={onInputChange}
                 fullWidth
                 multiline
                 required
                 rows={5}
+                inputRef={textRef}
+                onChange={onChange}
                 inputProps={{maxLength: 250, className: style.textInput}}
             />
             <TweetText value={text} textStyle={style.tweetText}/>

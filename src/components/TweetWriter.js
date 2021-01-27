@@ -1,7 +1,6 @@
-import React, {Fragment, useState} from "react";
+import React, {useRef, useState} from "react";
 import Grid from "@material-ui/core/Grid";
 import Avatar from "@material-ui/core/Avatar";
-import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import {
     Image as MediaIcon,
@@ -12,7 +11,6 @@ import {
 
 } from "@material-ui/icons";
 import {TweetWriterStyle} from "./TweetWriterStyle";
-import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import Divider from "@material-ui/core/Divider";
 import SpecialTextField from "./SpecialTextField";
@@ -23,15 +21,21 @@ import {isStateLoading} from "../redux/stateUtils";
 
 function TweetWriter({userState, createState, createTweet}) {
     const style = TweetWriterStyle();
-    const [tweetText, setTweetText] = useState("");
+    const tweetText = useRef(null);
+    // todo : clear output after sending tweet
+
+
+
+    console.log(createState);
 
     const onSend = ev => {
         const tweet = {
-            text: tweetText,
+            text: tweetText.current.value,
             media: null,
             parent: null
         };
         createTweet(tweet);
+
     };
 
     return (
@@ -39,7 +43,7 @@ function TweetWriter({userState, createState, createTweet}) {
             <Grid container className={style.root}>
                 <Grid item xs={2} md={1}><Avatar src={userState.profile_picture} alt={userState.username}/></Grid>
                 <Grid container xs={10} md={11}>
-                    <Grid item xs={12}><SpecialTextField text={tweetText} setText={setTweetText}/></Grid>
+                    <Grid item xs={12}><SpecialTextField textRef={tweetText}/></Grid>
                     <Grid container alignItems={"center"} justify={"space-between"} className={style.actionsLayout}>
                         <Grid container  xs>
                             <Grid item><IconButton><MediaIcon/></IconButton></Grid>
@@ -54,11 +58,11 @@ function TweetWriter({userState, createState, createTweet}) {
                     </Grid>
                 </Grid>
             </Grid>
-            {isStateLoading(createState)? <LinearProgress /> : null}
+            {isStateLoading(createState) ? <LinearProgress /> : null}
             <Divider/>
         </>
     );
-};
+}
 
 const mapStateToProp = state => ({
     createState: state.createTweet,

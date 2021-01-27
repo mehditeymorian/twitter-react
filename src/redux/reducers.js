@@ -62,7 +62,10 @@ import {
     LOGS_FAIL,
     TWEET_ACTION_INIT,
     TWEET_ACTION_SUCCESS,
-    TWEET_ACTION_FAIL
+    TWEET_ACTION_FAIL,
+    SEARCH_INIT,
+    SEARCH_SUCCESS,
+    SEARCH_FAIL,
 } from "./actions";
 
 const createDefault = () => ({
@@ -333,4 +336,8 @@ export const followListReducer = (followListState = createDefault(), action) => 
 
 export const logsReducer = (logsState = createDefault(), action) => {
     return generalReducer(logsState, action, [LOGS_INIT, LOGS_SUCCESS, LOGS_FAIL]);
+};
+
+export const searchReducer = (searchState = createDefault(), action) => {
+    return generalReducer(searchState, action, [SEARCH_INIT, SEARCH_SUCCESS, SEARCH_FAIL]);
 };

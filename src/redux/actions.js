@@ -4,6 +4,7 @@ import {createFail, createInit, createSuccess} from "./stateUtils";
 export const STATE_NULL = -1;
 export const STATE_LOADING = 0;
 export const STATE_SUCCESS = 1;
+const BASE_URL = "http://127.0.0.1:8080";
 
 // ****************** SIGN UP ************************
 export const SIGNUP_INIT = "SIGN_UP_INIT";
@@ -13,7 +14,7 @@ export const SIGNUP_FAIL = "SIGN_UP_FAIL";
 export const signup = (user) => async (dispatch, getState) => {
     dispatch(createInit(SIGNUP_INIT));
     await axios({
-        baseURL: 'http://127.0.0.1:8585',
+        baseURL: BASE_URL,
         method: 'post',
         url: '/signup',
         contentType: 'application/json',
@@ -47,7 +48,7 @@ export const SIGNIN_FAIL = "SIGNIN_FAIL";
 export const signin = (user) => async (dispatch, getState) => {
     dispatch(createInit(SIGNIN_INIT));
     await axios({
-        baseURL: 'http://127.0.0.1:8585',
+        baseURL: BASE_URL,
         method: 'post',
         url: '/login',
         contentType: 'application/json',
@@ -93,7 +94,7 @@ export const createTweet = (tweet) => async (dispatch, getState) => {
     if (tweet.parent != null) bodyFormData.append("parent", tweet.parent);
 
     await axios({
-        baseURL: 'http://127.0.0.1:8585',
+        baseURL: BASE_URL,
         method: 'post',
         url: '/tweets',
         data: bodyFormData,
@@ -125,7 +126,7 @@ export const deleteTweet = (tweetId) => async (dispatch, getState) => {
     const {user} = getState();
 
     await axios({
-        baseURL: 'http://127.0.0.1:8585',
+        baseURL: BASE_URL,
         method: 'delete',
         url: `/tweets/${tweetId}`,
         headers: {
@@ -153,7 +154,7 @@ export const getTweet = (tweetId) => async (dispatch, getState) => {
     const {user} = getState();
 
     await axios({
-        baseURL: 'http://127.0.0.1:8585',
+        baseURL: BASE_URL,
         method: 'get',
         url: `/tweets/${tweetId}`,
         headers: {
@@ -181,7 +182,7 @@ export const getLikeRetTweet = (tweetId) => async (dispatch, getState) => {
     const {user} = getState();
 
     await axios({
-        baseURL: 'http://127.0.0.1:8585',
+        baseURL: BASE_URL,
         method: 'get',
         url: `/tweets/${tweetId}/list`,
         headers: {
@@ -213,7 +214,7 @@ export const likeTweet = (tweetId) => async (dispatch, getState) => {
     const {user} = getState();
 
     await axios({
-        baseURL: 'http://127.0.0.1:8585',
+        baseURL: BASE_URL,
         method: 'post',
         url: `/tweets/${tweetId}/like`,
         headers: {
@@ -241,7 +242,7 @@ export const deleteLike = (tweetId) => async (dispatch, getState) => {
     const {user} = getState();
 
     await axios({
-        baseURL: 'http://127.0.0.1:8585',
+        baseURL: BASE_URL,
         method: 'delete',
         url: `/tweets/${tweetId}/like`,
         headers: {
@@ -269,7 +270,7 @@ export const retweet = (tweetId) => async (dispatch, getState) => {
     const {user} = getState();
 
     await axios({
-        baseURL: 'http://127.0.0.1:8585',
+        baseURL: BASE_URL,
         method: 'post',
         url: `/tweets/${tweetId}/retweet`,
         headers: {
@@ -297,7 +298,7 @@ export const deleteRetweet = (tweetId) => async (dispatch, getState) => {
     const {user} = getState();
 
     await axios({
-        baseURL: 'http://127.0.0.1:8585',
+        baseURL: BASE_URL,
         method: 'delete',
         url: `/tweets/${tweetId}/retweet`,
         headers: {
@@ -326,7 +327,7 @@ export const getTimeline = (dateCode=0) => async (dispatch, getState) => {
     const {user} = getState();
 
     await axios({
-        baseURL: 'http://127.0.0.1:8585',
+        baseURL: BASE_URL,
         method: 'get',
         url: `/home/${dateCode}`,
         headers: {
@@ -355,7 +356,7 @@ export const getTweets = (tweetsIds) => async (dispatch, getState) => {
     const {user} = getState();
 
     await axios({
-        baseURL: 'http://127.0.0.1:8585',
+        baseURL: BASE_URL,
         method: 'post',
         url: `/tweets/get`,
         headers: {
@@ -407,7 +408,7 @@ export const getUserProfileFail = code => ({
 export const getProfile = (token, username) => async (dispatch, getState) => {
 	dispatch(getUserProfileInit());
 	await axios({
-		baseURL: 'http://127.0.0.1:8585',
+		baseURL: BASE_URL,
 		method: 'get',
 		url: '/profiles/' + username,
 		contentType: 'application/json',
@@ -440,7 +441,7 @@ export const updateProfile = (profile) => async (dispatch, getState) => {
     if (profile.header != null) bodyFormData.append("header_picture", profile.header);
 
     await axios({
-        baseURL: 'http://127.0.0.1:8585',
+        baseURL: BASE_URL,
         method: 'put',
         url: `/profiles/${user.username}`,
         data: bodyFormData,
@@ -472,7 +473,7 @@ export const updateUser = (updatedUser) => async (dispatch, getState) => {
     dispatch(createInit(UPDATE_USER_INIT));
     const {user} = getState();
     await axios({
-        baseURL: 'http://127.0.0.1:8585',
+        baseURL: BASE_URL,
         method: 'put',
         url: `/user/${user.username}`,
         data: {
@@ -507,7 +508,7 @@ export const follow = (username) => async (dispatch, getState) => {
     dispatch(createInit(FOLLOW_INIT));
     const {user} = getState();
     await axios({
-        baseURL: 'http://127.0.0.1:8585',
+        baseURL: BASE_URL,
         method: 'post',
         url: `/profiles/${username}/follow`,
         headers: {
@@ -536,7 +537,7 @@ export const unfollow = (username) => async (dispatch, getState) => {
     dispatch(createInit(UNFOLLOW_INIT));
     const {user} = getState();
     await axios({
-        baseURL: 'http://127.0.0.1:8585',
+        baseURL: BASE_URL,
         method: 'delete',
         url: `/profiles/${username}/follow`,
         headers: {
@@ -565,7 +566,7 @@ export const followList = (username) => async (dispatch, getState) => {
     dispatch(createInit(FOLLOW_LIST_INIT));
     const {user} = getState();
     await axios({
-        baseURL: 'http://127.0.0.1:8585',
+        baseURL: BASE_URL,
         method: 'get',
         url: `/profiles/${username}/list`,
         headers: {
@@ -593,7 +594,7 @@ export const logs = (username) => async (dispatch, getState) => {
 	dispatch(createInit(LOGS_INIT));
 	const {user} = getState();
 	await axios({
-	    baseURL: 'http://127.0.0.1:8585',
+	    baseURL: BASE_URL,
 	    method: 'get',
 	    url: `/profiles/${username}/logs`,
 	    headers: {
@@ -610,6 +611,36 @@ export const logs = (username) => async (dispatch, getState) => {
 	        printError(error);
 	        dispatch(createFail(LOGS_FAIL, error.response.status));
 	    });
+};
+
+// ****************** SEARCH *************************************
+export const SEARCH_INIT = "SEARCH_INIT";
+export const SEARCH_SUCCESS = "SEARCH_SUCCESS";
+export const SEARCH_FAIL = "SEARCH_FAIL";
+
+export const search = (type, query) => async (dispatch, getState) => {
+    dispatch(createInit(SEARCH_INIT));
+	const {user} = getState();
+    await axios({
+        baseURL: BASE_URL,
+        method: type === "tweet" ? "post" : "get",
+        url: type === "hashtag" ? `/search/hashtag?query=${query}` :
+            type === "user" ? `/search/username?query=${query}` : `/search/tweet`,
+        data: type === "tweet" ? {"query": query} : null,
+	    headers: {
+		    "Authorization": "token" in user ? `Token ${user.token}` : "",
+	    },
+    })
+        .then(value => {
+            const result = {
+                ...value.data
+            };
+            dispatch(createSuccess(SEARCH_SUCCESS, result));
+        })
+        .catch(error => {
+            printError(error);
+            dispatch(createFail(SEARCH_FAIL, error.response.status));
+        });
 };
 
 function printError(error) {

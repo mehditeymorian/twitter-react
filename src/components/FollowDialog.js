@@ -61,10 +61,10 @@ function FollowDialog({followListState, open, setOpen}) {
                 </Tabs>
                 <SwipeableViews axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'} index={dialogSelectedTab} onChangeIndex={handleChangeIndex}>
                     <TabPanel value={dialogSelectedTab} index={0} dir={theme.direction}>
-                        {isStatePresent(followListState) ? followListState.followings.map((each) => <Identity closeDialog={handleClose} identity={each}/>) : null}
+                        {isStatePresent(followListState) ? followListState.followings.map((each,i) => <Identity key={i} closeDialog={handleClose} identity={each}/>) : null}
                     </TabPanel>
                     <TabPanel value={dialogSelectedTab} index={1} dir={theme.direction}>
-                        {isStatePresent(followListState) ? followListState.followers.map((each) => <Identity closeDialog={handleClose} identity={each}/>) : null}
+                        {isStatePresent(followListState) ? followListState.followers.map((each,i) => <Identity key={i} closeDialog={handleClose} identity={each}/>) : null}
                     </TabPanel>
 
                 </SwipeableViews>

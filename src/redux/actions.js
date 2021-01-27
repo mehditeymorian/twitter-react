@@ -107,6 +107,8 @@ export const createTweet = (tweet) => async (dispatch, getState) => {
                 ...value.data.tweet
             }
             dispatch(createSuccess(CREATE_TWEET_SUCCESS,result));
+            if (tweet.parent != null) dispatch(getTweet(tweet.parent));
+            else dispatch(getTimeline());
         })
         .catch(error => {
             printError(error);
@@ -166,7 +168,7 @@ export const getTweet = (tweetId) => async (dispatch, getState) => {
         })
         .catch(error => {
             printError(error);
-            dispatch(createFail(GET_TWEET_FAIL,error.response.status));
+            dispatch(createFail(GET_TWEET_FAIL,getErrorCode(error)));
         });
 };
 
@@ -594,4 +596,19 @@ function printError(error) {
 		console.log('Error', error.message);
 	}
 	console.log(error.config);
+}
+
+function getErrorCode(error) {
+    if (error.response) return error.response.status;
+    else if (error.request) {
+        // The request was made but no response was received
+        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+        // http.ClientRequest in node.js
+        console.log(error.request);
+        return 1000;
+    } else {
+        // Something happened in setting up the request that triggered an Error
+        console.log('Error', error.message);
+        return 2000;
+    }
 }

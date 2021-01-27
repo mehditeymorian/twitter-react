@@ -316,14 +316,14 @@ export const deleteRetweet = (tweetId) => async (dispatch, getState) => {
 export const TIMELINE_INIT = "TIMELINE_INIT";
 export const TIMELINE_SUCCESS = "TIMELINE_SUCCESS";
 export const TIMELINE_FAIL = "TIMELINE_FAIL";
-export const getTimeline = () => async (dispatch, getState) => {
+export const getTimeline = (dateCode=0) => async (dispatch, getState) => {
     dispatch(createInit(TIMELINE_INIT));
     const {user} = getState();
 
     await axios({
         baseURL: 'http://127.0.0.1:8585',
         method: 'get',
-        url: '/home',
+        url: `/home/${dateCode}`,
         headers: {
             "Authorization": `Token ${user.token}`
         }

@@ -463,13 +463,13 @@ export const FOLLOW_INIT = "FOLLOW_INIT";
 export const FOLLOW_SUCCESS = "FOLLOW_SUCCESS";
 export const FOLLOW_FAIL = "FOLLOW_FAIL";
 
-export const follow = (otherUser) => async (dispatch, getState) => {
+export const follow = (username) => async (dispatch, getState) => {
     dispatch(createInit(FOLLOW_INIT));
     const {user} = getState();
     await axios({
         baseURL: 'http://127.0.0.1:8585',
         method: 'post',
-        url: `/profiles/${otherUser.username}/follow`,
+        url: `/profiles/${username}/follow`,
         headers: {
             "Authorization": `Token ${user.token}`
         }
@@ -491,13 +491,13 @@ export const UNFOLLOW_INIT = "UNFOLLOW_INIT";
 export const UNFOLLOW_SUCCESS = "UNFOLLOW_SUCCESS";
 export const UNFOLLOW_FAIL = "UNFOLLOW_FAIL";
 
-export const unfollow = (otherUser) => async (dispatch, getState) => {
+export const unfollow = (username) => async (dispatch, getState) => {
     dispatch(createInit(UNFOLLOW_INIT));
     const {user} = getState();
     await axios({
         baseURL: 'http://127.0.0.1:8585',
         method: 'delete',
-        url: `/profiles/${otherUser.username}/follow`,
+        url: `/profiles/${username}/follow`,
         headers: {
             "Authorization": `Token ${user.token}`
         }

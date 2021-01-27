@@ -14,6 +14,7 @@ const IdentityStyle = makeStyles((theme) => ({
         paddingTop: theme.spacing(1),
     },
     button: {
+        marginTop: "20%",
         borderRadius: "20px",
     },
     infoSection: {

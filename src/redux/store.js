@@ -20,6 +20,7 @@ import {unfollowReducer as unfollow} from "./reducers";
 import {followListReducer as followList} from "./reducers";
 import {getTweetsReducer as getTweets} from "./reducers";
 import {logsReducer as logs} from "./reducers";
+import {searchReducer as search} from "./reducers";
 import thunk from "redux-thunk";
 
 
@@ -42,6 +43,7 @@ const reducers = combineReducers({
     unfollow,
     followList,
     logs,
+    search,
 });
 
 const persistConfig = {
@@ -64,6 +66,7 @@ const persistConfig = {
         'unfollow',
         'followList',
         'logs',
+        'search',
     ],
     storage,
     stateReconciler : autoMergeLevel2

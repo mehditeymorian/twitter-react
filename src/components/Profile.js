@@ -21,14 +21,9 @@ import Logs from "./Logs";
 import {followList, getProfile} from "../redux/actions";
 import {connect} from "react-redux";
 import {isStatePresent} from "../redux/stateUtils";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import DialogContent from "@material-ui/core/DialogContent";
-import SwipeableViews from "react-swipeable-views";
-import Identity from "./Identity";
-import DialogActions from "@material-ui/core/DialogActions";
-import Dialog from "@material-ui/core/Dialog";
 import Box from "@material-ui/core/Box";
 import FollowDialog from "./FollowDialog";
+import Tweet from "./Tweet";
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -53,7 +48,7 @@ function a11yProps(index) {
 const getFollowingCount = state => isStatePresent(state) ? state.profile.followings.length : -1;
 const getFollowersCount = state => isStatePresent(state) ? state.profile.followers.length : -1;
 
-function Profile({profileState, token, getUserProfile,getFollowList, followListState}) {
+function Profile({profileState, token, tweets, getUserProfile,getFollowList, followListState}) {
     const classes = ProfileStyle();
     let {url} = useRouteMatch();
     let {username} = useParams();
@@ -128,7 +123,7 @@ function Profile({profileState, token, getUserProfile,getFollowList, followListS
                         <Divider/>
                         <Switch>
                             <Route exact path={`${url}`}>
-                                {/*{isStatePresent(profileState) ? profileState.profile.tweets.map(each=> <a>each</a>) : null}*/}
+                                {isStatePresent(tweets) ? tweets.tweets.map(each=> <Tweet username={username} tweet={each}/>) : null}
                             </Route>
                             <Route path={`${url}/with_replies`}><h1>With Replies</h1></Route>
                             <Route path={`${url}/media`}><h1>Media</h1></Route>
@@ -145,13 +140,13 @@ function Profile({profileState, token, getUserProfile,getFollowList, followListS
 const mapStateToProp = state => ({
     token: state.user.token,
     profileState: state.profile,
-    followListState: state.followList
+    followListState: state.followList,
+    tweets: state.getTweets,
 });
 
 const mapActionsToProp = dispatch => ({
     getUserProfile: (token, username) => dispatch(getProfile(token, username)),
-    getFollowList: (username) => dispatch(followList(username))
-
+    getFollowList: (username) => dispatch(followList(username)),
 });
 
 export default connect(mapStateToProp, mapActionsToProp)(Profile);

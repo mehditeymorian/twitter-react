@@ -55,7 +55,14 @@ import {
     TIMELINE_SUCCESS,
     TIMELINE_FAIL,
     GET_TWEETS_INIT,
-    GET_TWEETS_SUCCESS, GET_TWEETS_FAIL, LOGS_INIT, LOGS_SUCCESS, LOGS_FAIL
+    GET_TWEETS_SUCCESS,
+    GET_TWEETS_FAIL,
+    LOGS_INIT,
+    LOGS_SUCCESS,
+    LOGS_FAIL,
+    TWEET_ACTION_INIT,
+    TWEET_ACTION_SUCCESS,
+    TWEET_ACTION_FAIL
 } from "./actions";
 
 const createDefault = () => ({
@@ -284,6 +291,10 @@ export const getLikeRetTweetReducer = (likeRetTweetState = initLikeRetTweet, act
         [GET_LIKE_RET_TWEET_INIT, GET_LIKE_RET_TWEET_SUCCESS, GET_LIKE_RET_TWEET_FAIL]);
 };
 
+export const tweetActionsReducer = (tweetActionsReducer = createDefault(), action) =>{
+    return generalReducer(tweetActionsReducer, action, [TWEET_ACTION_INIT, TWEET_ACTION_SUCCESS, TWEET_ACTION_FAIL]);
+}
+//todo: clear like unlike ret delete_ret reducers
 export const likeTweetReducer = (likeTweetState = createDefault(), action) => {
     return generalReducer(likeTweetState, action, [LIKE_TWEET_INIT, LIKE_TWEET_SUCCESS, LIKE_TWEET_FAIL]);
 };

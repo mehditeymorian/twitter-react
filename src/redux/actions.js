@@ -200,13 +200,16 @@ export const getLikeRetTweet = (tweetId) => async (dispatch, getState) => {
         });
 };
 
+export const TWEET_ACTION_INIT = "TWEET_ACTION_INIT";
+export const TWEET_ACTION_SUCCESS = "TWEET_ACTION_SUCCESS";
+export const TWEET_ACTION_FAIL = "TWEET_ACTION_FAIL";
 
 // ****************** LIKE TWEET ************************
 export const LIKE_TWEET_INIT = "LIKE_TWEET_INIT";
 export const LIKE_TWEET_SUCCESS = "LIKE_TWEET_SUCCESS";
 export const LIKE_TWEET_FAIL = "LIKE_TWEET_FAIL";
 export const likeTweet = (tweetId) => async (dispatch, getState) => {
-    dispatch(createInit(LIKE_TWEET_INIT));
+    dispatch(createInit(TWEET_ACTION_INIT));
     const {user} = getState();
 
     await axios({
@@ -221,11 +224,11 @@ export const likeTweet = (tweetId) => async (dispatch, getState) => {
             const result = {
                 ...value.data.tweet
             }
-            dispatch(createSuccess(LIKE_TWEET_SUCCESS,result));
+            dispatch(createSuccess(TWEET_ACTION_SUCCESS,result));
         })
         .catch(error => {
             printError(error);
-            dispatch(createFail(LIKE_TWEET_FAIL,error.response.status));
+            dispatch(createFail(TWEET_ACTION_FAIL,error.response.status));
         });
 };
 
@@ -233,8 +236,8 @@ export const likeTweet = (tweetId) => async (dispatch, getState) => {
 export const UNLIKE_TWEET_INIT = "UNLIKE_TWEET_INIT";
 export const UNLIKE_TWEET_SUCCESS = "UNLIKE_TWEET_SUCCESS";
 export const UNLIKE_TWEET_FAIL = "UNLIKE_TWEET_FAIL";
-export const deleteLikeTweet = (tweetId) => async (dispatch, getState) => {
-    dispatch(createInit(UNLIKE_TWEET_INIT));
+export const deleteLike = (tweetId) => async (dispatch, getState) => {
+    dispatch(createInit(TWEET_ACTION_INIT));
     const {user} = getState();
 
     await axios({
@@ -249,11 +252,11 @@ export const deleteLikeTweet = (tweetId) => async (dispatch, getState) => {
             const result = {
                 ...value.data.tweet
             }
-            dispatch(createSuccess(UNLIKE_TWEET_SUCCESS,result));
+            dispatch(createSuccess(TWEET_ACTION_SUCCESS,result));
         })
         .catch(error => {
             printError(error);
-            dispatch(createFail(UNLIKE_TWEET_FAIL,error.response.status));
+            dispatch(createFail(TWEET_ACTION_FAIL,error.response.status));
         });
 };
 
@@ -262,7 +265,7 @@ export const RETWEET_INIT = "RETWEET_INIT";
 export const RETWEET_SUCCESS = "RETWEET_SUCCESS";
 export const RETWEET_FAIL = "RETWEET_FAIL";
 export const retweet = (tweetId) => async (dispatch, getState) => {
-    dispatch(createInit(RETWEET_INIT));
+    dispatch(createInit(TWEET_ACTION_INIT));
     const {user} = getState();
 
     await axios({
@@ -277,11 +280,11 @@ export const retweet = (tweetId) => async (dispatch, getState) => {
             const result = {
                 ...value.data.tweet
             }
-            dispatch(createSuccess(RETWEET_SUCCESS,result));
+            dispatch(createSuccess(TWEET_ACTION_SUCCESS,result));
         })
         .catch(error => {
             printError(error);
-            dispatch(createFail(RETWEET_FAIL,error.response.status));
+            dispatch(createFail(TWEET_ACTION_FAIL,error.response.status));
         });
 };
 
@@ -290,7 +293,7 @@ export const DEL_RETWEET_INIT = "DEL_RETWEET_INIT";
 export const DEL_RETWEET_SUCCESS = "DEL_RETWEET_SUCCESS";
 export const DEL_RETWEET_FAIL = "DEL_RETWEET_FAIL";
 export const deleteRetweet = (tweetId) => async (dispatch, getState) => {
-    dispatch(createInit(DEL_RETWEET_INIT));
+    dispatch(createInit(TWEET_ACTION_INIT));
     const {user} = getState();
 
     await axios({
@@ -305,11 +308,11 @@ export const deleteRetweet = (tweetId) => async (dispatch, getState) => {
             const result = {
                 ...value.data.tweet
             }
-            dispatch(createSuccess(DEL_RETWEET_SUCCESS,result));
+            dispatch(createSuccess(TWEET_ACTION_SUCCESS,result));
         })
         .catch(error => {
             printError(error);
-            dispatch(createFail(DEL_RETWEET_FAIL,error.response.status));
+            dispatch(createFail(TWEET_ACTION_FAIL,error.response.status));
         });
 };
 

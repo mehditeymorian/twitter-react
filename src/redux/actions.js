@@ -355,6 +355,9 @@ export const getTweets = (tweetsIds) => async (dispatch, getState) => {
         url: `/tweets/get`,
         headers: {
             "Authorization": `Token ${user.token}`
+        },
+        data: {
+            tweets: tweetsIds
         }
     })
         .then(value => {
@@ -409,7 +412,8 @@ export const getProfile = (token, username) => async (dispatch, getState) => {
 			profile: value.data.profile,
 		}
 		dispatch(getUserProfileSuccess(result));
-	}).catch(error => {
+        dispatch(getTweets(result.profile.tweets));
+    }).catch(error => {
 		printError(error);
 		dispatch(getUserProfileFail(error.status));
 	});

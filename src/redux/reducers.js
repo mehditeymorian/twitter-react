@@ -94,9 +94,9 @@ export const createTweetReducer = (createTweet = createTweetInit, action) => {
             };
         }
         case CREATE_TWEET_SUCCESS:{
-            const {tweet} = payload;
+            const {result} = payload;
             return {
-                ...tweet,
+                ...result,
                 state: STATE_SUCCESS
             };
         }

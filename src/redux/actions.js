@@ -5,6 +5,7 @@ export const STATE_NULL = -1;
 export const STATE_LOADING = 0;
 export const STATE_SUCCESS = 1;
 
+// ****************** SIGN UP ************************
 export const SIGNUP_INIT = "SIGN_UP_INIT";
 export const SIGNUP_SUCCESS = "SIGN_UP_SUCCESS";
 export const SIGNUP_FAIL = "SIGN_UP_FAIL";
@@ -72,40 +73,19 @@ export const signin = (user) => async (dispatch, getState) => {
         });
 };
 
-
+// ****************** LOGOUT ************************
 export const LOGOUT = "LOGOUT";
 export const logoutUser = () => ({
 	type: LOGOUT
 });
 
-
+// ****************** CREATE TWEET ************************
 export const CREATE_TWEET_INIT = "CREATE_TWEET__INIT";
-export const createTweet_init = () => ({
-    type: CREATE_TWEET_INIT,
-    payload: {
-        code: STATE_LOADING
-    }
-});
-
 export const CREATE_TWEET_SUCCESS = "CREATE_TWEET_SUCCESS";
-export const createTweet_success = result => ({
-    type: CREATE_TWEET_SUCCESS,
-    payload: {
-        code: STATE_SUCCESS,
-        tweet: result
-    }
-});
-
 export const CREATE_TWEET_FAIL = "CREATE_TWEET_FAIL";
-export const createTweet_fail = code => ({
-    type: CREATE_TWEET_FAIL,
-    payload: {
-        code: code,
-    }
-});
 
 export const createTweet = (tweet) => async (dispatch, getState) => {
-    dispatch(createTweet_init());
+    dispatch(createInit(CREATE_TWEET_INIT));
     const {user} = getState();
 
     const bodyFormData = new FormData();
@@ -127,12 +107,11 @@ export const createTweet = (tweet) => async (dispatch, getState) => {
             const result = {
                 ...value.data.tweet
             }
-            dispatch(createTweet_success(result));
+            dispatch(createSuccess(CREATE_TWEET_SUCCESS,result));
         })
         .catch(error => {
             printError(error);
-
-            dispatch(createTweet_fail(error.response.status));
+            dispatch(createFail(CREATE_TWEET_FAIL,error.response.status));
         });
 };
 

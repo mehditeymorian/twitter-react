@@ -83,7 +83,6 @@ export const logoutUser = () => ({
 export const CREATE_TWEET_INIT = "CREATE_TWEET__INIT";
 export const CREATE_TWEET_SUCCESS = "CREATE_TWEET_SUCCESS";
 export const CREATE_TWEET_FAIL = "CREATE_TWEET_FAIL";
-
 export const createTweet = (tweet) => async (dispatch, getState) => {
     dispatch(createInit(CREATE_TWEET_INIT));
     const {user} = getState();
@@ -115,6 +114,35 @@ export const createTweet = (tweet) => async (dispatch, getState) => {
         });
 };
 
+// ****************** GET TIMELINE ************************
+
+export const TIMELINE_INIT = "TIMELINE_INIT";
+export const TIMELINE_SUCCESS = "TIMELINESUCCESS";
+export const TIMELINE_FAIL = "TIMELINEFAIL";
+export const getTimeline = () => async (dispatch, getState) => {
+    dispatch(createInit(TIMELINE_INIT));
+    const {user} = getState();
+
+    await axios({
+        baseURL: 'http://127.0.0.1:8585',
+        method: 'get',
+        url: '/home',
+        headers: {
+            "Authorization": `Token ${user.token}`
+        }
+    })
+        .then(value => {
+            const result = {
+                tweets: value.data.tweets,
+                tweetsCount: value.data.tweetsCount
+            }
+            dispatch(createSuccess(TIMELINE_SUCCESS,result));
+        })
+        .catch(error => {
+            printError(error);
+            dispatch(createFail(TIMELINE_FAIL,error.response.status));
+        });
+}
 
 export const GET_PROFILE_INIT = "GET_PROFILE_INIT";
 export const getUserProfileInit = () => ({

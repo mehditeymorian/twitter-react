@@ -14,16 +14,17 @@ import {
     STATE_SUCCESS,
     CREATE_TWEET_INIT,
     CREATE_TWEET_SUCCESS,
-    CREATE_TWEET_FAIL
+    CREATE_TWEET_FAIL, TIMELINE_INIT
 } from "./actions";
 
-const initUser = {
+const createDefault = () => ({
     state: STATE_NULL
-};
+});
 
-const initProfile = {
-	state: STATE_NULL
-};
+const initUser = createDefault();
+const initProfile = createDefault();
+const initCreateTweet = createDefault();
+const initTimeline = createDefault();
 
 export const authReducer = (userState = initUser, action) => {
     const {type, payload} = action;
@@ -80,10 +81,8 @@ export const authReducer = (userState = initUser, action) => {
 };
 
 
-const createTweetInit = {
-    state: STATE_NULL
-};
-export const createTweetReducer = (createTweet = createTweetInit, action) => {
+
+export const createTweetReducer = (createTweet = initCreateTweet, action) => {
     const {type, payload} = action;
 
     switch (type) {
@@ -138,5 +137,34 @@ export const profileReducer = (profileState = initProfile, action) => {
         }
         default:
             return profileState;
+    }
+}
+
+export const timelineReducer = (timelineState = initTimeline, action) =>{
+    const {type, payload} = action;
+
+    switch (type) {
+        case TIMELINE_INIT: {
+            return {
+                ...timelineState,
+                state: STATE_LOADING
+            };
+        }
+        case GET_PROFILE_SUCCESS: {
+            const {result} = payload;
+            return {
+                ...result,
+                state: STATE_SUCCESS
+            };
+        }
+        case GET_PROFILE_FAIL: {
+            const {code} = payload;
+            return {
+                ...timelineState,
+                state: code
+            };
+        }
+        default:
+            return timelineState;
     }
 }

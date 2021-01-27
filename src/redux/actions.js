@@ -525,7 +525,7 @@ export const followList = (username) => async (dispatch, getState) => {
     await axios({
         baseURL: 'http://127.0.0.1:8585',
         method: 'get',
-        url: `/profiles/${username}/follow`,
+        url: `/profiles/${username}/list`,
         headers: {
             "Authorization": `Token ${user.token}`
         }

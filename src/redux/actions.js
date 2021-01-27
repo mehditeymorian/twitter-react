@@ -512,6 +512,7 @@ export const follow = (username) => async (dispatch, getState) => {
                 ...value.data.profile
             };
             dispatch(createSuccess(FOLLOW_SUCCESS,result));
+            dispatch(getProfile(user.token, username));
         })
         .catch(error => {
             printError(error);
@@ -540,6 +541,7 @@ export const unfollow = (username) => async (dispatch, getState) => {
                 ...value.data.profile
             };
             dispatch(createSuccess(UNFOLLOW_SUCCESS,result));
+            dispatch(getProfile(user.token, username));
         })
         .catch(error => {
             printError(error);

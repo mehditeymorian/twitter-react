@@ -22,7 +22,7 @@ import FollowDialog from "./FollowDialog";
 import Logs from "./Logs";
 import EditProfile from "./EditProfile";
 import {getProfile} from "../redux/actions";
-import connect from "react-redux/lib/connect/connect";
+import {connect} from "react-redux";
 
 function Profile({profile, token, getProfile}) {
     const classes = ProfileStyle();

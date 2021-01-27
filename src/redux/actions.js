@@ -456,6 +456,7 @@ export const updateProfile = (profile) => async (dispatch, getState) => {
             }
             dispatch(createSuccess(UPDATE_PROFILE_SUCCESS,result));
             dispatch(getProfile(user.token, user.username));
+            dispatch(updateProfilePic(result.profile_picture));
         })
         .catch(error => {
             printError(error);
@@ -463,6 +464,14 @@ export const updateProfile = (profile) => async (dispatch, getState) => {
         });
 };
 
+export const updateProfilePic = (profilePic) => async (dispatch, getState) => {
+    const {user} = getState();
+    const result = {
+        ...user,
+        profile_picture : profilePic
+    }
+    dispatch(createSuccess(SIGNIN_SUCCESS, result));
+};
 
 // ****************** UPDATE USER ************************
 export const UPDATE_USER_INIT = "UPDATE_USER_INIT";

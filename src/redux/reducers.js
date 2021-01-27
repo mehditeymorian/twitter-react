@@ -49,7 +49,13 @@ import {
     UNFOLLOW_INIT,
     UNFOLLOW_SUCCESS,
     UNFOLLOW_FAIL,
-    FOLLOW_LIST_INIT, FOLLOW_LIST_SUCCESS, FOLLOW_LIST_FAIL, TIMELINE_SUCCESS, TIMELINE_FAIL
+    FOLLOW_LIST_INIT,
+    FOLLOW_LIST_SUCCESS,
+    FOLLOW_LIST_FAIL,
+    TIMELINE_SUCCESS,
+    TIMELINE_FAIL,
+    GET_TWEETS_INIT,
+    GET_TWEETS_SUCCESS, GET_TWEETS_FAIL
 } from "./actions";
 
 const createDefault = () => ({
@@ -234,6 +240,10 @@ export const timelineReducer = (timelineState = initTimeline, action) =>{
         default:
             return timelineState;
     }
+}
+
+export const getTweetsReducer = (tweetsState = createDefault(), action) =>{
+    return generalReducer(tweetsState,action,[GET_TWEETS_INIT,GET_TWEETS_SUCCESS,GET_TWEETS_FAIL])
 }
 
 export const deleteTweetReducer = (deleteTweetState = initDeleteTweet, action) => {

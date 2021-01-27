@@ -18,6 +18,7 @@ import {updateUserReducer as updateUser} from "./reducers";
 import {followReducer as follow} from "./reducers";
 import {unfollowReducer as unfollow} from "./reducers";
 import {followListReducer as followList} from "./reducers";
+import {getTweetsReducer as getTweets} from "./reducers";
 import thunk from "redux-thunk";
 
 
@@ -26,6 +27,7 @@ const reducers = combineReducers({
     createTweet,
     profile,
     timeline,
+    getTweets,
     deleteTweet,
     getTweet,
     likeRetTweet,
@@ -46,6 +48,7 @@ const persistConfig = {
         'createTweet',
         'profile',
         'timeline',
+        'getTweets',
         'deleteTweet',
         'getTweet',
         'likeRetTweet',

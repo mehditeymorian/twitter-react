@@ -340,6 +340,35 @@ export const getTimeline = (dateCode=0) => async (dispatch, getState) => {
         });
 }
 
+// ****************** GET Tweets ************************
+
+export const GET_TWEETS_INIT = "GET_TWEETS_INIT";
+export const GET_TWEETS_SUCCESS = "GET_TWEETS_SUCCESS";
+export const GET_TWEETS_FAIL = "GET_TWEETS_FAIL";
+export const getTweets = (tweetsIds) => async (dispatch, getState) => {
+    dispatch(createInit(GET_TWEETS_INIT));
+    const {user} = getState();
+
+    await axios({
+        baseURL: 'http://127.0.0.1:8585',
+        method: 'post',
+        url: `/tweets/get`,
+        headers: {
+            "Authorization": `Token ${user.token}`
+        }
+    })
+        .then(value => {
+            const result = {
+                ...value.data
+            }
+            dispatch(createSuccess(GET_TWEETS_SUCCESS,result));
+        })
+        .catch(error => {
+            printError(error);
+            dispatch(createFail(GET_TWEETS_FAIL,error.response.status));
+        });
+}
+
 // ****************** GET PROFILE ************************
 
 export const GET_PROFILE_INIT = "GET_PROFILE_INIT";

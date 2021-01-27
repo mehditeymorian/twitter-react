@@ -49,7 +49,7 @@ import {
     UNFOLLOW_INIT,
     UNFOLLOW_SUCCESS,
     UNFOLLOW_FAIL,
-    FOLLOW_LIST_INIT, FOLLOW_LIST_SUCCESS, FOLLOW_LIST_FAIL
+    FOLLOW_LIST_INIT, FOLLOW_LIST_SUCCESS, FOLLOW_LIST_FAIL, TIMELINE_SUCCESS, TIMELINE_FAIL
 } from "./actions";
 
 const createDefault = () => ({
@@ -217,14 +217,14 @@ export const timelineReducer = (timelineState = initTimeline, action) =>{
                 state: STATE_LOADING
             };
         }
-        case GET_PROFILE_SUCCESS: {
+        case TIMELINE_SUCCESS: {
             const {result} = payload;
             return {
                 ...result,
                 state: STATE_SUCCESS
             };
         }
-        case GET_PROFILE_FAIL: {
+        case TIMELINE_FAIL: {
             const {code} = payload;
             return {
                 ...timelineState,

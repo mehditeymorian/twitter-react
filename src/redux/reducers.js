@@ -8,11 +8,9 @@ import {
     SIGNUP_FAIL,
     SIGNUP_INIT,
     SIGNUP_SUCCESS,
-    PROFILE_NULL,
     GET_PROFILE_INIT,
     GET_PROFILE_SUCCESS,
     GET_PROFILE_FAIL,
-    PROFILE_LOADING, PROFILE_SUCCESS,
     CREATE_TWEET__INIT, CREATE_TWEET_SUCCESS, CREATE_TWEET_FAIL
 } from "./actions";
 
@@ -21,7 +19,7 @@ const initUser = {
 };
 
 const initProfile = {
-	state: PROFILE_NULL
+	state: STATE_NULL
 };
 
 export const authReducer = (userState = initUser, action) => {
@@ -118,14 +116,14 @@ export const profileReducer = (profileState = initProfile, action) => {
         case GET_PROFILE_INIT: {
             return {
                 ...profileState,
-                state: PROFILE_LOADING
+                state: STATE_LOADING
             };
         }
         case GET_PROFILE_SUCCESS: {
             const {profile} = payload;
             return {
                 ...profile,
-                state: PROFILE_SUCCESS
+                state: STATE_SUCCESS
             };
         }
         case GET_PROFILE_FAIL: {

@@ -341,6 +341,8 @@ export const getTimeline = () => async (dispatch, getState) => {
         });
 }
 
+// ****************** GET PROFILE ************************
+
 export const GET_PROFILE_INIT = "GET_PROFILE_INIT";
 export const getUserProfileInit = () => ({
 	type: GET_PROFILE_INIT,
@@ -383,6 +385,42 @@ export const getProfile = (token, username) => async (dispatch, getState) => {
 		printError(error);
 		dispatch(getUserProfileFail(error.status));
 	});
+};
+
+
+// ****************** UPDATE PROFILE TWEET ************************
+export const UPDATE_PROFILE_INIT = "UPDATE_PROFILE_INIT";
+export const UPDATE_PROFILE_SUCCESS = "UPDATE_PROFILE_SUCCESS";
+export const UPDATE_PROFILE_FAIL = "UPDATE_PROFILE_FAIL";
+export const updateProfile = (profile) => async (dispatch, getState) => {
+    dispatch(createInit(UPDATE_PROFILE_INIT));
+    const {user} = getState();
+
+    const bodyFormData = new FormData();
+    if (profile.bio != null) bodyFormData.append("bio", profile.bio);
+    if (profile.profile_picture != null) bodyFormData.append("profile_picture", profile.profile_picture);
+    if (profile.header_picture != null) bodyFormData.append("header_picture", profile.header_picture);
+
+    await axios({
+        baseURL: 'http://127.0.0.1:8585',
+        method: 'update',
+        url: `/profiles/${user.username}`,
+        data: bodyFormData,
+        headers: {
+            'Content-Type': 'multipart/form-data',
+            "Authorization": `Token ${user.token}`
+        }
+    })
+        .then(value => {
+            const result = {
+                ...value.data.profile
+            }
+            dispatch(createSuccess(UPDATE_PROFILE_SUCCESS,result));
+        })
+        .catch(error => {
+            printError(error);
+            dispatch(createFail(UPDATE_PROFILE_FAIL,error.response.status));
+        });
 };
 
 function printError(error) {

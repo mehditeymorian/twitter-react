@@ -31,7 +31,13 @@ import {
     UNLIKE_TWEET_INIT,
     UNLIKE_TWEET_SUCCESS,
     UNLIKE_TWEET_FAIL,
-    RETWEET_INIT, RETWEET_SUCCESS, RETWEET_FAIL, DEL_RETWEET_INIT, DEL_RETWEET_SUCCESS, DEL_RETWEET_FAIL
+    RETWEET_INIT,
+    RETWEET_SUCCESS,
+    RETWEET_FAIL,
+    DEL_RETWEET_INIT,
+    DEL_RETWEET_SUCCESS,
+    DEL_RETWEET_FAIL,
+    UPDATE_PROFILE_INIT, UPDATE_PROFILE_SUCCESS, UPDATE_PROFILE_FAIL
 } from "./actions";
 
 const createDefault = () => ({
@@ -270,4 +276,8 @@ export const retweetReducer = (retweetState = createDefault(), action) => {
 
 export const deleteRetweetReducer = (deleteRetweetState = createDefault(), action) => {
     return generalReducer(deleteRetweetState, action, [DEL_RETWEET_INIT, DEL_RETWEET_SUCCESS, DEL_RETWEET_FAIL]);
+};
+
+export const updateProfileReducer = (updateProfileState = createDefault(), action) => {
+    return generalReducer(updateProfileState, action, [UPDATE_PROFILE_INIT, UPDATE_PROFILE_SUCCESS, UPDATE_PROFILE_FAIL]);
 };

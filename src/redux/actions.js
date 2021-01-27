@@ -170,6 +170,34 @@ export const getTweet = (tweetId) => async (dispatch, getState) => {
         });
 };
 
+// ****************** GET LIKE RETWEET of TWEET ************************
+export const GET_LIKE_RET_TWEET_INIT = "GET_LIKE_RET_TWEET_INIT";
+export const GET_LIKE_RET_TWEET_SUCCESS = "GET_LIKE_RET_TWEET_SUCCESS";
+export const GET_LIKE_RET_TWEET_FAIL = "GET_LIKE_RET_TWEET_FAIL";
+export const getLikeRetTweet = (tweetId) => async (dispatch, getState) => {
+    dispatch(createInit(GET_LIKE_RET_TWEET_INIT));
+    const {user} = getState();
+
+    await axios({
+        baseURL: 'http://127.0.0.1:8585',
+        method: 'get',
+        url: `/tweets/${tweetId}/list`,
+        headers: {
+            "Authorization": `Token ${user.token}`
+        }
+    })
+        .then(value => {
+            const result = {
+                ...value.data
+            }
+            dispatch(createSuccess(GET_LIKE_RET_TWEET_SUCCESS,result));
+        })
+        .catch(error => {
+            printError(error);
+            dispatch(createFail(GET_LIKE_RET_TWEET_FAIL,error.response.status));
+        });
+};
+
 // ****************** GET TIMELINE ************************
 
 export const TIMELINE_INIT = "TIMELINE_INIT";

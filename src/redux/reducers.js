@@ -20,7 +20,7 @@ import {
     DEL_TWEET_INIT,
     DEL_TWEET_SUCCESS,
     GET_TWEET_INIT,
-    GET_TWEET_SUCCESS, GET_TWEET_FAIL
+    GET_TWEET_SUCCESS, GET_TWEET_FAIL, GET_LIKE_RET_TWEET_INIT, GET_LIKE_RET_TWEET_SUCCESS, GET_LIKE_RET_TWEET_FAIL
 } from "./actions";
 
 const createDefault = () => ({
@@ -33,6 +33,7 @@ const initCreateTweet = createDefault();
 const initTimeline = createDefault();
 const initDeleteTweet = createDefault();
 const initGetTweet = createDefault();
+const initLikeRetTweet = createDefault();
 
 const generalReducer = (initState, action, types) => {
     const {type, payload} = action;
@@ -237,4 +238,9 @@ export const deleteTweetReducer = (deleteTweetState = initDeleteTweet, action) =
 
 export const getTweetReducer = (getTweetState = initGetTweet, action) => {
     return generalReducer(getTweetState, action, [GET_TWEET_INIT, GET_TWEET_SUCCESS, GET_TWEET_FAIL]);
+};
+
+export const getLikeRetTweetReducer = (likeRetTweetState = initLikeRetTweet, action) => {
+    return generalReducer(likeRetTweetState, action,
+        [GET_LIKE_RET_TWEET_INIT, GET_LIKE_RET_TWEET_SUCCESS, GET_LIKE_RET_TWEET_FAIL]);
 };

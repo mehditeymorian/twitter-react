@@ -429,13 +429,14 @@ export const updateProfile = (profile) => async (dispatch, getState) => {
     const {user} = getState();
 
     const bodyFormData = new FormData();
+    if (profile.name != null) bodyFormData.append("name", profile.name);
     if (profile.bio != null) bodyFormData.append("bio", profile.bio);
-    if (profile.profile_picture != null) bodyFormData.append("profile_picture", profile.profile_picture);
-    if (profile.header_picture != null) bodyFormData.append("header_picture", profile.header_picture);
+    if (profile.profilePicture != null) bodyFormData.append("profile_picture", profile.profilePicture);
+    if (profile.header != null) bodyFormData.append("header_picture", profile.header);
 
     await axios({
         baseURL: 'http://127.0.0.1:8585',
-        method: 'update',
+        method: 'put',
         url: `/profiles/${user.username}`,
         data: bodyFormData,
         headers: {
@@ -448,6 +449,7 @@ export const updateProfile = (profile) => async (dispatch, getState) => {
                 ...value.data.profile
             }
             dispatch(createSuccess(UPDATE_PROFILE_SUCCESS,result));
+            dispatch(getProfile(user.token, user.username));
         })
         .catch(error => {
             printError(error);
@@ -575,6 +577,34 @@ export const followList = (username) => async (dispatch, getState) => {
             printError(error);
             dispatch(createFail(FOLLOW_LIST_FAIL,error.response.status));
         });
+};
+
+// ****************** LOGS LIST ************************
+export const LOGS_INIT = "LOGS_INIT";
+export const LOGS_SUCCESS = "LOGS_SUCCESS";
+export const LOGS_FAIL = "LOGS_FAIL";
+
+export const logs = (username) => async (dispatch, getState) => {
+	dispatch(createInit(LOGS_INIT));
+	const {user} = getState();
+	await axios({
+	    baseURL: 'http://127.0.0.1:8585',
+	    method: 'get',
+	    url: `/profiles/${username}/logs`,
+	    headers: {
+	        "Authorization": `Token ${user.token}`
+	    }
+	})
+	    .then(value => {
+	        const result = {
+	            ...value.data
+	        };
+	        dispatch(createSuccess(LOGS_SUCCESS, result));
+	    })
+	    .catch(error => {
+	        printError(error);
+	        dispatch(createFail(LOGS_FAIL, error.response.status));
+	    });
 };
 
 function printError(error) {

@@ -18,7 +18,7 @@ import {
     LocationOn as LocationIcon
 } from "@material-ui/icons";
 import Logs from "./Logs";
-import {follow, followList, getProfile, unfollow} from "../redux/actions";
+import {follow, followList, getProfile, logs, unfollow} from "../redux/actions";
 import {connect} from "react-redux";
 import {isStatePresent} from "../redux/stateUtils";
 import FollowDialog from "./FollowDialog";
@@ -30,7 +30,7 @@ const getFollowingCount = state => isStatePresent(state) ? state.profile.followi
 const getFollowersCount = state => isStatePresent(state) ? state.profile.followers.length : -1;
 
 
-function Profile({profileState, userState,followUser, unfollowUser, tweets, getUserProfile, getFollowList, followListState}) {
+function Profile({profileState, userState,followUser, unfollowUser, tweets, getUserProfile, getFollowList, followListState, logs, getLogs}) {
     const classes = ProfileStyle();
     let {url} = useRouteMatch();
     let {username} = useParams();
@@ -45,6 +45,7 @@ function Profile({profileState, userState,followUser, unfollowUser, tweets, getU
     useEffect(() => {
         getUserProfile(userState.token, username);
         getFollowList(username);
+        getLogs(username);
     }, [username]);
 
 
@@ -52,8 +53,8 @@ function Profile({profileState, userState,followUser, unfollowUser, tweets, getU
         username: isStatePresent(profileState) ? profileState.profile.username : "Loading..",
         name: isStatePresent(profileState) ? profileState.profile.name : "Loading..",
         bio: isStatePresent(profileState) ? profileState.profile.bio : "Loading..",
-        profilePicture: isStatePresent(profileState) ? profileState.profile.profile_picture : "https://i.stack.imgur.com/34AD2.jpg",
-        header: isStatePresent(profileState) ? profileState.profile.header_picture : "assets/header_default.png"
+        profilePicture: isStatePresent(profileState) && profileState.profile.profile_picture !== "" ? profileState.profile.profile_picture : "https://i.stack.imgur.com/34AD2.jpg",
+        header: isStatePresent(profileState) && profileState.profile.header_picture !== "" ? profileState.profile.header_picture : "https://www.tweetbrander.com/wp-content/uploads/2013/01/twitter-header-post-640x360.png"
     };
 
     const handleFollow = (ev) => {
@@ -68,7 +69,7 @@ function Profile({profileState, userState,followUser, unfollowUser, tweets, getU
         if (profileState.profile.username === userState.username)
             return <Button className={classes.editButton}
                            variant={"outlined"}
-                           component={Link} to={`${url}/edit`}
+                           component={Link} to={`${url}`}
                            onClick={() => setOpenEditDialog(true)}>Edit profile</Button>
 
         else return <Button className={classes.editButton}
@@ -84,15 +85,15 @@ function Profile({profileState, userState,followUser, unfollowUser, tweets, getU
 
             <Grid container spacing={0}>
                 <Grid item xs={12}>
-                    <img src={"/assets/header_default.png"} className={classes.image} alt={"random"}/>
+                    <img src={userProfile.header} className={classes.image} alt={"random"}/>
                 </Grid>
                 <Grid item xs={1} sm={8}><Avatar src={userProfile.profilePicture}
                                                  className={classes.profileImage}/></Grid>
                 <Grid container xs={11} sm={4} justify={"flex-end"} spacing={2}>
                     <Grid item>{getHeaderButton(profileState, userState)}</Grid>
-                    <Route path={`${url}/edit`}>
-                        <EditProfile profile={userProfile} open={openEditDialog} setOpen={setOpenEditDialog}/>
-                    </Route>
+                    {/*<Route path={`${url}`}>*/}
+                    <EditProfile profile={userProfile} open={openEditDialog} setOpen={setOpenEditDialog}/>
+                    {/*</Route>*/}
                 </Grid>
                 <Grid item xs={12}><Typography className={classes.userName}>{userProfile.name}</Typography></Grid>
                 <Grid item xs={12}><Typography className={classes.bio}
@@ -131,7 +132,7 @@ function Profile({profileState, userState,followUser, unfollowUser, tweets, getU
                             </Route>
                             <Route path={`${url}/with_replies`}><h1>With Replies</h1></Route>
                             <Route path={`${url}/media`}><h1>Media</h1></Route>
-                            <Route path={`${url}/logs`}>{Logs()}</Route>
+                            <Route path={`${url}/logs`} ><Logs events={isStatePresent(logs) && "events" in logs ? logs.events : null}/></Route>
                         </Switch>
 
                     </Fragment>
@@ -146,6 +147,7 @@ const mapStateToProp = state => ({
     profileState: state.profile,
     followListState: state.followList,
     tweets: state.getTweets,
+    logs: state.logs,
 });
 
 const mapActionsToProp = dispatch => ({
@@ -153,6 +155,7 @@ const mapActionsToProp = dispatch => ({
     getFollowList: (username) => dispatch(followList(username)),
     followUser: (username) => dispatch(follow(username)),
     unfollowUser: (username) => dispatch(unfollow(username)),
+    getLogs: (username) => dispatch(logs(username)),
 });
 
 export default connect(mapStateToProp, mapActionsToProp)(Profile);

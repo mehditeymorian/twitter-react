@@ -55,7 +55,7 @@ import {
     TIMELINE_SUCCESS,
     TIMELINE_FAIL,
     GET_TWEETS_INIT,
-    GET_TWEETS_SUCCESS, GET_TWEETS_FAIL
+    GET_TWEETS_SUCCESS, GET_TWEETS_FAIL, LOGS_INIT, LOGS_SUCCESS, LOGS_FAIL
 } from "./actions";
 
 const createDefault = () => ({
@@ -318,4 +318,8 @@ export const unfollowReducer = (unfollowState = createDefault(), action) => {
 
 export const followListReducer = (followListState = createDefault(), action) => {
     return generalReducer(followListState, action, [FOLLOW_LIST_INIT, FOLLOW_LIST_SUCCESS, FOLLOW_LIST_FAIL]);
+};
+
+export const logsReducer = (logsState = createDefault(), action) => {
+    return generalReducer(logsState, action, [LOGS_INIT, LOGS_SUCCESS, LOGS_FAIL]);
 };

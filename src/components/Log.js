@@ -27,22 +27,31 @@ export default function Log(props) {
 		"https://uifaces.co/our-content/donated/gPZwCbdS.jpg",
 		"https://uifaces.co/our-content/donated/gPZwCbdS.jpg"
 	];
-	const targetName = props.targetName
-	const tweetText = props.tweetText;
+	const targetName = props.targetName;
+	const regex = props.tweetText.toString().match(new RegExp("Tweet (.*) at"));
+	const tweetText = regex !== null ? regex[1] : "Sample Tweet";
 	const dir = isRTL(tweetText.toString().split(' ')[0]) ? "rtl" : "ltr";
 	const type = props.type;
 	const typeMap = {
-		"like": <FavoriteIcon className={classes.icon}
+		"Like": <FavoriteIcon className={classes.icon}
 		                      style={{color: "#ff0000"}}/>,
-		"follow": <PersonIcon className={classes.icon}
+		"Follow": <PersonIcon className={classes.icon}
 		                      style={{color: "#0099ff"}}/>,
-		"retweet": <RepeatIcon className={classes.icon}
+		"Retweet": <RepeatIcon className={classes.icon}
 		                       style={{color: "#2ae000"}}/>,
 	}
 	const text = {
-		"like": <Typography display={"inline"}>You liked <Typography display={"inline"} className={classes.sourceName}>{targetName}</Typography>'s tweet.</Typography>,
-		"follow": <Typography display={"inline"}>You followed <Typography display={"inline"} className={classes.sourceName}>{targetName}</Typography>.</Typography>,
-		"retweet": <Typography display={"inline"}>You retweeted <Typography display={"inline"} className={classes.sourceName}>{targetName}</Typography>'s tweet.</Typography>,
+		"Like": <Typography display={"inline"}>You liked <Typography
+			display={"inline"}
+			className={classes.sourceName}>{targetName}</Typography>'s
+			tweet.</Typography>,
+		"Follow": <Typography display={"inline"}>You followed <Typography
+			display={"inline"}
+			className={classes.sourceName}>{targetName}</Typography>.</Typography>,
+		"Retweet": <Typography display={"inline"}>You retweeted <Typography
+			display={"inline"}
+			className={classes.sourceName}>{targetName}</Typography>'s
+			tweet.</Typography>,
 	}
 	
 	return (
@@ -51,13 +60,15 @@ export default function Log(props) {
 				<Grid container className={classes.notification}>
 					{typeMap[type]}
 					<div className={classes.profilePictures}>
-						<Avatar item src={avatarURLs[0]} className={classes.picture}/>
+						<Avatar item src={avatarURLs[0]}
+						        className={classes.picture}/>
 					</div>
 					<Grid container className={classes.text}>
 						{text[type]}
 					</Grid>
-					<Grid container className={classes.tweet}
-					      style={{direction: dir}}>{tweetText}</Grid>
+					{type === "Follow" ? null :
+						<Grid container className={classes.tweet}
+						      style={{direction: dir}}>{tweetText}</Grid>}
 				</Grid>
 			</CardActionArea>
 		</Card>

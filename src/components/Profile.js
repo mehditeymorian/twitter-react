@@ -1,4 +1,4 @@
-import React, {Fragment, useState} from "react";
+import React, {Fragment, useEffect, useState} from "react";
 import {
     Avatar,
     Button,
@@ -17,43 +17,80 @@ import {
     CalendarToday as JoinDateIcon,
     LocationOn as LocationIcon
 } from "@material-ui/icons";
-import Tweet from "./Tweet";
-import FollowDialog from "./FollowDialog";
 import Logs from "./Logs";
-import EditProfile from "./EditProfile";
-import {getProfile} from "../redux/actions";
+import {followList, getProfile} from "../redux/actions";
 import {connect} from "react-redux";
+import {isStatePresent} from "../redux/stateUtils";
+import DialogTitle from "@material-ui/core/DialogTitle";
+import DialogContent from "@material-ui/core/DialogContent";
+import SwipeableViews from "react-swipeable-views";
+import Identity from "./Identity";
+import DialogActions from "@material-ui/core/DialogActions";
+import Dialog from "@material-ui/core/Dialog";
+import Box from "@material-ui/core/Box";
+import FollowDialog from "./FollowDialog";
 
-function Profile({profile, token, getUserProfile}) {
+function TabPanel(props) {
+    const { children, value, index, ...other } = props;
+
+    return (
+        <div role="tabpanel" hidden={value !== index} id={`full-width-tabpanel-${index}`}
+             aria-labelledby={`full-width-tab-${index}`}{...other}>
+            {value === index && (<Box p={3}><Typography>{children}</Typography></Box>)}
+        </div>
+    );
+}
+
+
+
+function a11yProps(index) {
+    return {
+        id: `full-width-tab-${index}`,
+        'aria-controls': `full-width-tabpanel-${index}`,
+    };
+}
+
+const getFollowingCount = state => isStatePresent(state) ? state.profile.followings.length : -1;
+const getFollowersCount = state => isStatePresent(state) ? state.profile.followers.length : -1;
+
+function Profile({profileState, token, getUserProfile,getFollowList, followListState}) {
     const classes = ProfileStyle();
-    const [value, setValue] = useState(0);
-    const handleChange = (event, newValue) => setValue(newValue);
     let {url} = useRouteMatch();
     let {username} = useParams();
-    
-    if (profile.state === -1) {
-        const result = getUserProfile(token, username);
-        console.log("GETTING IT");
-    }
 
     const [openFollowDialog, setOpenFollowDialog] = useState(false);
     const [openEditDialog, setOpenEditDialog] = useState(false);
-    
+
+    const [selectedTab, setSelectedTab] = useState(0);
+    const handleTabChange = (event, newValue) => setSelectedTab(newValue);
+
+
+    console.log("reload");
+
+
+    useEffect(() => {
+                getUserProfile(token, username);
+                getFollowList(username);
+    },[username]);
+
+
+
     const userProfile = {
-        username: profile.username,
-        name: profile.name,
-        bio:profile.bio,
-        profilePicture: profile.profile_picture === "" ? "https://i.stack.imgur.com/34AD2.jpg" : profile.profile_picture,
-        header: profile.header_picture === "" ? "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAW8AAACJCAMAAADUiEkNAAAAA1BMVEVpo7nX6yl3AAAASElEQVR4nO3BMQEAAADCoPVPbQsvoAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAICXAcTwAAG9LRdQAAAAAElFTkSuQmCC" : profile.header_picture
-    }
+        username: isStatePresent(profileState) ? profileState.profile.username : "Loading..",
+        name: isStatePresent(profileState) ? profileState.profile.name : "Loading..",
+        bio: isStatePresent(profileState) ? profileState.profile.bio : "Loading..",
+        profilePicture: isStatePresent(profileState) ? profileState.profile.profile_picture : "https://i.stack.imgur.com/34AD2.jpg",
+        header: isStatePresent(profileState) ? profileState.profile.header_picture : "assets/header_default.png"
+    };
     
-    console.log(profile);
     return (
         <Paper className={classes.root}>
-            <FollowDialog open={openFollowDialog} setOpen={setOpenFollowDialog} />
+            <FollowDialog followListState={followListState} open={openFollowDialog} setOpen={setOpenFollowDialog} />
 
             <Grid container spacing={0} >
-                <Grid item xs={12}><img src={userProfile.header} className={classes.image} alt={"random"}/></Grid>
+                <Grid item xs={12}>
+                    <img src={"/assets/header_default.png"}  className={classes.image} alt={"random"}/>
+                </Grid>
                 <Grid item xs={1} sm={8}><Avatar src={userProfile.profilePicture}
                                                  className={classes.profileImage}/></Grid>
                 <Grid container xs={11} sm={4} justify={"flex-end"} spacing={2}>
@@ -76,12 +113,12 @@ function Profile({profile, token, getUserProfile}) {
                         className={classes.bioInfoIcon}/>Joined August 2016</Typography>
                 </Grid>
                 <Grid container xs={12} className={classes.bioInfoLayout}>
-                    <Typography component={UILink} onClick={() => setOpenFollowDialog(true)} className={classes.bioInfo}>{"followings" in profile ? profile.followings.length : 0} Followings</Typography>
-                    <Typography component={UILink} onClick={() => setOpenFollowDialog(true)} className={classes.bioInfo}>{"followers" in profile ? profile.followers.length : 0} Followers</Typography>
+                    <Typography component={UILink} onClick={() => setOpenFollowDialog(true)} className={classes.bioInfo}>{getFollowingCount(profileState)} Followings</Typography>
+                    <Typography component={UILink} onClick={() => setOpenFollowDialog(true)} className={classes.bioInfo}>{getFollowersCount(profileState)} Followers</Typography>
                 </Grid>
                 <Grid item xs={12}>
                     <Fragment>
-                        <Tabs value={value} onChange={handleChange}
+                        <Tabs value={selectedTab} onChange={handleTabChange}
                               indicatorColor="primary" textColor="primary" variant={"fullWidth"}>
                             <Tab label="Tweets" component={Link} to={`${url}`}/>
                             <Tab label="Tweets & replies" component={Link} to={`${url}/with_replies`}/>
@@ -91,9 +128,7 @@ function Profile({profile, token, getUserProfile}) {
                         <Divider/>
                         <Switch>
                             <Route exact path={`${url}`}>
-                                {"Tweets" in profile ? profile.Tweets.tweets.map((t) => {
-                                    return <Tweet tweet={t}/>
-                                }) : null}
+                                {/*{isStatePresent(profileState) ? profileState.profile.tweets.map(each=> <a>each</a>) : null}*/}
                             </Route>
                             <Route path={`${url}/with_replies`}><h1>With Replies</h1></Route>
                             <Route path={`${url}/media`}><h1>Media</h1></Route>
@@ -109,11 +144,14 @@ function Profile({profile, token, getUserProfile}) {
 
 const mapStateToProp = state => ({
     token: state.user.token,
-    profile: state.profile,
+    profileState: state.profile,
+    followListState: state.followList
 });
 
 const mapActionsToProp = dispatch => ({
     getUserProfile: (token, username) => dispatch(getProfile(token, username)),
+    getFollowList: (username) => dispatch(followList(username))
+
 });
 
 export default connect(mapStateToProp, mapActionsToProp)(Profile);

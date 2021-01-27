@@ -9,6 +9,7 @@ import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import SwipeableViews from "react-swipeable-views";
 import Identity from "./Identity";
+import {isStatePresent} from "../redux/stateUtils";
 
 
 function TabPanel(props) {
@@ -32,15 +33,16 @@ function a11yProps(index) {
 }
 
 
-export default function FollowDialog({open,setOpen}) {
-    const [value, setValue] = useState(0);
-    const handleChange = (event, newValue) => setValue(newValue);
+function FollowDialog({followListState, open, setOpen}) {
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
-    const handleClose = () => setOpen(false);
+    const [dialogSelectedTab, setDialogSelectedTab] = useState(0);
+    const handleDialogTabChange = (event, newValue) => setDialogSelectedTab(newValue);
 
-    const handleChangeIndex = (index) => setValue(index);
+    const handleClose = () => setOpen(false);
+    const handleChangeIndex = (index) => setDialogSelectedTab(index);
+
 
     return (
         <Dialog
@@ -52,17 +54,17 @@ export default function FollowDialog({open,setOpen}) {
             aria-labelledby="responsive-dialog-title">
             <DialogTitle id="responsive-dialog-title">{"Follow List"}</DialogTitle>
             <DialogContent>
-                <Tabs value={value} onChange={handleChange} indicatorColor="primary"
+                <Tabs value={dialogSelectedTab} onChange={handleDialogTabChange} indicatorColor="primary"
                       textColor="primary" variant="fullWidth" aria-label="full width tabs example">
                     <Tab label="Followings" {...a11yProps(0)} />
                     <Tab label="Followers" {...a11yProps(1)} />
                 </Tabs>
-                <SwipeableViews axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'} index={value} onChangeIndex={handleChangeIndex}>
-                    <TabPanel value={value} index={0} dir={theme.direction}>
-                        {[...Array(20).keys()].map(() => <Identity/>)}
+                <SwipeableViews axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'} index={dialogSelectedTab} onChangeIndex={handleChangeIndex}>
+                    <TabPanel value={dialogSelectedTab} index={0} dir={theme.direction}>
+                        {isStatePresent(followListState) ? followListState.followings.map((each) => <Identity closeDialog={handleClose} identity={each}/>) : null}
                     </TabPanel>
-                    <TabPanel value={value} index={1} dir={theme.direction}>
-                        {[...Array(20).keys()].map(() => <Identity/>)}
+                    <TabPanel value={dialogSelectedTab} index={1} dir={theme.direction}>
+                        {isStatePresent(followListState) ? followListState.followers.map((each) => <Identity closeDialog={handleClose} identity={each}/>) : null}
                     </TabPanel>
 
                 </SwipeableViews>
@@ -73,4 +75,8 @@ export default function FollowDialog({open,setOpen}) {
         </Dialog>
     );
 
-};
+}
+
+
+
+export default FollowDialog;

@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import Grid from "@material-ui/core/Grid";
 import Avatar from "@material-ui/core/Avatar";
 import Divider from "@material-ui/core/Divider";
@@ -18,6 +18,7 @@ import TweetText from "./TweetText";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import {Link} from "react-router-dom";
+import TweetDialog from "./TweetDialog";
 
 export const TWEET_NORMAL = 0;
 export const TWEET_DETAIL = 1;
@@ -43,50 +44,60 @@ export default function Tweet({type = TWEET_NORMAL, tweet, username}) {
         text
         time
      */
-    
+
+    console.log(tweet)
+
     const tweetText = tweet.text;
     const like = tweet.liked;
     const bookmarked = false;
     const retweeted = tweet.retweeted;
     const myTweet = username === tweet.owner.username;
+
+    const [commentDialogOpen, setCommentDialogOpen] = useState(false);
+    const onCommentHandle = () => {
+        setCommentDialogOpen(true);
+    };
+
+
+    const content = (<Grid container className={classes.root}>
+        <Grid item xs={2} md={1}><Avatar
+            src={tweet.owner.profile_picture}/></Grid>
+        <Grid container className={classes.tweetHeader} xs={10} md={11} spacing={1}>
+            <Grid container xs={12} alignItems={"flex-start"}>
+                <Grid item xs={getNameBP(type)}><Typography display={"inline"} className={classes.name}>{tweet.owner.name}</Typography></Grid>
+                <Grid item><Typography display={"inline"} className={classes.id}>@{tweet.owner.username}</Typography></Grid>
+                <Grid item><Typography display={"inline"} style={{display: getTopDateVisibility(type)}} className={classes.date}>{tweet.date}</Typography></Grid>
+            </Grid>
+            <Grid item xs={12}><TweetText value={tweetText} textStyle={classes.tweetText}/></Grid>
+            {type === TWEET_DETAIL ? <Grid item xs={12}><Typography>{tweet.date}</Typography></Grid>: null}
+            {type === TWEET_DETAIL ? <Divider/>: null}
+            <Grid container justify={"space-between"} className={classes.tweetActions} xs={12}>
+                <Grid item>
+                    <IconButton onClick={onCommentHandle}><CommentIcon/></IconButton>
+                    <Typography display={"inline"} className={classes.actionText}>{tweet.comments != null ? tweet.comments.length: -1}</Typography>
+                </Grid>
+                <Grid item>
+                    <IconButton
+                        className={retweeted ? classes.retweetStyle : null}><RetweetIcon/></IconButton>
+                    <Typography display={"inline"} className={classes.actionText}>{tweet.retweets_count}</Typography>
+                </Grid>
+                <Grid item>
+                    <IconButton className={classes.likeStyle}>{like ? <LikeFilledIcon/> :
+                        <LikeIcon/>}</IconButton>
+                    <Typography display={"inline"} className={classes.actionText}>{tweet.likes_count}</Typography>
+                </Grid>
+                <Grid item><IconButton className={classes.bookmarkStyle}>{bookmarked ?
+                    <BookmarkFilledIcon/> : <BookmarkIcon/>}</IconButton></Grid>
+                {myTweet ? <Grid item><IconButton><StatIcon/></IconButton></Grid> : null}
+            </Grid>
+        </Grid>
+
+    </Grid>);
+
     return (
         <Card square>
-            <CardActionArea disabled={type === TWEET_DETAIL} component={Link} to={`/tweet-detail/${tweet.id}`}>
-                <Grid container className={classes.root}>
-                    <Grid item xs={2} md={1}><Avatar
-                        src={tweet.owner.profile_picture}/></Grid>
-                    <Grid container className={classes.tweetHeader} xs={10} md={11} spacing={1}>
-                        <Grid container xs={12} alignItems={"flex-start"}>
-                            <Grid item xs={getNameBP(type)}><Typography display={"inline"} className={classes.name}>{tweet.owner.name}</Typography></Grid>
-                            <Grid item><Typography display={"inline"} className={classes.id}>@{tweet.owner.username}</Typography></Grid>
-                            <Grid item><Typography display={"inline"} style={{display: getTopDateVisibility(type)}} className={classes.date}>{tweet.date}</Typography></Grid>
-                        </Grid>
-                        <Grid item xs={12}><TweetText value={tweetText} textStyle={classes.tweetText}/></Grid>
-                        {type === TWEET_DETAIL ? <Grid item xs={12}><Typography>{tweet.date}</Typography></Grid>: null}
-                        {type === TWEET_DETAIL ? <Divider/>: null}
-                        <Grid container justify={"space-between"} className={classes.tweetActions} xs={12}>
-                            <Grid item>
-                                <IconButton><CommentIcon/></IconButton>
-                                <Typography display={"inline"} className={classes.actionText}>{tweet.comments.length}</Typography>
-                            </Grid>
-                            <Grid item>
-                                <IconButton
-                                    className={retweeted ? classes.retweetStyle : null}><RetweetIcon/></IconButton>
-                                <Typography display={"inline"} className={classes.actionText}>{tweet.retweets_count}</Typography>
-                            </Grid>
-                            <Grid item>
-                                <IconButton className={classes.likeStyle}>{like ? <LikeFilledIcon/> :
-                                    <LikeIcon/>}</IconButton>
-                                <Typography display={"inline"} className={classes.actionText}>{tweet.likes_count}</Typography>
-                            </Grid>
-                            <Grid item><IconButton className={classes.bookmarkStyle}>{bookmarked ?
-                                <BookmarkFilledIcon/> : <BookmarkIcon/>}</IconButton></Grid>
-                            {myTweet ? <Grid item><IconButton><StatIcon/></IconButton></Grid> : null}
-                        </Grid>
-                    </Grid>
-
-                </Grid>
-            </CardActionArea>
+            <TweetDialog open={commentDialogOpen} setOpen={setCommentDialogOpen} parent={tweet.id} />
+            {type !== TWEET_DETAIL ? <CardActionArea component={Link} to={`/tweet-detail/${tweet.id}`}>{content}</CardActionArea> : content}
             <Divider/>
         </Card>
     );

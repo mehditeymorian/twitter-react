@@ -486,6 +486,34 @@ export const follow = (otherUser) => async (dispatch, getState) => {
         });
 };
 
+// ****************** UNFOLLOW ************************
+export const UNFOLLOW_INIT = "UNFOLLOW_INIT";
+export const UNFOLLOW_SUCCESS = "UNFOLLOW_SUCCESS";
+export const UNFOLLOW_FAIL = "UNFOLLOW_FAIL";
+
+export const unfollow = (otherUser) => async (dispatch, getState) => {
+    dispatch(createInit(UNFOLLOW_INIT));
+    const {user} = getState();
+    await axios({
+        baseURL: 'http://127.0.0.1:8585',
+        method: 'delete',
+        url: `/profiles/${otherUser.username}/follow`,
+        headers: {
+            "Authorization": `Token ${user.token}`
+        }
+    })
+        .then(value => {
+            const result = {
+                ...value.data.profile
+            };
+            dispatch(createSuccess(UNFOLLOW_SUCCESS,result));
+        })
+        .catch(error => {
+            printError(error);
+            dispatch(createFail(UNFOLLOW_FAIL,error.response.status));
+        });
+};
+
 function printError(error) {
 	if (error.response) {
 		// The request was made and the server responded with a status code

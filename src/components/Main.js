@@ -115,7 +115,7 @@ function Main({userState,window}) {
                         </Hidden>
                     </nav>
                 </div>
-            <Grid container className={classes.content} alignItems={"flex-start"} justify={"center"} xs={12}>
+            <Grid container className={classes.content} alignItems={"flex-start"} justify={"center"}>
                 <Grid item xs={12}><div className={classes.toolbar}/></Grid>
                 <Grid item xs={11} md={9} lg={7} xl={5} className={classes.timeline}>
                     <Switch>

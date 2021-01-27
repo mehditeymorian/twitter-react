@@ -387,7 +387,7 @@ export const getProfile = (token, username) => async (dispatch, getState) => {
 };
 
 
-// ****************** UPDATE PROFILE TWEET ************************
+// ****************** UPDATE PROFILE ************************
 export const UPDATE_PROFILE_INIT = "UPDATE_PROFILE_INIT";
 export const UPDATE_PROFILE_SUCCESS = "UPDATE_PROFILE_SUCCESS";
 export const UPDATE_PROFILE_FAIL = "UPDATE_PROFILE_FAIL";
@@ -423,7 +423,7 @@ export const updateProfile = (profile) => async (dispatch, getState) => {
 };
 
 
-// ****************** UPDATE USER TWEET ************************
+// ****************** UPDATE USER ************************
 export const UPDATE_USER_INIT = "UPDATE_USER_INIT";
 export const UPDATE_USER_SUCCESS = "UPDATE_USER_SUCCESS";
 export const UPDATE_USER_FAIL = "UPDATE_USER_FAIL";

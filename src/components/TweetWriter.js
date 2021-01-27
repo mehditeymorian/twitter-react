@@ -17,17 +17,22 @@ import SpecialTextField from "./SpecialTextField";
 import {createTweet} from "../redux/actions";
 import {connect} from "react-redux";
 import LinearProgress from "@material-ui/core/LinearProgress";
-import {isStateLoading} from "../redux/stateUtils";
+import {getUserProfileImg, isStateLoading} from "../redux/stateUtils";
 
 function TweetWriter({userState, createState, createTweet, parent, setDialogClose}) {
     const style = TweetWriterStyle();
     const tweetText = useRef(null);
     const [media, setMedia] = useState(null);
+    const [mediaPrev, setMediaPrev] = useState("");
     // todo : clear output after sending tweet
 
     const onMediaChange = ev => {
         const file = ev.target.files[0];
         setMedia(file);
+
+        let reader = new FileReader();
+        reader.onload = ev1 => setMediaPrev(ev1.target.result);
+        reader.readAsDataURL(file);
     };
 
 
@@ -42,14 +47,16 @@ function TweetWriter({userState, createState, createTweet, parent, setDialogClos
         createTweet(tweet);
         if (setDialogClose != null) setDialogClose();
 
+        setMediaPrev("");
     };
 
     return (
         <>
             <Grid container className={style.root}>
-                <Grid item xs={2} md={1}><Avatar src={userState.profile_picture} alt={userState.username}/></Grid>
+                <Grid item xs={2} md={1}><Avatar src={getUserProfileImg(userState.profile_picture)} alt={userState.username}/></Grid>
                 <Grid container xs={10} md={11}>
                     <Grid item xs={12}><SpecialTextField textRef={tweetText}/></Grid>
+                    {mediaPrev != "" ? <Grid item xs={12}><img width={200} height={200} src={mediaPrev} /> </Grid>: null}
                     <Grid container alignItems={"center"} justify={"space-between"} className={style.actionsLayout}>
                         <Grid container xs>
                             <Grid item><IconButton component={"label"}><MediaIcon/><input onChange={onMediaChange}

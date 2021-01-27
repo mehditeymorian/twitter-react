@@ -8,6 +8,7 @@ import React from "react";
 import {makeStyles} from "@material-ui/core";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
+import {getUserProfileImg} from "../redux/stateUtils";
 
 const IdentityStyle = makeStyles((theme) => ({
     root: {
@@ -37,7 +38,7 @@ export default function Identity({closeDialog, identity}) {
         <Card square>
             <CardActionArea onClick={onIdentityClick} component={Link} to={`/profile/${identity.username}`}>
                 <Grid container className={classes.root}>
-                    <Grid item xs={2} sm={1}><Avatar src={profileImg}/></Grid>
+                    <Grid item xs={2} sm={1}><Avatar src={getUserProfileImg(identity.profile_picture)}/></Grid>
                     <Grid container xs={9} sm={10} direction={"column"} className={classes.infoSection}>
                         <Grid container xs={12}>
                             <Grid item xs={9} sm={10}>

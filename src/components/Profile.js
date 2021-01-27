@@ -20,11 +20,13 @@ import {
 import Logs from "./Logs";
 import {follow, followList, getProfile, logs, unfollow} from "../redux/actions";
 import {connect} from "react-redux";
-import {isStatePresent} from "../redux/stateUtils";
+import {getUserProfileImg, isStatePresent} from "../redux/stateUtils";
 import FollowDialog from "./FollowDialog";
 import EditProfile from "./EditProfile";
 import Tweet from "./Tweet";
 
+const PROFILE_FALLBACK = "https://i.stack.imgur.com/34AD2.jpg";
+const HEADER_FALLBACK = "https://www.tweetbrander.com/wp-content/uploads/2013/01/twitter-header-post-640x360.png";
 
 const getFollowingCount = state => isStatePresent(state) ? state.profile.followings.length : -1;
 const getFollowersCount = state => isStatePresent(state) ? state.profile.followers.length : -1;
@@ -49,12 +51,13 @@ function Profile({profileState, userState,followUser, unfollowUser, tweets, getU
     }, [username]);
 
 
+
     const userProfile = {
         username: isStatePresent(profileState) ? profileState.profile.username : "Loading..",
         name: isStatePresent(profileState) ? profileState.profile.name : "Loading..",
         bio: isStatePresent(profileState) ? profileState.profile.bio : "Loading..",
-        profilePicture: isStatePresent(profileState) && profileState.profile.profile_picture !== "" ? profileState.profile.profile_picture : "https://i.stack.imgur.com/34AD2.jpg",
-        header: isStatePresent(profileState) && profileState.profile.header_picture !== "" ? profileState.profile.header_picture : "https://www.tweetbrander.com/wp-content/uploads/2013/01/twitter-header-post-640x360.png"
+        profilePicture: isStatePresent(profileState) && profileState.profile.profile_picture !== "" ? getUserProfileImg(profileState.profile.profile_picture) : PROFILE_FALLBACK,
+        header: isStatePresent(profileState) && profileState.profile.header_picture !== "" ? getUserProfileImg(profileState.profile.header_picture) : HEADER_FALLBACK
     };
 
     const handleFollow = (ev) => {
@@ -127,7 +130,7 @@ function Profile({profileState, userState,followUser, unfollowUser, tweets, getU
                         <Divider/>
                         <Switch>
                             <Route exact path={`${url}`}>
-                                {isStatePresent(tweets) ? tweets.tweets.map(each => <Tweet username={username}
+                                {isStatePresent(tweets) ? tweets.tweets.map(each => <Tweet username={username} profilePic={userProfile.profilePicture}
                                                                                            tweet={each}/>) : null}
                             </Route>
                             <Route path={`${url}/with_replies`}><h1>With Replies</h1></Route>

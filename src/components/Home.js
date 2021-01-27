@@ -4,7 +4,7 @@ import TweetWriter from "./TweetWriter";
 import {connect} from "react-redux";
 import {getTimeline} from "../redux/actions";
 import Tweet from "./Tweet";
-import {isStatePresent} from "../redux/stateUtils";
+import {getUserProfileImg, isStatePresent} from "../redux/stateUtils";
 import LinearProgress from "@material-ui/core/LinearProgress";
 
 function Home({user, timeline, getTimeline}) {
@@ -18,7 +18,7 @@ function Home({user, timeline, getTimeline}) {
     return (
         <Paper>
             <TweetWriter/>
-            {isStatePresent(timeline) ? timeline.tweets.map(each => <Tweet tweet={each} username={user.username}/>):<LinearProgress/>}
+            {isStatePresent(timeline) ? timeline.tweets.map(each => <Tweet profilePic={getUserProfileImg(user.profile_picture)} tweet={each} username={user.username}/>):<LinearProgress/>}
         </Paper>
     );
 }

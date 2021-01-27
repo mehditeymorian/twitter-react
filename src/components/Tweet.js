@@ -40,7 +40,7 @@ const getCommentsCount = (tweet) => tweet.comments != null ? tweet.comments.leng
 const getTopDateVisibility = (type) => type === TWEET_DETAIL ? "none" : "block";
 
 function Tweet({type = TWEET_NORMAL, tweet, username,
-                   actionResult,deleteTweet,userState,
+                   actionResult,deleteTweet,userState,profilePic,
                    likeTweet, unlikeTweet, retweet, deleteRetweet}) {
     const classes = TweetStyle();
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
@@ -114,7 +114,7 @@ function Tweet({type = TWEET_NORMAL, tweet, username,
 
     const content = (<Grid container className={classes.root}>
         <Grid item xs={2} md={1}><Avatar
-            src={tweet.owner.profile_picture}/></Grid>
+            src={profilePic}/></Grid>
         <Grid container className={classes.tweetHeader} xs={10} md={11} spacing={1}>
             <Grid container xs={12} alignItems={"center"} justify={"space-between"}>
                 <Grid container item xs>

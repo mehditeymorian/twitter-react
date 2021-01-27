@@ -7,6 +7,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 import {Link} from "react-router-dom";
 import {logoutUser} from "../redux/actions";
 import {connect} from "react-redux";
+import {getUserProfileImg} from "../redux/stateUtils";
 
 const profileMenuLinks = ["/profile","/settings"];
 
@@ -44,8 +45,8 @@ function ProfileMenu({userState, logout}) {
         <>
             <Card elevation={0} className={classes.profileMenuLayout} onClick={handleProfileClick}>
                 <CardActionArea className={classes.profileMenuActionArea}>
-                    <Avatar src={"https://uifaces.co/our-content/donated/gPZwCbdS.jpg"} alt={userState.username}/>
-                    <Typography display={"inline"} className={classes.profileMenuTitle}>{userState.name}</Typography>
+                    <Avatar src={getUserProfileImg(userState.profile_picture)} alt={userState.username}/>
+                    <Typography display={"inline"} className={classes.profileMenuTitle}>{userState.username}</Typography>
                 </CardActionArea>
             </Card>
             <Menu

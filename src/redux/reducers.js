@@ -25,7 +25,13 @@ import {
     GET_LIKE_RET_TWEET_INIT,
     GET_LIKE_RET_TWEET_SUCCESS,
     GET_LIKE_RET_TWEET_FAIL,
-    LIKE_TWEET_INIT, LIKE_TWEET_SUCCESS, LIKE_TWEET_FAIL, UNLIKE_TWEET_INIT, UNLIKE_TWEET_SUCCESS, UNLIKE_TWEET_FAIL
+    LIKE_TWEET_INIT,
+    LIKE_TWEET_SUCCESS,
+    LIKE_TWEET_FAIL,
+    UNLIKE_TWEET_INIT,
+    UNLIKE_TWEET_SUCCESS,
+    UNLIKE_TWEET_FAIL,
+    RETWEET_INIT, RETWEET_SUCCESS, RETWEET_FAIL
 } from "./actions";
 
 const createDefault = () => ({
@@ -256,4 +262,8 @@ export const likeTweetReducer = (likeTweetState = createDefault(), action) => {
 
 export const unlikeTweetReducer = (unlikeTweetState = createDefault(), action) => {
     return generalReducer(unlikeTweetState, action, [UNLIKE_TWEET_INIT, UNLIKE_TWEET_SUCCESS, UNLIKE_TWEET_FAIL]);
+};
+
+export const retweetReducer = (retweetState = createDefault(), action) => {
+    return generalReducer(retweetState, action, [RETWEET_INIT, RETWEET_SUCCESS, RETWEET_FAIL]);
 };

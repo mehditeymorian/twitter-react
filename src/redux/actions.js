@@ -255,6 +255,34 @@ export const deleteLikeTweet = (tweetId) => async (dispatch, getState) => {
         });
 };
 
+// ****************** RETWEET TWEET ************************
+export const RETWEET_INIT = "RETWEET_INIT";
+export const RETWEET_SUCCESS = "RETWEET_SUCCESS";
+export const RETWEET_FAIL = "RETWEET_FAIL";
+export const retweet = (tweetId) => async (dispatch, getState) => {
+    dispatch(createInit(RETWEET_INIT));
+    const {user} = getState();
+
+    await axios({
+        baseURL: 'http://127.0.0.1:8585',
+        method: 'post',
+        url: `/tweets/${tweetId}/retweet`,
+        headers: {
+            "Authorization": `Token ${user.token}`
+        }
+    })
+        .then(value => {
+            const result = {
+                ...value.data.tweet
+            }
+            dispatch(createSuccess(RETWEET_SUCCESS,result));
+        })
+        .catch(error => {
+            printError(error);
+            dispatch(createFail(RETWEET_FAIL,error.response.status));
+        });
+};
+
 // ****************** GET TIMELINE ************************
 
 export const TIMELINE_INIT = "TIMELINE_INIT";

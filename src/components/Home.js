@@ -1,36 +1,35 @@
-import React from "react";
+import React, {useEffect} from "react";
 import Paper from "@material-ui/core/Paper";
 import TweetWriter from "./TweetWriter";
-import Tweet from "./Tweet";
 import {connect} from "react-redux";
-import {createTweet} from "../redux/actions";
+import {getTimeline} from "../redux/actions";
+import Tweet from "./Tweet";
+import {isStatePresent} from "../redux/stateUtils";
+import LinearProgress from "@material-ui/core/LinearProgress";
 
-function Home() {
+function Home({user, timeline, getTimeline}) {
+
+
+    useEffect(() => {
+        getTimeline();
+    }, []);
+
+    console.log(timeline);
     return (
-       <Paper>
-           <TweetWriter />
-           {/*<Tweet />*/}
-           {/*<Tweet />*/}
-           {/*<Tweet />*/}
-           {/*<Tweet />*/}
-           {/*<Tweet />*/}
-           {/*<Tweet />*/}
-           {/*<Tweet />*/}
-           {/*<Tweet />*/}
-           {/*<Tweet />*/}
-           {/*<Tweet />*/}
-           {/*<Tweet />*/}
-           {/*<Tweet />*/}
-       </Paper>
+        <Paper>
+            <TweetWriter/>
+            {isStatePresent(timeline) ? timeline.tweets.map(each => <Tweet tweet={each} username={user.username}/>):<LinearProgress/>}
+        </Paper>
     );
 }
 
 const mapStateToProp = state => ({
-       createState: state.createState
+    user: state.user,
+    timeline: state.timeline
 });
 
 const mapActionsToProp = dispatch => ({
-       createTweet: tweet => dispatch(createTweet(tweet)),
+    getTimeline: () => dispatch(getTimeline()),
 });
 
 export default connect(mapStateToProp, mapActionsToProp)(Home);

@@ -6,6 +6,7 @@ import {composeWithDevTools} from 'redux-devtools-extension';
 import {authReducer as user, profileReducer as profile} from "./reducers";
 import {createTweetReducer as createTweet} from "./reducers";
 import {timelineReducer as timeline} from "./reducers";
+import {deleteTweetReducer as deleteTweet} from "./reducers";
 import thunk from "redux-thunk";
 
 
@@ -13,7 +14,8 @@ const reducers = combineReducers({
     user,
     createTweet,
     profile,
-    timeline
+    timeline,
+    deleteTweet
 });
 
 const persistConfig = {
@@ -21,7 +23,8 @@ const persistConfig = {
     blacklist: [
         'createTweet',
         'profile',
-        'timeline'
+        'timeline',
+        'deleteTweet'
     ],
     storage,
     stateReconciler : autoMergeLevel2

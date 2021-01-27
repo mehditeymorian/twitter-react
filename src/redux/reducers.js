@@ -14,7 +14,7 @@ import {
     STATE_SUCCESS,
     CREATE_TWEET_INIT,
     CREATE_TWEET_SUCCESS,
-    CREATE_TWEET_FAIL, TIMELINE_INIT
+    CREATE_TWEET_FAIL, TIMELINE_INIT, DEL_TWEET_FAIL, DEL_TWEET_INIT, DEL_TWEET_SUCCESS
 } from "./actions";
 
 const createDefault = () => ({
@@ -25,6 +25,7 @@ const initUser = createDefault();
 const initProfile = createDefault();
 const initCreateTweet = createDefault();
 const initTimeline = createDefault();
+const initDeleteTweet = createDefault();
 
 export const authReducer = (userState = initUser, action) => {
     const {type, payload} = action;
@@ -168,3 +169,32 @@ export const timelineReducer = (timelineState = initTimeline, action) =>{
             return timelineState;
     }
 }
+
+export const deleteTweetReducer = (deleteTweetState = initDeleteTweet, action) => {
+    const {type, payload} = action;
+
+    switch (type) {
+        case DEL_TWEET_INIT:{
+            return {
+                ...deleteTweetState,
+                state: STATE_LOADING
+            };
+        }
+        case DEL_TWEET_SUCCESS:{
+            const {result} = payload;
+            return {
+                ...result,
+                state: STATE_SUCCESS
+            };
+        }
+        case DEL_TWEET_FAIL:{
+            const {code} = payload;
+            return {
+                ...deleteTweetState,
+                state: code
+            };
+        }
+        default:
+            return deleteTweetState;
+    }
+};

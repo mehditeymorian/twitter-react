@@ -80,7 +80,7 @@ export const logoutUser = () => ({
 });
 
 // ****************** CREATE TWEET ************************
-export const CREATE_TWEET_INIT = "CREATE_TWEET__INIT";
+export const CREATE_TWEET_INIT = "CREATE_TWEET_INIT";
 export const CREATE_TWEET_SUCCESS = "CREATE_TWEET_SUCCESS";
 export const CREATE_TWEET_FAIL = "CREATE_TWEET_FAIL";
 export const createTweet = (tweet) => async (dispatch, getState) => {
@@ -111,6 +111,34 @@ export const createTweet = (tweet) => async (dispatch, getState) => {
         .catch(error => {
             printError(error);
             dispatch(createFail(CREATE_TWEET_FAIL,error.response.status));
+        });
+};
+
+// ****************** DELETE TWEET ************************
+export const DEL_TWEET_INIT = "DEL_TWEET_INIT";
+export const DEL_TWEET_SUCCESS = "DEL_TWEET_SUCCESS";
+export const DEL_TWEET_FAIL = "DEL_TWEET_FAIL";
+export const deleteTweet = (tweetId) => async (dispatch, getState) => {
+    dispatch(createInit(DEL_TWEET_INIT));
+    const {user} = getState();
+
+    await axios({
+        baseURL: 'http://127.0.0.1:8585',
+        method: 'delete',
+        url: `/tweets/${tweetId}`,
+        headers: {
+            "Authorization": `Token ${user.token}`
+        }
+    })
+        .then(value => {
+            const result = {
+                ...value.data.tweet
+            }
+            dispatch(createSuccess(DEL_TWEET_SUCCESS,result));
+        })
+        .catch(error => {
+            printError(error);
+            dispatch(createFail(DEL_TWEET_FAIL,error.response.status));
         });
 };
 

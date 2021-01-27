@@ -125,6 +125,7 @@ function Tweet({type = TWEET_NORMAL, tweet, username,
                 <Grid item xs={1}>{tweet.owner.username === userState.username ? <IconButton onClick={onDeleteButton} onMouseDown={event => event.stopPropagation()}><DeleteIcon /></IconButton> : null}</Grid>
             </Grid>
             <Grid item xs={12}><TweetText value={tweetText} textStyle={classes.tweetText}/></Grid>
+            {tweet.media !== "" ? <Grid item xs={12}><img className={classes.media} src={`http://127.0.0.1:8080/${tweet.media}`}/> </Grid> : null}
             {type === TWEET_DETAIL ? <Grid item xs={12}><Typography color={"secondary"} variant={"subtitle2"}>{tweet.date}</Typography></Grid>: null}
             {type === TWEET_DETAIL ? <Divider/>: null}
             <Grid item container justify={"space-between"} className={classes.tweetActions} xs={12}>

@@ -33,7 +33,7 @@ const classes = makeStyles(() => ({
 
 
 
-export default function SpecialTextField({textRef, clearInput=false}) {
+export default function SpecialTextField({textRef}) {
     const style = classes();
     const [text, setText] = useState("");
 

@@ -35,4 +35,8 @@ export const TweetStyle = makeStyles((theme) => ({
     bookmarkStyle: {
       color: theme.palette.primary
     },
+    media: {
+        width: "200px",
+        height: "200px",
+    }
 }));

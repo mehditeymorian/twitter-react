@@ -19,21 +19,26 @@ import {connect} from "react-redux";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import {isStateLoading} from "../redux/stateUtils";
 
-function TweetWriter({userState, createState, createTweet, parent,setDialogClose}) {
+function TweetWriter({userState, createState, createTweet, parent, setDialogClose}) {
     const style = TweetWriterStyle();
     const tweetText = useRef(null);
+    const [media, setMedia] = useState(null);
     // todo : clear output after sending tweet
 
+    const onMediaChange = ev => {
+        const file = ev.target.files[0];
+        setMedia(file);
+    };
 
-
-    console.log(createState);
 
     const onSend = ev => {
         const tweet = {
             text: tweetText.current.value,
-            media: null,
+            media: media,
             parent: parent
         };
+
+        // tweetText.current.value = "";
         createTweet(tweet);
         if (setDialogClose != null) setDialogClose();
 
@@ -46,20 +51,24 @@ function TweetWriter({userState, createState, createTweet, parent,setDialogClose
                 <Grid container xs={10} md={11}>
                     <Grid item xs={12}><SpecialTextField textRef={tweetText}/></Grid>
                     <Grid container alignItems={"center"} justify={"space-between"} className={style.actionsLayout}>
-                        <Grid container  xs>
-                            <Grid item><IconButton><MediaIcon/></IconButton></Grid>
+                        <Grid container xs>
+                            <Grid item><IconButton component={"label"}><MediaIcon/><input onChange={onMediaChange}
+                                                                                          id={"media"} type={"file"}
+                                                                                          accept={"image/*"}
+                                                                                          hidden/></IconButton></Grid>
                             <Grid item><IconButton><GifIcon/></IconButton></Grid>
                             <Grid item><IconButton><PollIcon/></IconButton></Grid>
                             <Grid item><IconButton><EmojiIcon/></IconButton></Grid>
                             <Grid item><IconButton><ScheduleIcon/></IconButton></Grid>
                         </Grid>
                         <Grid item xs={3} sm={3} md={2} lg={2}>
-                            <Button variant={"contained"} onClick={onSend} disableElevation color={"secondary"} className={style.sendButton}>Tweet</Button>
+                            <Button variant={"contained"} onClick={onSend} disableElevation color={"secondary"}
+                                    className={style.sendButton}>Tweet</Button>
                         </Grid>
                     </Grid>
                 </Grid>
             </Grid>
-            {isStateLoading(createState) ? <LinearProgress /> : null}
+            {isStateLoading(createState) ? <LinearProgress/> : null}
             <Divider/>
         </>
     );

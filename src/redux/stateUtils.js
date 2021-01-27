@@ -27,3 +27,6 @@ export const createFail = (type,failCode) => ({
         code: failCode
     }
 });
+
+
+export const getUserProfileImg = (link) => `http://127.0.0.1:8080/${link}`;

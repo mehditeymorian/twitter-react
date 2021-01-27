@@ -1,11 +1,10 @@
-import React, {useState} from "react";
+import React, {useRef, useState} from "react";
 import {EditProfileStyle} from "./EditProfileStyle";
 import {Button, useMediaQuery} from "@material-ui/core";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import Dialog from "@material-ui/core/Dialog";
 import useTheme from "@material-ui/core/styles/useTheme";
-import {useHistory} from "react-router-dom";
 import CardMedia from "@material-ui/core/CardMedia";
 import TextField from "@material-ui/core/TextField";
 import DialogActions from "@material-ui/core/DialogActions";
@@ -15,19 +14,40 @@ import CancelIcon from '@material-ui/icons/Cancel';
 import IconButton from "@material-ui/core/IconButton";
 import {updateProfile} from "../redux/actions";
 import {connect} from "react-redux";
+import {isStatePresent} from "../redux/stateUtils";
 
 function EditProfile({profile, open, setOpen, updateUserProfile}) {
 	const style = EditProfileStyle();
 	const fullScreen = useMediaQuery(useTheme().breakpoints.down('sm'));
 
-	const [bioInput, setBio] = useState("");
-	const [nameInput, setName] = useState("");
-	const [profilePictureInput, setProfilePicture] = useState(profile.profilePicture);
-	const [headerInput, setHeaderInput] = useState(profile.header);
+	const [bioInput, setBio] = useState(isStatePresent(updateUserProfile) ? updateUserProfile.bio : profile.bio);
+	const [nameInput, setName] = useState(isStatePresent(updateUserProfile) ? updateUserProfile.name : profile.name);
+	const [profilePic, setProfilePic] = useState(null);
+	const [headerPic, setHeaderPic] = useState(null);
+	const [profilePicPrev, setProfilePicPrev] = useState(profile.profile_picture);
+	const [headerPicPrev, setHeaderPicPrev] = useState(profile.header_picture);
 
-	function handleChangeHeader() {
+	function handleChangeHeader(ev) {
+		const file = ev.target.files[0];
+		setHeaderPic(file);
 
+		let reader = new FileReader();
+		reader.onload = ev1 => setHeaderPicPrev(ev1.target.result);
+		reader.readAsDataURL(file);
 	}
+
+	const deleteHeader = () => setHeaderPic(null);
+
+	function handleChangeProfile(ev) {
+		const file = ev.target.files[0];
+		setProfilePic(file);
+
+		let reader = new FileReader();
+		reader.onload = ev1 => setProfilePicPrev(ev1.target.result);
+		reader.readAsDataURL(file);
+	}
+
+	const deleteProfilePic = () => setProfilePic(null);
 
 	const updateProfile = e => {
 		e.preventDefault();
@@ -35,8 +55,8 @@ function EditProfile({profile, open, setOpen, updateUserProfile}) {
 			username: profile.username,
 			name: nameInput,
 			bio: bioInput,
-			profilePicture: profilePictureInput,
-			header: headerInput,
+			profilePicture: profilePic,
+			header: headerPic,
 		};
 		updateUserProfile(np);
 		setOpen(false);
@@ -61,17 +81,23 @@ function EditProfile({profile, open, setOpen, updateUserProfile}) {
 				</Button>
 			</DialogActions>
 			<DialogContent>
-				<IconButton className={style.addHeaderIcon} onClick={handleChangeHeader()}>
-					<AddAPhotoIcon />
+				<IconButton component={"label"} className={style.addHeaderIcon}>
+					<AddAPhotoIcon /> <input onChange={handleChangeHeader}
+											 id={"media"} type={"file"}
+											 accept={"image/*"}
+											 hidden/>
 				</IconButton>
-				<IconButton className={style.deleteIcon} onClick={handleChangeHeader()}>
+				<IconButton className={style.deleteIcon} onClick={deleteHeader}>
 					<HighlightOffIcon/>
 				</IconButton>
-				<CardMedia image={profile.header} className={style.header}/>
-				<IconButton className={style.addProfileIcon} onClick={handleChangeHeader()}>
-					<AddAPhotoIcon />
+				<CardMedia image={headerPicPrev} className={style.header}/>
+				<IconButton className={style.addProfileIcon} component={"label"} >
+					<AddAPhotoIcon /><input onChange={handleChangeProfile}
+											id={"media"} type={"file"}
+											accept={"image/*"}
+											hidden/>
 				</IconButton>
-				<CardMedia image={profile.profilePicture} className={style.profile}/>
+				<CardMedia image={profilePicPrev} className={style.profile}/>
 			</DialogContent>
 			<DialogContent>
 				<TextField

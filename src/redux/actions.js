@@ -443,7 +443,6 @@ export const updateUser = (updatedUser) => async (dispatch, getState) => {
             }
         },
         headers: {
-            'Content-Type': 'multipart/form-data',
             "Authorization": `Token ${user.token}`
         }
     })

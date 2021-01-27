@@ -198,6 +198,35 @@ export const getLikeRetTweet = (tweetId) => async (dispatch, getState) => {
         });
 };
 
+
+// ****************** LIKE TWEET ************************
+export const LIKE_TWEET_INIT = "LIKE_TWEET_INIT";
+export const LIKE_TWEET_SUCCESS = "LIKE_TWEET_SUCCESS";
+export const LIKE_TWEET_FAIL = "LIKE_TWEET_FAIL";
+export const likeTweet = (tweetId) => async (dispatch, getState) => {
+    dispatch(createInit(LIKE_TWEET_INIT));
+    const {user} = getState();
+
+    await axios({
+        baseURL: 'http://127.0.0.1:8585',
+        method: 'post',
+        url: `/tweets/${tweetId}/like`,
+        headers: {
+            "Authorization": `Token ${user.token}`
+        }
+    })
+        .then(value => {
+            const result = {
+                ...value.data.tweet
+            }
+            dispatch(createSuccess(LIKE_TWEET_SUCCESS,result));
+        })
+        .catch(error => {
+            printError(error);
+            dispatch(createFail(LIKE_TWEET_FAIL,error.response.status));
+        });
+};
+
 // ****************** GET TIMELINE ************************
 
 export const TIMELINE_INIT = "TIMELINE_INIT";

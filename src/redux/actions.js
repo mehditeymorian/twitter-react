@@ -142,6 +142,34 @@ export const deleteTweet = (tweetId) => async (dispatch, getState) => {
         });
 };
 
+// ****************** GET TWEET ************************
+export const GET_TWEET_INIT = "GET_TWEET_INIT";
+export const GET_TWEET_SUCCESS = "GET_TWEET_SUCCESS";
+export const GET_TWEET_FAIL = "GET_TWEET_FAIL";
+export const getTweet = (tweetId) => async (dispatch, getState) => {
+    dispatch(createInit(GET_TWEET_INIT));
+    const {user} = getState();
+
+    await axios({
+        baseURL: 'http://127.0.0.1:8585',
+        method: 'get',
+        url: `/tweets/${tweetId}`,
+        headers: {
+            "Authorization": `Token ${user.token}`
+        }
+    })
+        .then(value => {
+            const result = {
+                ...value.data.tweet
+            }
+            dispatch(createSuccess(GET_TWEET_SUCCESS,result));
+        })
+        .catch(error => {
+            printError(error);
+            dispatch(createFail(GET_TWEET_FAIL,error.response.status));
+        });
+};
+
 // ****************** GET TIMELINE ************************
 
 export const TIMELINE_INIT = "TIMELINE_INIT";

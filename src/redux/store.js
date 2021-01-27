@@ -7,6 +7,7 @@ import {authReducer as user, profileReducer as profile} from "./reducers";
 import {createTweetReducer as createTweet} from "./reducers";
 import {timelineReducer as timeline} from "./reducers";
 import {deleteTweetReducer as deleteTweet} from "./reducers";
+import {getTweetReducer as getTweet} from "./reducers";
 import thunk from "redux-thunk";
 
 
@@ -15,7 +16,8 @@ const reducers = combineReducers({
     createTweet,
     profile,
     timeline,
-    deleteTweet
+    deleteTweet,
+    getTweet
 });
 
 const persistConfig = {
@@ -24,7 +26,8 @@ const persistConfig = {
         'createTweet',
         'profile',
         'timeline',
-        'deleteTweet'
+        'deleteTweet',
+        'getTweet'
     ],
     storage,
     stateReconciler : autoMergeLevel2

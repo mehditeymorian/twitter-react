@@ -35,7 +35,7 @@ const classes = makeStyles(() => ({
 
 export default function SpecialTextField({textRef, clearInput=false}) {
     const style = classes();
-    const [text, setText] = useState(clearInput);
+    const [text, setText] = useState("");
 
 
     const onChange = ev => {setText(ev.target.value);};

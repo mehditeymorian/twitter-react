@@ -330,8 +330,7 @@ export const getTimeline = () => async (dispatch, getState) => {
     })
         .then(value => {
             const result = {
-                tweets: value.data.tweets,
-                tweetsCount: value.data.tweetsCount
+                ...value.data
             }
             dispatch(createSuccess(TIMELINE_SUCCESS,result));
         })
@@ -420,6 +419,43 @@ export const updateProfile = (profile) => async (dispatch, getState) => {
         .catch(error => {
             printError(error);
             dispatch(createFail(UPDATE_PROFILE_FAIL,error.response.status));
+        });
+};
+
+
+// ****************** UPDATE USER TWEET ************************
+export const UPDATE_USER_INIT = "UPDATE_USER_INIT";
+export const UPDATE_USER_SUCCESS = "UPDATE_USER_SUCCESS";
+export const UPDATE_USER_FAIL = "UPDATE_USER_FAIL";
+
+export const updateUser = (updatedUser) => async (dispatch, getState) => {
+    dispatch(createInit(UPDATE_USER_INIT));
+    const {user} = getState();
+    await axios({
+        baseURL: 'http://127.0.0.1:8585',
+        method: 'put',
+        url: `/user/${user.username}`,
+        data: {
+            user: {
+                username: updatedUser.username,
+                email: updatedUser.email,
+                password: updatedUser.password
+            }
+        },
+        headers: {
+            'Content-Type': 'multipart/form-data',
+            "Authorization": `Token ${user.token}`
+        }
+    })
+        .then(value => {
+            const result = {
+                ...value.data.user
+            };
+            dispatch(createSuccess(UPDATE_USER_SUCCESS,result));
+        })
+        .catch(error => {
+            printError(error);
+            dispatch(createFail(UPDATE_USER_FAIL,error.response.status));
         });
 };
 

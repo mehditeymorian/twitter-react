@@ -37,7 +37,12 @@ import {
     DEL_RETWEET_INIT,
     DEL_RETWEET_SUCCESS,
     DEL_RETWEET_FAIL,
-    UPDATE_PROFILE_INIT, UPDATE_PROFILE_SUCCESS, UPDATE_PROFILE_FAIL
+    UPDATE_PROFILE_INIT,
+    UPDATE_PROFILE_SUCCESS,
+    UPDATE_PROFILE_FAIL,
+    UPDATE_USER_INIT,
+    UPDATE_USER_SUCCESS,
+    UPDATE_USER_FAIL
 } from "./actions";
 
 const createDefault = () => ({
@@ -280,4 +285,8 @@ export const deleteRetweetReducer = (deleteRetweetState = createDefault(), actio
 
 export const updateProfileReducer = (updateProfileState = createDefault(), action) => {
     return generalReducer(updateProfileState, action, [UPDATE_PROFILE_INIT, UPDATE_PROFILE_SUCCESS, UPDATE_PROFILE_FAIL]);
+};
+
+export const updateUserReducer = (updateUserState = createDefault(), action) => {
+    return generalReducer(updateUserState, action, [UPDATE_USER_INIT, UPDATE_USER_SUCCESS, UPDATE_USER_FAIL]);
 };

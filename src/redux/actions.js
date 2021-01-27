@@ -56,9 +56,35 @@ export const signup = (user) => async (dispatch, getState) => {
             printError(error);
             dispatch(signup_fail(error.response.status));
         });
+	dispatch(signup_init());
+	await axios({
+		baseURL: 'http://127.0.0.1:8585',
+		method: 'post',
+		url: '/signup',
+		contentType: 'application/json',
+		data: {
+			user: {
+				username: user.username,
+				name: user.name,
+				email: user.email,
+				password: user.password
+			}
+		}
+	})
+		.then(value => {
+			const result = {
+				...user,
+				token: value.data.user.token
+			}
+			dispatch(signup_success(result));
+		})
+		.catch(error => {
+			printError(error);
+			dispatch(signup_fail(error.status));
+		});
 };
 
-
+// ****************** SIGN IN ************************
 export const SIGNIN_INIT = "SIGNIN_INIT";
 export const signin_init = () => ({
     type: SIGNIN_INIT,
@@ -78,10 +104,10 @@ export const signin_success = result => ({
 
 export const SIGNIN_FAIL = "SIGNIN_FAIL";
 export const signin_fail = code => ({
-    type: SIGNIN_FAIL,
-    payload: {
-        code: code,
-    }
+	type: SIGNIN_FAIL,
+	payload: {
+		code: code,
+	}
 });
 
 export const signin = (user) => async (dispatch, getState) => {
@@ -116,7 +142,7 @@ export const signin = (user) => async (dispatch, getState) => {
 
 export const LOGOUT = "LOGOUT";
 export const logoutUser = () => ({
-    type: LOGOUT
+	type: LOGOUT
 });
 
 
@@ -223,20 +249,20 @@ export const getProfile = (token, username) => async (dispatch, getState) => {
 };
 
 function printError(error) {
-    if (error.response) {
-        // The request was made and the server responded with a status code
-        // that falls out of the range of 2xx
-        console.log(error.response.data);
-        console.log(error.response.status);
-        console.log(error.response.headers);
-    } else if (error.request) {
-        // The request was made but no response was received
-        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-        // http.ClientRequest in node.js
-        console.log(error.request);
-    } else {
-        // Something happened in setting up the request that triggered an Error
-        console.log('Error', error.message);
-    }
-    console.log(error.config);
+	if (error.response) {
+		// The request was made and the server responded with a status code
+		// that falls out of the range of 2xx
+		console.log(error.response.data);
+		console.log(error.response.status);
+		console.log(error.response.headers);
+	} else if (error.request) {
+		// The request was made but no response was received
+		// `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+		// http.ClientRequest in node.js
+		console.log(error.request);
+	} else {
+		// Something happened in setting up the request that triggered an Error
+		console.log('Error', error.message);
+	}
+	console.log(error.config);
 }

@@ -1,6 +1,7 @@
 import {
-    STATE_LOADING,
-    STATE_NULL, STATE_SUCCESS,
+    AUTH_LOADING,
+    AUTH_NULL,
+    AUTH_SUCCESS,
     LOGOUT,
     SIGNIN_FAIL,
     SIGNIN_INIT,
@@ -8,10 +9,11 @@ import {
     SIGNUP_FAIL,
     SIGNUP_INIT,
     SIGNUP_SUCCESS,
+    PROFILE_NULL,
     GET_PROFILE_INIT,
     GET_PROFILE_SUCCESS,
     GET_PROFILE_FAIL,
-    CREATE_TWEET__INIT, CREATE_TWEET_SUCCESS, CREATE_TWEET_FAIL
+    PROFILE_LOADING, PROFILE_SUCCESS
 } from "./actions";
 
 const initUser = {
@@ -111,7 +113,7 @@ export const createTweetReducer = (createTweet = createTweetInit, action) => {
 
 export const profileReducer = (profileState = initProfile, action) => {
     const {type, payload} = action;
-
+    
     switch (type) {
         case GET_PROFILE_INIT: {
             return {

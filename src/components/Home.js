@@ -9,18 +9,18 @@ function Home() {
     return (
        <Paper>
            <TweetWriter />
-           <Tweet />
-           <Tweet />
-           <Tweet />
-           <Tweet />
-           <Tweet />
-           <Tweet />
-           <Tweet />
-           <Tweet />
-           <Tweet />
-           <Tweet />
-           <Tweet />
-           <Tweet />
+           {/*<Tweet />*/}
+           {/*<Tweet />*/}
+           {/*<Tweet />*/}
+           {/*<Tweet />*/}
+           {/*<Tweet />*/}
+           {/*<Tweet />*/}
+           {/*<Tweet />*/}
+           {/*<Tweet />*/}
+           {/*<Tweet />*/}
+           {/*<Tweet />*/}
+           {/*<Tweet />*/}
+           {/*<Tweet />*/}
        </Paper>
     );
 }

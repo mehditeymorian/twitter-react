@@ -1,36 +1,16 @@
 import axios from "axios";
+import {createFail, createInit, createSuccess} from "./stateUtils";
 
 export const STATE_NULL = -1;
 export const STATE_LOADING = 0;
 export const STATE_SUCCESS = 1;
 
 export const SIGNUP_INIT = "SIGN_UP_INIT";
-export const signup_init = () => ({
-    type: SIGNUP_INIT,
-    payload: {
-        code: STATE_LOADING
-    }
-});
-
 export const SIGNUP_SUCCESS = "SIGN_UP_SUCCESS";
-export const signup_success = result => ({
-    type: SIGNUP_SUCCESS,
-    payload: {
-        code: STATE_SUCCESS,
-        user: result
-    }
-});
-
 export const SIGNUP_FAIL = "SIGN_UP_FAIL";
-export const signup_fail = code => ({
-    type: SIGNUP_FAIL,
-    payload: {
-        code: code,
-    }
-});
 
 export const signup = (user) => async (dispatch, getState) => {
-    dispatch(signup_init());
+    dispatch(createInit(SIGNUP_INIT));
     await axios({
         baseURL: 'http://127.0.0.1:8585',
         method: 'post',
@@ -50,68 +30,21 @@ export const signup = (user) => async (dispatch, getState) => {
             const result = {
                 ...value.data.user
             };
-            dispatch(signup_success(result));
+            dispatch(createSuccess(SIGNUP_SUCCESS,result));
         })
         .catch(error => {
             printError(error);
-            dispatch(signup_fail(error.response.status));
+            dispatch(createFail(SIGNUP_FAIL,error.response.status));
         });
-	dispatch(signup_init());
-	await axios({
-		baseURL: 'http://127.0.0.1:8585',
-		method: 'post',
-		url: '/signup',
-		contentType: 'application/json',
-		data: {
-			user: {
-				username: user.username,
-				name: user.name,
-				email: user.email,
-				password: user.password
-			}
-		}
-	})
-		.then(value => {
-			const result = {
-				...user,
-				token: value.data.user.token
-			}
-			dispatch(signup_success(result));
-		})
-		.catch(error => {
-			printError(error);
-			dispatch(signup_fail(error.status));
-		});
 };
 
 // ****************** SIGN IN ************************
 export const SIGNIN_INIT = "SIGNIN_INIT";
-export const signin_init = () => ({
-    type: SIGNIN_INIT,
-    payload: {
-        code: STATE_LOADING
-    }
-});
-
 export const SIGNIN_SUCCESS = "SIGNIN_SUCCESS";
-export const signin_success = result => ({
-    type: SIGNIN_SUCCESS,
-    payload: {
-        code: STATE_SUCCESS,
-        user: result
-    }
-});
-
 export const SIGNIN_FAIL = "SIGNIN_FAIL";
-export const signin_fail = code => ({
-	type: SIGNIN_FAIL,
-	payload: {
-		code: code,
-	}
-});
 
 export const signin = (user) => async (dispatch, getState) => {
-    dispatch(signin_init());
+    dispatch(createInit(SIGNIN_INIT));
     await axios({
         baseURL: 'http://127.0.0.1:8585',
         method: 'post',
@@ -131,11 +64,11 @@ export const signin = (user) => async (dispatch, getState) => {
             const result = {
                 ...value.data.user
             }
-            dispatch(signin_success(result));
+            dispatch(createSuccess(SIGNIN_SUCCESS,result));
         })
         .catch(error => {
             printError(error);
-            dispatch(signin_fail(error.response.status));
+            dispatch(createFail(SIGNIN_FAIL,error.response.status));
         });
 };
 
@@ -146,9 +79,9 @@ export const logoutUser = () => ({
 });
 
 
-export const CREATE_TWEET__INIT = "CREATE_TWEET__INIT";
+export const CREATE_TWEET_INIT = "CREATE_TWEET__INIT";
 export const createTweet_init = () => ({
-    type: CREATE_TWEET__INIT,
+    type: CREATE_TWEET_INIT,
     payload: {
         code: STATE_LOADING
     }

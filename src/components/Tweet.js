@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useRef, useState} from "react";
 import Grid from "@material-ui/core/Grid";
 import Avatar from "@material-ui/core/Avatar";
 import Divider from "@material-ui/core/Divider";
@@ -19,6 +19,9 @@ import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import {Link} from "react-router-dom";
 import TweetDialog from "./TweetDialog";
+import {deleteLike, deleteRetweet, likeTweet, retweet} from "../redux/actions";
+import {connect} from "react-redux";
+import {isStatePresent} from "../redux/stateUtils";
 
 export const TWEET_NORMAL = 0;
 export const TWEET_DETAIL = 1;
@@ -26,11 +29,13 @@ export const TWEET_REPLY = 2;
 
 const getNameBP = (type) => type === TWEET_DETAIL ? 12 : "auto";
 
-
+const getCommentsCount = (tweet) => tweet.comments != null ? tweet.comments.length: -1;
 
 const getTopDateVisibility = (type) => type === TWEET_DETAIL ? "none" : "block";
 
-export default function Tweet({type = TWEET_NORMAL, tweet, username}) {
+function Tweet({type = TWEET_NORMAL, tweet, username,
+                   actionResult,
+                   likeTweet, unlikeTweet, retweet, deleteRetweet}) {
     const classes = TweetStyle();
     /*
     What does each tweet have:
@@ -45,17 +50,44 @@ export default function Tweet({type = TWEET_NORMAL, tweet, username}) {
         time
      */
 
-    console.log(tweet)
+    if (isStatePresent(actionResult) && actionResult.id === tweet.id) {
+        tweet.liked = actionResult.liked;
+        tweet.retweeted = actionResult.retweeted;
+        tweet.likes_count = actionResult.likes_count;
+        tweet.retweets_count = actionResult.retweets_count;
+    }
 
-    const tweetText = tweet.text;
-    const like = tweet.liked;
+
     const bookmarked = false;
-    const retweeted = tweet.retweeted;
     const myTweet = username === tweet.owner.username;
+    const tweetText = tweet.text;
+    let like = tweet.liked;
+    let retweeted = tweet.retweeted;
+    const commentCount = isStatePresent(actionResult) && actionResult.id === tweet.id  ? getCommentsCount(actionResult) : getCommentsCount(tweet);
+    const likesCount = tweet.likes_count;
+    const retweetsCount = tweet.retweets_count;
 
     const [commentDialogOpen, setCommentDialogOpen] = useState(false);
-    const onCommentHandle = () => {
+    const onCommentHandle = (ev) => {
+        ev.stopPropagation();
+        ev.preventDefault();
         setCommentDialogOpen(true);
+    }
+
+    const onLike = (ev) => {
+        ev.stopPropagation();
+        ev.preventDefault();
+        if (like) unlikeTweet(tweet.id);
+        else likeTweet(tweet.id);
+        like = !like;
+    };
+
+    const onRetweet = (ev) => {
+        ev.stopPropagation();
+        ev.preventDefault();
+        if (retweeted) deleteRetweet(tweet.id);
+        else retweet(tweet.id);
+        retweeted = !retweeted;
     };
 
 
@@ -73,21 +105,23 @@ export default function Tweet({type = TWEET_NORMAL, tweet, username}) {
             {type === TWEET_DETAIL ? <Divider/>: null}
             <Grid container justify={"space-between"} className={classes.tweetActions} xs={12}>
                 <Grid item>
-                    <IconButton onClick={onCommentHandle}><CommentIcon/></IconButton>
-                    <Typography display={"inline"} className={classes.actionText}>{tweet.comments != null ? tweet.comments.length: -1}</Typography>
+                    <IconButton onClick={onCommentHandle}  onMouseDown={event => event.stopPropagation()}><CommentIcon/></IconButton>
+                    <Typography display={"inline"} className={classes.actionText}>{commentCount}</Typography>
                 </Grid>
                 <Grid item>
-                    <IconButton
+                    <IconButton onClick={onRetweet} onMouseDown={event => event.stopPropagation()}
                         className={retweeted ? classes.retweetStyle : null}><RetweetIcon/></IconButton>
-                    <Typography display={"inline"} className={classes.actionText}>{tweet.retweets_count}</Typography>
+                    <Typography display={"inline"} className={classes.actionText}>{retweetsCount}</Typography>
                 </Grid>
                 <Grid item>
-                    <IconButton className={classes.likeStyle}>{like ? <LikeFilledIcon/> :
+                    <IconButton  onClick={onLike}  onMouseDown={event => event.stopPropagation()}
+                        className={classes.likeStyle}>{like ? <LikeFilledIcon/> :
                         <LikeIcon/>}</IconButton>
-                    <Typography display={"inline"} className={classes.actionText}>{tweet.likes_count}</Typography>
+                    <Typography display={"inline"} className={classes.actionText}>{likesCount}</Typography>
                 </Grid>
-                <Grid item><IconButton className={classes.bookmarkStyle}>{bookmarked ?
-                    <BookmarkFilledIcon/> : <BookmarkIcon/>}</IconButton></Grid>
+                <Grid item><IconButton onClick={event => event.stopPropagation()} onMouseDown={event => event.stopPropagation()}
+                    className={classes.bookmarkStyle}>
+                    {bookmarked ? <BookmarkFilledIcon/> : <BookmarkIcon/>}</IconButton></Grid>
                 {myTweet ? <Grid item><IconButton><StatIcon/></IconButton></Grid> : null}
             </Grid>
         </Grid>
@@ -103,3 +137,16 @@ export default function Tweet({type = TWEET_NORMAL, tweet, username}) {
     );
 
 }
+
+const mapStateToProp = state => ({
+    actionResult: state.tweetAction
+});
+
+const mapActionsToProp = dispatch => ({
+    likeTweet: (id) => dispatch(likeTweet(id)),
+    unlikeTweet: (id) => dispatch(deleteLike(id)),
+    retweet: (id) => dispatch(retweet(id)),
+    deleteRetweet: (id) => dispatch(deleteRetweet(id)),
+});
+
+export default connect(mapStateToProp, mapActionsToProp)(Tweet);

@@ -9,12 +9,15 @@ import SearchIcon from '@material-ui/icons/Search';
 import {search} from "../redux/actions";
 import {connect} from "react-redux";
 import Tweet from "./Tweet";
+import {useLocation} from 'react-router-dom';
 import Identity from "./Identity";
 
 function Explore({searchState, userState, searchQuery}) {
 	const classes = ExploreStyle();
+	let query = new URLSearchParams(useLocation().search).get("query");
 	const [textInput, setTextInput] = useState("");
-	
+
+
 	const searchHandler = (e) => {
 		if (textInput.startsWith("#")) {
 			searchQuery("hashtag", textInput.slice(1));
@@ -37,6 +40,7 @@ function Explore({searchState, userState, searchQuery}) {
 							<SearchIcon/>
 						</div>
 						<InputBase
+							fullWidth
 							onChange={e => setTextInput(e.target.value)}
 							onKeyPress={e => e.code === "Enter" || e.code === "NumpadEnter" ? searchHandler(e) : null}
 							placeholder="Search..."

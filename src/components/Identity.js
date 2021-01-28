@@ -24,10 +24,10 @@ const IdentityStyle = makeStyles((theme) => ({
 }));
 
 
-export default function Identity({closeDialog, identity}) {
+export default function Identity({logged = false, closeDialog, identity}) {
     const classes = IdentityStyle();
 
-    const profileImg = identity.profile_picture === "" ? "https://i.stack.imgur.com/34AD2.jpg" : identity.profile_picture;
+    const profileImg = identity.profile_picture === "" ? "https://i.stack.imgur.com/34AD2.jpg" : getUserProfileImg(identity.profile_picture);
 
     const onIdentityClick = ev => {
         if (closeDialog != null)
@@ -38,7 +38,7 @@ export default function Identity({closeDialog, identity}) {
         <Card square>
             <CardActionArea onClick={onIdentityClick} component={Link} to={`/profile/${identity.username}`}>
                 <Grid container className={classes.root}>
-                    <Grid item xs={2} sm={1}><Avatar src={getUserProfileImg(identity.profile_picture)}/></Grid>
+                    <Grid item xs={2} sm={1}><Avatar src={getUserProfileImg(profileImg)}/></Grid>
                     <Grid container xs={9} sm={10} direction={"column"} className={classes.infoSection}>
                         <Grid container xs={12}>
                             <Grid item xs={9} sm={10}>
@@ -46,8 +46,8 @@ export default function Identity({closeDialog, identity}) {
                                 <Typography>{identity.username}</Typography>
                             </Grid>
                             <Grid item xs={3} sm={2}>
-                                <Button size={"small"} color={"secondary"} variant={"contained"}
-                                        className={classes.button} disableElevation>Following</Button>
+                                {logged ? <Button size={"small"} color={"secondary"} variant={identity.is_following ? "contained" : "outlined"}
+                                        className={classes.button} disableElevation>{identity.is_following ? "Following" : "Follow"}</Button> : null}
                             </Grid>
                         </Grid>
                         <Grid item xs={12}><Typography>{identity.bio}</Typography></Grid>

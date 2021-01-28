@@ -33,7 +33,7 @@ function a11yProps(index) {
 }
 
 
-function FollowDialog({followListState, open, setOpen}) {
+function FollowDialog({logged, followListState, open, setOpen}) {
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -61,7 +61,7 @@ function FollowDialog({followListState, open, setOpen}) {
                 </Tabs>
                 <SwipeableViews axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'} index={dialogSelectedTab} onChangeIndex={handleChangeIndex}>
                     <TabPanel value={dialogSelectedTab} index={0} dir={theme.direction}>
-                        {isStatePresent(followListState) ? followListState.followings.map((each,i) => <Identity key={i} closeDialog={handleClose} identity={each}/>) : null}
+                        {isStatePresent(followListState) ? followListState.followings.map((each,i) => <Identity key={i} logged={logged} closeDialog={handleClose} identity={each}/>) : null}
                     </TabPanel>
                     <TabPanel value={dialogSelectedTab} index={1} dir={theme.direction}>
                         {isStatePresent(followListState) ? followListState.followers.map((each,i) => <Identity key={i} closeDialog={handleClose} identity={each}/>) : null}

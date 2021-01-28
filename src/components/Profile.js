@@ -36,6 +36,7 @@ function Profile({profileState, userState,followUser, unfollowUser, tweets, getU
     const classes = ProfileStyle();
     let {url} = useRouteMatch();
     let {username} = useParams();
+    const logged = isStatePresent(userState);
 
     const [openFollowDialog, setOpenFollowDialog] = useState(false);
     const [openEditDialog, setOpenEditDialog] = useState(false);
@@ -67,7 +68,7 @@ function Profile({profileState, userState,followUser, unfollowUser, tweets, getU
     };
 
     const getHeaderButton = () => {
-        if (!isStatePresent(profileState)) return null;
+        if (!logged || !isStatePresent(profileState)) return <Button className={`${classes.editButton} ${classes.invis}`}>Edit profile</Button>
 
         if (profileState.profile.username === userState.username)
             return <Button className={classes.editButton}
@@ -84,7 +85,7 @@ function Profile({profileState, userState,followUser, unfollowUser, tweets, getU
 
     return (
         <Paper className={classes.root}>
-            <FollowDialog followListState={followListState} open={openFollowDialog} setOpen={setOpenFollowDialog}/>
+            <FollowDialog logged={logged} followListState={followListState} open={openFollowDialog} setOpen={setOpenFollowDialog}/>
 
             <Grid container spacing={0}>
                 <Grid item xs={12}>

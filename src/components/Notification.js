@@ -33,9 +33,7 @@ function Notification({n, userState, unread, getT}) {
 	// need to change these to actual input
 	let {url} = useRouteMatch();
 	const avatarURLs = [
-		"https://uifaces.co/our-content/donated/gPZwCbdS.jpg",
-		"https://uifaces.co/our-content/donated/gPZwCbdS.jpg",
-		"https://uifaces.co/our-content/donated/gPZwCbdS.jpg"
+		n.source.profile_picture,
 	];
 	const blueShade = unread;
 	const srcName = n.source.name;

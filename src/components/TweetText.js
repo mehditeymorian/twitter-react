@@ -20,7 +20,7 @@ function mapEach(value, level) {
             {mapEach(value.slice(result.index+1),1)}
         </span>;
     } else {
-        if (HASHTAG_REGEX.test(value)) return <span>{' '}<Link display={"inline"} onClick={event => event.stopPropagation()} color={"secondary"} href={`/explore/${value}`}>{`${value}`}</Link></span>;
+        if (HASHTAG_REGEX.test(value)) return <span>{' '}<Link display={"inline"} onClick={event => event.stopPropagation()} color={"secondary"} href={`/explore?query=${value.slice(1)}`}>{`${value}`}</Link></span>;
         else if (HANDLER_REGEX.test(value)) return <span>{' '}<Link display={"inline"} onClick={event => event.stopPropagation()} color={"secondary"} href={`/profile/${value.slice(1)}`}>{`${value}`}</Link></span>;
         else if (URL_REGEX.test(value)) return <span>{' '}<Link display={"inline"} onClick={event => event.stopPropagation()} color={"secondary"} href={`http://${value}`}>{`${value}`}</Link></span>;
         else return <a>{` ${value}`}</a>;
@@ -28,18 +28,6 @@ function mapEach(value, level) {
 }
 
 export default function TweetText({value, textStyle}) {
-
-    const classes = makeStyles((theme) => ({
-        something: {
-            textDecoration: "none",
-            color: "red"
-        }
-    }));
-
-    // let result = value.replaceAll(HASHTAG_REGEX, oldValue => `<Link  className={"${classes.something}"} color={"red"} href={"/hashtag"}>${oldValue}</Link>`);
-    // result = result.replaceAll(HANDLER_REGEX, oldValue => `<a className={"${classes.something}"} href={"/profile"}>${oldValue}</a>`);
-    // result = result.replaceAll(URL_REGEX, oldValue => `<a className={"${classes.something}"} href={"/url"}>${oldValue}</a>`);
-    // return (<div className={textStyle} dangerouslySetInnerHTML={{__html: result}}/>);
 
     return (
         <div className={textStyle}>

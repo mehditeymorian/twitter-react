@@ -45,13 +45,15 @@ export const TWEET_REPLY = 2;
 
 const getNameBP = (type) => type === TWEET_DETAIL ? 12 : "auto";
 
-const getCommentsCount = (tweet) => tweet.comments != null ? tweet.comments.length: tweet.comments_count;
+const getCommentsCount = (tweet) => tweet.comments != null ? tweet.comments.length : tweet.comments_count;
 
 const getTopDateVisibility = (type) => type === TWEET_DETAIL ? "none" : "block";
 
-function Tweet({type = TWEET_NORMAL, tweet, username,
-                   actionResult,deleteTweet,userState,profilePic,
-                   likeTweet, unlikeTweet, retweet, deleteRetweet, list, getProfile, loc, fallback, shit}) {
+function Tweet({
+                   type = TWEET_NORMAL, tweet, username,
+                   actionResult, deleteTweet, userState, profilePic,
+                   likeTweet, unlikeTweet, retweet, deleteRetweet, list, getProfile, loc, fallback, shit
+               }) {
     const classes = TweetStyle();
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
     const [openLikeDialog, setOpenLikeDialog] = useState(false);
@@ -83,7 +85,7 @@ function Tweet({type = TWEET_NORMAL, tweet, username,
     const tweetText = tweet.text;
     let like = tweet.liked;
     let retweeted = tweet.retweeted;
-    const commentCount =  getCommentsCount(tweet);
+    const commentCount = getCommentsCount(tweet);
     const likesCount = tweet.likes_count;
     const retweetsCount = tweet.retweets_count;
 
@@ -91,7 +93,8 @@ function Tweet({type = TWEET_NORMAL, tweet, username,
     const onCommentHandle = (ev) => {
         ev.stopPropagation();
         ev.preventDefault();
-        setCommentDialogOpen(true);
+        if (isStatePresent(userState))
+            setCommentDialogOpen(true);
     }
 
     const onLike = (ev) => {
@@ -117,60 +120,68 @@ function Tweet({type = TWEET_NORMAL, tweet, username,
     };
 
 
-
     const onDeleteCancel = ev => setDeleteDialogOpen(false);
     const onDeleteConfirm = ev => {
         setDeleteDialogOpen(false);
         deleteTweet(tweet.id, loc);
     }
-    
-    
+
+
     const goHome = () => {
         getProfile(userState.token, userState.username);
     }
-    
+
     const content = (<Grid container className={classes.root}>
         <Grid item xs={2} md={1}><Avatar
             src={profilePic}/></Grid>
         <Grid container className={classes.tweetHeader} xs={10} md={11} spacing={1}>
             <Grid container xs={12} alignItems={"center"} justify={"space-between"}>
                 <Grid container item xs>
-                <Grid item xs={getNameBP(type)}><Typography display={"inline"} className={classes.name}>{tweet.owner.name}</Typography></Grid>
-                <Grid item><Typography display={"inline"} className={classes.id} onClick={goHome} component={Link} to={`${url.slice(0, -url.indexOf('/'))}/profile/${tweet.owner.username}`}>@{tweet.owner.username}</Typography></Grid>
-                <Grid item><Typography display={"inline"} style={{display: getTopDateVisibility(type)}} className={classes.date}>{tweet.date}</Typography></Grid>
+                    <Grid item xs={getNameBP(type)}><Typography display={"inline"}
+                                                                className={classes.name}>{tweet.owner.name}</Typography></Grid>
+                    <Grid item><Typography display={"inline"} className={classes.id} onClick={goHome} component={Link}
+                                           to={`${url.slice(0, -url.indexOf('/'))}/profile/${tweet.owner.username}`}>@{tweet.owner.username}</Typography></Grid>
+                    <Grid item><Typography display={"inline"} style={{display: getTopDateVisibility(type)}}
+                                           className={classes.date}>{tweet.date}</Typography></Grid>
                 </Grid>
-                <Grid item xs={1}>{tweet.owner.username === userState.username ? <IconButton onClick={onDeleteButton} onMouseDown={event => event.stopPropagation()}><DeleteIcon /></IconButton> : null}</Grid>
+                <Grid item xs={1}>{tweet.owner.username === userState.username ? <IconButton onClick={onDeleteButton}
+                                                                                             onMouseDown={event => event.stopPropagation()}><DeleteIcon/></IconButton> : null}</Grid>
             </Grid>
             <Grid item xs={12}><TweetText value={tweetText} textStyle={classes.tweetText}/></Grid>
-            {tweet.media !== "" ? <Grid item xs={12}><img className={classes.media} src={`${BASE_URL}/${tweet.media}`}/> </Grid> : null}
-            {type === TWEET_DETAIL ? <Grid item xs={12}><Typography color={"secondary"} variant={"subtitle2"}>{tweet.time}</Typography></Grid>: null}
-            <Divider />
+            {tweet.media !== "" ?
+                <Grid item xs={12}><img className={classes.media} src={`${BASE_URL}/${tweet.media}`}/> </Grid> : null}
+            {type === TWEET_DETAIL ? <Grid item xs={12}><Typography color={"secondary"}
+                                                                    variant={"subtitle2"}>{tweet.time}</Typography></Grid> : null}
+            <Divider/>
             {type === TWEET_DETAIL ?
                 <Grid container xs={12}>
-                    <Typography component={UILink} onClick={() => setOpenRetweetDialog(true)} className={classes.list}>Retweets</Typography>
-                    <Typography component={UILink} onClick={() => setOpenLikeDialog(true)} className={classes.list}>Likes</Typography>
+                    <Typography component={UILink} onClick={() => setOpenRetweetDialog(true)}
+                                className={classes.list}>Retweets</Typography>
+                    <Typography component={UILink} onClick={() => setOpenLikeDialog(true)}
+                                className={classes.list}>Likes</Typography>
                 </Grid>
-            : null}
-            <Divider />
-            {type === TWEET_DETAIL ? <Divider/>: null}
+                : null}
+            <Divider/>
+            {type === TWEET_DETAIL ? <Divider/> : null}
             <Grid item container justify={"space-between"} className={classes.tweetActions} xs={12}>
                 <Grid item>
-                    <IconButton onClick={onCommentHandle}  onMouseDown={event => event.stopPropagation()}><CommentIcon/></IconButton>
+                    <IconButton onClick={onCommentHandle} onMouseDown={event => event.stopPropagation()}><CommentIcon/></IconButton>
                     <Typography display={"inline"} className={classes.actionText}>{commentCount}</Typography>
                 </Grid>
                 <Grid item>
                     <IconButton onClick={onRetweet} onMouseDown={event => event.stopPropagation()}
-                        className={retweeted ? classes.retweetStyle : null}><RetweetIcon/></IconButton>
+                                className={retweeted ? classes.retweetStyle : null}><RetweetIcon/></IconButton>
                     <Typography display={"inline"} className={classes.actionText}>{retweetsCount}</Typography>
                 </Grid>
                 <Grid item>
-                    <IconButton  onClick={onLike}  onMouseDown={event => event.stopPropagation()}
-                        className={classes.likeStyle}>{like ? <LikeFilledIcon/> :
+                    <IconButton onClick={onLike} onMouseDown={event => event.stopPropagation()}
+                                className={classes.likeStyle}>{like ? <LikeFilledIcon/> :
                         <LikeIcon/>}</IconButton>
                     <Typography display={"inline"} className={classes.actionText}>{likesCount}</Typography>
                 </Grid>
-                <Grid item><IconButton onClick={event => event.stopPropagation()} onMouseDown={event => event.stopPropagation()}
-                    className={classes.bookmarkStyle}>
+                <Grid item><IconButton onClick={event => event.stopPropagation()}
+                                       onMouseDown={event => event.stopPropagation()}
+                                       className={classes.bookmarkStyle}>
                     {bookmarked ? <BookmarkFilledIcon/> : <BookmarkIcon/>}</IconButton></Grid>
                 {myTweet ? <Grid item><IconButton><StatIcon/></IconButton></Grid> : null}
             </Grid>
@@ -180,8 +191,10 @@ function Tweet({type = TWEET_NORMAL, tweet, username,
 
     return (
         <Card square>
-            <ListDialog name={"Likes"} list={list !== undefined && "likes" in list ? list.likes : null} open={openLikeDialog} setOpen={setOpenLikeDialog}/>
-            <ListDialog name={"Retweets"} list={list !== undefined && "retweets" in list ? list.retweets : null} open={openRetweetDialog} setOpen={setOpenRetweetDialog}/>
+            <ListDialog name={"Likes"} list={list !== undefined && "likes" in list ? list.likes : null}
+                        open={openLikeDialog} setOpen={setOpenLikeDialog}/>
+            <ListDialog name={"Retweets"} list={list !== undefined && "retweets" in list ? list.retweets : null}
+                        open={openRetweetDialog} setOpen={setOpenRetweetDialog}/>
             <Dialog
                 disableBackdropClick
                 disableEscapeKeyDown
@@ -199,8 +212,10 @@ function Tweet({type = TWEET_NORMAL, tweet, username,
                     </Button>
                 </DialogActions>
             </Dialog>
-            <TweetDialog open={commentDialogOpen} setOpen={setCommentDialogOpen} parent={tweet.id} fallback={fallback} shit={shit} />
-            {type !== TWEET_DETAIL ? <CardActionArea component={Link} to={`/tweet-detail/${tweet.id}`}>{content}</CardActionArea> : content}
+            <TweetDialog open={commentDialogOpen} setOpen={setCommentDialogOpen} parent={tweet.id} fallback={fallback}
+                         shit={shit}/>
+            {type !== TWEET_DETAIL ?
+                <CardActionArea component={Link} to={`/tweet-detail/${tweet.id}`}>{content}</CardActionArea> : content}
             <Divider/>
         </Card>
     );

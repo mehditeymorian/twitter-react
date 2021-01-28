@@ -1,5 +1,5 @@
 import axios from "axios";
-import {createFail, createInit, createSuccess} from "./stateUtils";
+import {createFail, createInit, createSuccess, isStatePresent} from "./stateUtils";
 
 export const STATE_NULL = -1;
 export const STATE_LOADING = 0;
@@ -31,11 +31,11 @@ export const signup = (user) => async (dispatch, getState) => {
             const result = {
                 ...value.data.user
             };
-            dispatch(createSuccess(SIGNUP_SUCCESS,result));
+            dispatch(createSuccess(SIGNUP_SUCCESS, result));
         })
         .catch(error => {
             printError(error);
-            dispatch(createFail(SIGNUP_FAIL,getErrorCode(error)));
+            dispatch(createFail(SIGNUP_FAIL, getErrorCode(error)));
         });
 };
 
@@ -54,8 +54,8 @@ export const signin = (user) => async (dispatch, getState) => {
         accept: '*/*',
         data: {
             user: {
-            	username: user.username,
-            	name: user.name,
+                username: user.username,
+                name: user.name,
                 email: user.email,
                 password: user.password
             }
@@ -65,18 +65,18 @@ export const signin = (user) => async (dispatch, getState) => {
             const result = {
                 ...value.data.user
             }
-            dispatch(createSuccess(SIGNIN_SUCCESS,result));
+            dispatch(createSuccess(SIGNIN_SUCCESS, result));
         })
         .catch(error => {
             printError(error);
-            dispatch(createFail(SIGNIN_FAIL,getErrorCode(error)));
+            dispatch(createFail(SIGNIN_FAIL, getErrorCode(error)));
         });
 };
 
 // ****************** LOGOUT ************************
 export const LOGOUT = "LOGOUT";
 export const logoutUser = () => ({
-	type: LOGOUT
+    type: LOGOUT
 });
 
 // ****************** CREATE TWEET ************************
@@ -106,8 +106,8 @@ export const createTweet = (tweet, fallback = "", props = {}) => async (dispatch
             const result = {
                 ...value.data.tweet
             }
-            dispatch(createSuccess(CREATE_TWEET_SUCCESS,result));
-	        console.log("fallback and shit: ", fallback, props);
+            dispatch(createSuccess(CREATE_TWEET_SUCCESS, result));
+            console.log("fallback and shit: ", fallback, props);
             if (fallback === "detail" && "id" in props) dispatch(getTweet(props.id));
             else if (fallback === "timeline") dispatch(getTimeline());
             else if (fallback === "profile" && "target" in props) dispatch(getProfile(user.token, props.target));
@@ -117,7 +117,7 @@ export const createTweet = (tweet, fallback = "", props = {}) => async (dispatch
         })
         .catch(error => {
             printError(error);
-            dispatch(createFail(CREATE_TWEET_FAIL,getErrorCode(error)));
+            dispatch(createFail(CREATE_TWEET_FAIL, getErrorCode(error)));
         });
 };
 
@@ -141,12 +141,12 @@ export const deleteTweet = (tweetId, loc) => async (dispatch, getState) => {
             const result = {
                 ...value.data.tweet
             }
-            dispatch(createSuccess(DEL_TWEET_SUCCESS,result));
+            dispatch(createSuccess(DEL_TWEET_SUCCESS, result));
             loc === "timeline" ? dispatch(getTimeline()) : dispatch(getProfile(user.token, user.username));
         })
         .catch(error => {
             printError(error);
-            dispatch(createFail(DEL_TWEET_FAIL,getErrorCode(error)));
+            dispatch(createFail(DEL_TWEET_FAIL, getErrorCode(error)));
         });
 };
 
@@ -167,12 +167,12 @@ export const getTweet = (tweetId) => async (dispatch, getState) => {
             const result = {
                 ...value.data.tweet
             }
-            dispatch(createSuccess(GET_TWEET_SUCCESS,result));
+            dispatch(createSuccess(GET_TWEET_SUCCESS, result));
             dispatch(getLikeRetTweet(tweetId));
         })
         .catch(error => {
             printError(error);
-            dispatch(createFail(GET_TWEET_FAIL,getErrorCode(error)));
+            dispatch(createFail(GET_TWEET_FAIL, getErrorCode(error)));
         });
 };
 
@@ -200,11 +200,11 @@ export const likeTweet = (tweetId) => async (dispatch, getState) => {
             const result = {
                 ...value.data.tweet
             }
-            dispatch(createSuccess(TWEET_ACTION_SUCCESS,result));
+            dispatch(createSuccess(TWEET_ACTION_SUCCESS, result));
         })
         .catch(error => {
             printError(error);
-            dispatch(createFail(TWEET_ACTION_FAIL,getErrorCode(error)));
+            dispatch(createFail(TWEET_ACTION_FAIL, getErrorCode(error)));
         });
 };
 
@@ -228,11 +228,11 @@ export const deleteLike = (tweetId) => async (dispatch, getState) => {
             const result = {
                 ...value.data.tweet
             }
-            dispatch(createSuccess(TWEET_ACTION_SUCCESS,result));
+            dispatch(createSuccess(TWEET_ACTION_SUCCESS, result));
         })
         .catch(error => {
             printError(error);
-            dispatch(createFail(TWEET_ACTION_FAIL,getErrorCode(error)));
+            dispatch(createFail(TWEET_ACTION_FAIL, getErrorCode(error)));
         });
 };
 
@@ -256,11 +256,11 @@ export const retweet = (tweetId) => async (dispatch, getState) => {
             const result = {
                 ...value.data.tweet
             }
-            dispatch(createSuccess(TWEET_ACTION_SUCCESS,result));
+            dispatch(createSuccess(TWEET_ACTION_SUCCESS, result));
         })
         .catch(error => {
             printError(error);
-            dispatch(createFail(TWEET_ACTION_FAIL,getErrorCode(error)));
+            dispatch(createFail(TWEET_ACTION_FAIL, getErrorCode(error)));
         });
 };
 
@@ -284,11 +284,11 @@ export const deleteRetweet = (tweetId) => async (dispatch, getState) => {
             const result = {
                 ...value.data.tweet
             }
-            dispatch(createSuccess(TWEET_ACTION_SUCCESS,result));
+            dispatch(createSuccess(TWEET_ACTION_SUCCESS, result));
         })
         .catch(error => {
             printError(error);
-            dispatch(createFail(TWEET_ACTION_FAIL,getErrorCode(error)));
+            dispatch(createFail(TWEET_ACTION_FAIL, getErrorCode(error)));
         });
 };
 
@@ -297,7 +297,7 @@ export const deleteRetweet = (tweetId) => async (dispatch, getState) => {
 export const TIMELINE_INIT = "TIMELINE_INIT";
 export const TIMELINE_SUCCESS = "TIMELINE_SUCCESS";
 export const TIMELINE_FAIL = "TIMELINE_FAIL";
-export const getTimeline = (dateCode=0) => async (dispatch, getState) => {
+export const getTimeline = (dateCode = 0) => async (dispatch, getState) => {
     dispatch(createInit(TIMELINE_INIT));
     const {user} = getState();
 
@@ -313,11 +313,11 @@ export const getTimeline = (dateCode=0) => async (dispatch, getState) => {
             const result = {
                 ...value.data
             }
-            dispatch(createSuccess(TIMELINE_SUCCESS,result));
+            dispatch(createSuccess(TIMELINE_SUCCESS, result));
         })
         .catch(error => {
             printError(error);
-            dispatch(createFail(TIMELINE_FAIL,getErrorCode(error)));
+            dispatch(createFail(TIMELINE_FAIL, getErrorCode(error)));
         });
 }
 
@@ -341,11 +341,11 @@ export const getTweets = (tweetsIds) => async (dispatch, getState) => {
             const result = {
                 ...value.data
             }
-            dispatch(createSuccess(GET_TWEETS_SUCCESS,result));
+            dispatch(createSuccess(GET_TWEETS_SUCCESS, result));
         })
         .catch(error => {
             printError(error);
-            dispatch(createFail(GET_TWEETS_FAIL,getErrorCode(error)));
+            dispatch(createFail(GET_TWEETS_FAIL, getErrorCode(error)));
         });
 }
 
@@ -353,46 +353,56 @@ export const getTweets = (tweetsIds) => async (dispatch, getState) => {
 
 export const GET_PROFILE_INIT = "GET_PROFILE_INIT";
 export const getUserProfileInit = () => ({
-	type: GET_PROFILE_INIT,
-	payload: {
-		code: STATE_LOADING,
-	}
+    type: GET_PROFILE_INIT,
+    payload: {
+        code: STATE_LOADING,
+    }
 });
 
 export const GET_PROFILE_SUCCESS = "GET_PROFILE_SUCCESS";
 export const getUserProfileSuccess = result => ({
-	type: GET_PROFILE_SUCCESS,
-	payload: {
-		code: STATE_SUCCESS,
-		profile: result,
-	}
+    type: GET_PROFILE_SUCCESS,
+    payload: {
+        code: STATE_SUCCESS,
+        profile: result,
+    }
 });
 
 export const GET_PROFILE_FAIL = "GET_PROFILE_FAIL";
 export const getUserProfileFail = code => ({
-	type: GET_PROFILE_FAIL,
-	payload: {
-		code: code,
-	}
+    type: GET_PROFILE_FAIL,
+    payload: {
+        code: code,
+    }
 });
 
 export const getProfile = (username) => async (dispatch, getState) => {
-	dispatch(getUserProfileInit());
-	await axios({
-		baseURL: BASE_URL,
-		method: 'get',
-		url: '/profiles/' + username,
-		contentType: 'application/json',
-	}).then(value => {
-		const result = {
-			profile: value.data.profile,
-		}
-		dispatch(getUserProfileSuccess(result));
+    dispatch(getUserProfileInit());
+    const {user} = getState();
+    let config = {
+        baseURL: BASE_URL,
+        method: 'get',
+        url: '/profiles/' + username,
+        contentType: 'application/json',
+    };
+
+    if (isStatePresent(user)) config = {
+        ...config,
+        headers: {
+            "Authorization": `Token ${user.token}`
+        }
+    }
+
+    await axios(config).then(value => {
+        const result = {
+            profile: value.data.profile,
+        }
+        dispatch(getUserProfileSuccess(result));
         dispatch(getTweets(result.profile.tweets));
     }).catch(error => {
-		printError(error);
-		dispatch(getUserProfileFail(getErrorCode(error)));
-	});
+        printError(error);
+        dispatch(getUserProfileFail(getErrorCode(error)));
+    });
 };
 
 
@@ -424,13 +434,13 @@ export const updateProfile = (profile) => async (dispatch, getState) => {
             const result = {
                 ...value.data.profile
             }
-            dispatch(createSuccess(UPDATE_PROFILE_SUCCESS,result));
+            dispatch(createSuccess(UPDATE_PROFILE_SUCCESS, result));
             dispatch(getProfile(user.token, user.username));
             dispatch(updateProfilePic(result.profile_picture));
         })
         .catch(error => {
             printError(error);
-            dispatch(createFail(UPDATE_PROFILE_FAIL,error.response.status));
+            dispatch(createFail(UPDATE_PROFILE_FAIL, error.response.status));
         });
 };
 
@@ -438,7 +448,7 @@ export const updateProfilePic = (profilePic) => async (dispatch, getState) => {
     const {user} = getState();
     const result = {
         ...user,
-        profile_picture : profilePic
+        profile_picture: profilePic
     }
     dispatch(createSuccess(SIGNIN_SUCCESS, result));
 };
@@ -470,11 +480,11 @@ export const updateUser = (updatedUser) => async (dispatch, getState) => {
             const result = {
                 ...value.data.user
             };
-            dispatch(createSuccess(UPDATE_USER_SUCCESS,result));
+            dispatch(createSuccess(UPDATE_USER_SUCCESS, result));
         })
         .catch(error => {
             printError(error);
-            dispatch(createFail(UPDATE_USER_FAIL,getErrorCode(error)));
+            dispatch(createFail(UPDATE_USER_FAIL, getErrorCode(error)));
         });
 };
 
@@ -498,12 +508,12 @@ export const follow = (username) => async (dispatch, getState) => {
             const result = {
                 ...value.data.profile
             };
-            dispatch(createSuccess(FOLLOW_SUCCESS,result));
-            dispatch(getProfile(user.token, username));
+            dispatch(createSuccess(FOLLOW_SUCCESS, result));
+            dispatch(getProfile(username));
         })
         .catch(error => {
             printError(error);
-            dispatch(createFail(FOLLOW_FAIL,getErrorCode(error)));
+            dispatch(createFail(FOLLOW_FAIL, getErrorCode(error)));
         });
 };
 
@@ -527,12 +537,12 @@ export const unfollow = (username) => async (dispatch, getState) => {
             const result = {
                 ...value.data.profile
             };
-            dispatch(createSuccess(UNFOLLOW_SUCCESS,result));
-            dispatch(getProfile(user.token, username));
+            dispatch(createSuccess(UNFOLLOW_SUCCESS, result));
+            dispatch(getProfile(username));
         })
         .catch(error => {
             printError(error);
-            dispatch(createFail(UNFOLLOW_FAIL,getErrorCode(error)));
+            dispatch(createFail(UNFOLLOW_FAIL, getErrorCode(error)));
         });
 };
 
@@ -544,20 +554,31 @@ export const FOLLOW_LIST_FAIL = "FOLLOW_LIST_FAIL";
 export const followList = (username) => async (dispatch, getState) => {
     dispatch(createInit(FOLLOW_LIST_INIT));
     const {user} = getState();
-    await axios({
+
+    let config = {
         baseURL: BASE_URL,
         method: 'get',
         url: `/profiles/${username}/list`,
-    })
+        contentType: 'application/json',
+    };
+
+    if (isStatePresent(user)) config = {
+        ...config,
+        headers: {
+            "Authorization": `Token ${user.token}`
+        }
+    }
+
+    await axios(config)
         .then(value => {
             const result = {
                 ...value.data
             };
-            dispatch(createSuccess(FOLLOW_LIST_SUCCESS,result));
+            dispatch(createSuccess(FOLLOW_LIST_SUCCESS, result));
         })
         .catch(error => {
             printError(error);
-            dispatch(createFail(FOLLOW_LIST_FAIL,getErrorCode(error)));
+            dispatch(createFail(FOLLOW_LIST_FAIL, getErrorCode(error)));
         });
 };
 
@@ -567,26 +588,26 @@ export const LOGS_SUCCESS = "LOGS_SUCCESS";
 export const LOGS_FAIL = "LOGS_FAIL";
 
 export const logs = (username) => async (dispatch, getState) => {
-	dispatch(createInit(LOGS_INIT));
-	const {user} = getState();
-	await axios({
-	    baseURL: BASE_URL,
-	    method: 'get',
-	    url: `/profiles/${username}/logs`,
-	    headers: {
-	        "Authorization": `Token ${user.token}`
-	    }
-	})
-	    .then(value => {
-	        const result = {
-	            ...value.data
-	        };
-	        dispatch(createSuccess(LOGS_SUCCESS, result));
-	    })
-	    .catch(error => {
-	        printError(error);
-	        dispatch(createFail(LOGS_FAIL, getErrorCode(error)));
-	    });
+    dispatch(createInit(LOGS_INIT));
+    const {user} = getState();
+    await axios({
+        baseURL: BASE_URL,
+        method: 'get',
+        url: `/profiles/${username}/logs`,
+        headers: {
+            "Authorization": `Token ${user.token}`
+        }
+    })
+        .then(value => {
+            const result = {
+                ...value.data
+            };
+            dispatch(createSuccess(LOGS_SUCCESS, result));
+        })
+        .catch(error => {
+            printError(error);
+            dispatch(createFail(LOGS_FAIL, getErrorCode(error)));
+        });
 };
 
 // ****************** SEARCH *************************************
@@ -596,16 +617,16 @@ export const SEARCH_FAIL = "SEARCH_FAIL";
 
 export const search = (type, query) => async (dispatch, getState) => {
     dispatch(createInit(SEARCH_INIT));
-	const {user} = getState();
+    const {user} = getState();
     await axios({
         baseURL: BASE_URL,
         method: type === "tweet" ? "post" : "get",
         url: type === "hashtag" ? `/search/hashtag?query=${query}` :
             type === "user" ? `/search/username?query=${query}` : `/search/tweet`,
         data: type === "tweet" ? {"query": query} : null,
-	    headers: {
-		    "Authorization": "token" in user ? `Token ${user.token}` : "",
-	    },
+        headers: {
+            "Authorization": "token" in user ? `Token ${user.token}` : "",
+        },
     })
         .then(value => {
             const result = {
@@ -625,27 +646,27 @@ export const NOTIFICATIONS_SUCCESS = "NOTIFICATION_SUCCESS";
 export const NOTIFICATIONS_FAIL = "NOTIFICATION_FAIL";
 
 export const notificationList = () => async (dispatch, getState) => {
-	dispatch(createInit(NOTIFICATIONS_INIT));
-	const {user} = getState();
-	await axios({
-		baseURL: BASE_URL,
-		method: "get",
-		url: `/profiles/${user.username}/notifications`,
-		headers: {
-			"Authorization": `Token ${user.token}`
-		},
-	})
-		.then(value => {
-			const result = {
-				...value.data,
-			};
-			console.log(result);
-			dispatch(createSuccess(NOTIFICATIONS_SUCCESS, result));
-		})
-		.catch(error => {
-			printError(error);
-			dispatch(createFail(NOTIFICATIONS_FAIL, getErrorCode(error)));
-		});
+    dispatch(createInit(NOTIFICATIONS_INIT));
+    const {user} = getState();
+    await axios({
+        baseURL: BASE_URL,
+        method: "get",
+        url: `/profiles/${user.username}/notifications`,
+        headers: {
+            "Authorization": `Token ${user.token}`
+        },
+    })
+        .then(value => {
+            const result = {
+                ...value.data,
+            };
+            console.log(result);
+            dispatch(createSuccess(NOTIFICATIONS_SUCCESS, result));
+        })
+        .catch(error => {
+            printError(error);
+            dispatch(createFail(NOTIFICATIONS_FAIL, getErrorCode(error)));
+        });
 };
 
 // ********************* SUGGESTION LIST **************************
@@ -684,7 +705,7 @@ export const GET_LIKE_RET_TWEET_FAIL = "GET_LIKE_RET_TWEET_FAIL";
 export const getLikeRetTweet = (tweetId) => async (dispatch, getState) => {
     dispatch(createInit(GET_LIKE_RET_TWEET_INIT));
     const {user} = getState();
-    
+
     await axios({
         baseURL: BASE_URL,
         method: 'get',
@@ -697,33 +718,31 @@ export const getLikeRetTweet = (tweetId) => async (dispatch, getState) => {
             const result = {
                 ...value.data
             }
-            dispatch(createSuccess(GET_LIKE_RET_TWEET_SUCCESS,result));
+            dispatch(createSuccess(GET_LIKE_RET_TWEET_SUCCESS, result));
         })
         .catch(error => {
             printError(error);
-            dispatch(createFail(GET_LIKE_RET_TWEET_FAIL,getErrorCode(error)));
+            dispatch(createFail(GET_LIKE_RET_TWEET_FAIL, getErrorCode(error)));
         });
 };
 
 function printError(error) {
-	if (error.response) {
-		// The request was made and the server responded with a status code
-		// that falls out of the range of 2xx
-		console.log(error.response.data);
-		console.log(error.response.status);
-		console.log(error.response.headers);
-	}
-	else if (error.request) {
-		// The request was made but no response was received
-		// `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-		// http.ClientRequest in node.js
-		console.log(error.request);
-	}
-	else {
-		// Something happened in setting up the request that triggered an Error
-		console.log('Error', error.message);
-	}
-	console.log(error.config);
+    if (error.response) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        console.log(error.response.data);
+        console.log(error.response.status);
+        console.log(error.response.headers);
+    } else if (error.request) {
+        // The request was made but no response was received
+        // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+        // http.ClientRequest in node.js
+        console.log(error.request);
+    } else {
+        // Something happened in setting up the request that triggered an Error
+        console.log('Error', error.message);
+    }
+    console.log(error.config);
 }
 
 function getErrorCode(error) {

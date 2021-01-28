@@ -99,7 +99,7 @@ function Main({userState, notifications, window, getNotifications}) {
 
 
     const drawer = (
-        <div>
+        <div className={classes.sideMenu}>
             <div className={classes.toolbar}>
             </div>
             <Divider/>
@@ -149,7 +149,7 @@ function Main({userState, notifications, window, getNotifications}) {
                 <Grid item xs={12}><div className={classes.toolbar}/></Grid>
                 <Grid item xs={11} md={9} lg={7} xl={5} className={classes.timeline}>
                     <Switch>
-                        <Route exact path={"/"} component={Home}/>
+                        <Route exact path={"/"}>{logged ? <Home/> : <Redirect to={"/auth/sign-in"}/>}</Route>
                         <Route path={`${url}${menu[0].toLowerCase()}`}>{logged ? <Home/> : <Redirect to={"/auth/sign-in"}/>}</Route>
                         <Route path={`${url}${menu[1].toLowerCase()}`} component={Explore}/>
                         <Route path={`${url}${menu[2].toLowerCase()}`}>{logged ? <Notifications /> : <Redirect to={"/auth/sign-in"}/>}</Route>

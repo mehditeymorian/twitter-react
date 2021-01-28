@@ -1,4 +1,4 @@
-import {BASE_URL, SIGNIN_INIT, STATE_LOADING, STATE_SUCCESS} from "./actions";
+import {BASE_URL, STATE_LOADING, STATE_SUCCESS} from "./actions";
 
 
 export const isStatePresent = parent => parent.state === STATE_SUCCESS

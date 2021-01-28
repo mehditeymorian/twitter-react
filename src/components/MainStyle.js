@@ -21,6 +21,7 @@ export const MainStyle = makeStyles((theme) => ({
         },
     },
     appBar: {
+        backgroundColor: "#1DA1F2",
         [theme.breakpoints.up('sm')]: {
             width: `calc(100% - ${drawerWidth}px)`,
             marginLeft: drawerWidth,
@@ -34,6 +35,7 @@ export const MainStyle = makeStyles((theme) => ({
     },
     // necessary for content to be below app bar
     toolbar: theme.mixins.toolbar,
+
     drawerPaper: {
         width: drawerWidth,
     },
@@ -48,5 +50,9 @@ export const MainStyle = makeStyles((theme) => ({
     tweetButton: {
         backgroundColor: theme.palette.primary,
         borderRadius: "20px"
+    },
+    sideMenu:{
+        height: "100%",
+        backgroundColor: "#1DA1F2"
     }
 }));

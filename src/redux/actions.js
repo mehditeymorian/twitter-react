@@ -689,7 +689,6 @@ export const suggestionList = () => async (dispatch, getState) => {
             const result = {
                 ...value.data,
             };
-            console.log(result);
             dispatch(createSuccess(SUGGESTION_SUCCESS, result));
         })
         .catch(error => {

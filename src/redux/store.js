@@ -7,12 +7,9 @@ import {authReducer as user, profileReducer as profile} from "./reducers";
 import {createTweetReducer as createTweet} from "./reducers";
 import {timelineReducer as timeline} from "./reducers";
 import {deleteTweetReducer as deleteTweet} from "./reducers";
+import {trendsReducer as trends} from "./reducers";
 import {getTweetReducer as getTweet} from "./reducers";
 import {getLikeRetTweetReducer as likeRetTweet} from "./reducers";
-import {likeTweetReducer as likeTweet} from "./reducers";
-import {unlikeTweetReducer as unlikeTweet} from "./reducers";
-import {retweetReducer as retweet} from "./reducers";
-import {deleteRetweetReducer as deleteRetweet} from "./reducers";
 import {tweetActionsReducer as tweetAction} from "./reducers";
 import {updateProfileReducer as updateProfile} from "./reducers";
 import {updateUserReducer as updateUser} from "./reducers";
@@ -36,10 +33,7 @@ const reducers = combineReducers({
     deleteTweet,
     getTweet,
     likeRetTweet,
-    // likeTweet,
-    // unlikeTweet,
-    // retweet,
-    // deleteRetweet,
+    trends,
     tweetAction,
     updateProfile,
     updateUser,
@@ -63,10 +57,7 @@ const persistConfig = {
         'getTweet',
         'likeRetTweet',
         'tweetAction',
-        'likeTweet',
-        'unlikeTweet',
-        'retweet',
-        'deleteRetweet',
+        'trends',
         'updateProfile',
         'updateUser',
         'follow',

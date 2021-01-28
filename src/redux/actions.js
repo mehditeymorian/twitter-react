@@ -4,7 +4,7 @@ import {createFail, createInit, createSuccess} from "./stateUtils";
 export const STATE_NULL = -1;
 export const STATE_LOADING = 0;
 export const STATE_SUCCESS = 1;
-export const BASE_URL = "http://127.0.0.1:8585";
+export const BASE_URL = "http://127.0.0.1:8080";
 
 // ****************** SIGN UP ************************
 export const SIGNUP_INIT = "SIGN_UP_INIT";
@@ -18,7 +18,6 @@ export const signup = (user) => async (dispatch, getState) => {
         method: 'post',
         url: '/signup',
         contentType: 'application/json',
-        // accept: '*/*',
         data: {
             user: {
                 name: `${user.firstName} ${user.lastName}`,
@@ -29,7 +28,6 @@ export const signup = (user) => async (dispatch, getState) => {
         }
     })
         .then(value => {
-            console.log("value ", value);
             const result = {
                 ...value.data.user
             };
@@ -37,7 +35,7 @@ export const signup = (user) => async (dispatch, getState) => {
         })
         .catch(error => {
             printError(error);
-            dispatch(createFail(SIGNUP_FAIL,error.response.status));
+            dispatch(createFail(SIGNUP_FAIL,getErrorCode(error)));
         });
 };
 
@@ -71,7 +69,7 @@ export const signin = (user) => async (dispatch, getState) => {
         })
         .catch(error => {
             printError(error);
-            dispatch(createFail(SIGNIN_FAIL,error.response.status));
+            dispatch(createFail(SIGNIN_FAIL,getErrorCode(error)));
         });
 };
 
@@ -119,7 +117,7 @@ export const createTweet = (tweet, fallback = "", props = {}) => async (dispatch
         })
         .catch(error => {
             printError(error);
-            dispatch(createFail(CREATE_TWEET_FAIL,error.response.status));
+            dispatch(createFail(CREATE_TWEET_FAIL,getErrorCode(error)));
         });
 };
 
@@ -148,7 +146,7 @@ export const deleteTweet = (tweetId, loc) => async (dispatch, getState) => {
         })
         .catch(error => {
             printError(error);
-            dispatch(createFail(DEL_TWEET_FAIL,error.response.status));
+            dispatch(createFail(DEL_TWEET_FAIL,getErrorCode(error)));
         });
 };
 
@@ -209,7 +207,7 @@ export const likeTweet = (tweetId) => async (dispatch, getState) => {
         })
         .catch(error => {
             printError(error);
-            dispatch(createFail(TWEET_ACTION_FAIL,error.response.status));
+            dispatch(createFail(TWEET_ACTION_FAIL,getErrorCode(error)));
         });
 };
 
@@ -237,7 +235,7 @@ export const deleteLike = (tweetId) => async (dispatch, getState) => {
         })
         .catch(error => {
             printError(error);
-            dispatch(createFail(TWEET_ACTION_FAIL,error.response.status));
+            dispatch(createFail(TWEET_ACTION_FAIL,getErrorCode(error)));
         });
 };
 
@@ -265,7 +263,7 @@ export const retweet = (tweetId) => async (dispatch, getState) => {
         })
         .catch(error => {
             printError(error);
-            dispatch(createFail(TWEET_ACTION_FAIL,error.response.status));
+            dispatch(createFail(TWEET_ACTION_FAIL,getErrorCode(error)));
         });
 };
 
@@ -293,7 +291,7 @@ export const deleteRetweet = (tweetId) => async (dispatch, getState) => {
         })
         .catch(error => {
             printError(error);
-            dispatch(createFail(TWEET_ACTION_FAIL,error.response.status));
+            dispatch(createFail(TWEET_ACTION_FAIL,getErrorCode(error)));
         });
 };
 
@@ -322,7 +320,7 @@ export const getTimeline = (dateCode=0) => async (dispatch, getState) => {
         })
         .catch(error => {
             printError(error);
-            dispatch(createFail(TIMELINE_FAIL,error.response.status));
+            dispatch(createFail(TIMELINE_FAIL,getErrorCode(error)));
         });
 }
 
@@ -354,7 +352,7 @@ export const getTweets = (tweetsIds) => async (dispatch, getState) => {
         })
         .catch(error => {
             printError(error);
-            dispatch(createFail(GET_TWEETS_FAIL,error.response.status));
+            dispatch(createFail(GET_TWEETS_FAIL,getErrorCode(error)));
         });
 }
 
@@ -401,7 +399,7 @@ export const getProfile = (token, username) => async (dispatch, getState) => {
         dispatch(getTweets(result.profile.tweets));
     }).catch(error => {
 		printError(error);
-		dispatch(getUserProfileFail(error.status));
+		dispatch(getUserProfileFail(getErrorCode(error)));
 	});
 };
 
@@ -484,7 +482,7 @@ export const updateUser = (updatedUser) => async (dispatch, getState) => {
         })
         .catch(error => {
             printError(error);
-            dispatch(createFail(UPDATE_USER_FAIL,error.response.status));
+            dispatch(createFail(UPDATE_USER_FAIL,getErrorCode(error)));
         });
 };
 
@@ -513,7 +511,7 @@ export const follow = (username) => async (dispatch, getState) => {
         })
         .catch(error => {
             printError(error);
-            dispatch(createFail(FOLLOW_FAIL,error.response.status));
+            dispatch(createFail(FOLLOW_FAIL,getErrorCode(error)));
         });
 };
 
@@ -542,7 +540,7 @@ export const unfollow = (username) => async (dispatch, getState) => {
         })
         .catch(error => {
             printError(error);
-            dispatch(createFail(UNFOLLOW_FAIL,error.response.status));
+            dispatch(createFail(UNFOLLOW_FAIL,getErrorCode(error)));
         });
 };
 
@@ -570,7 +568,7 @@ export const followList = (username) => async (dispatch, getState) => {
         })
         .catch(error => {
             printError(error);
-            dispatch(createFail(FOLLOW_LIST_FAIL,error.response.status));
+            dispatch(createFail(FOLLOW_LIST_FAIL,getErrorCode(error)));
         });
 };
 
@@ -598,7 +596,7 @@ export const logs = (username) => async (dispatch, getState) => {
 	    })
 	    .catch(error => {
 	        printError(error);
-	        dispatch(createFail(LOGS_FAIL, error.response.status));
+	        dispatch(createFail(LOGS_FAIL, getErrorCode(error)));
 	    });
 };
 
@@ -628,7 +626,7 @@ export const search = (type, query) => async (dispatch, getState) => {
         })
         .catch(error => {
             printError(error);
-            dispatch(createFail(SEARCH_FAIL, error.response.status));
+            dispatch(createFail(SEARCH_FAIL, getErrorCode(error)));
         });
 };
 
@@ -657,7 +655,7 @@ export const notificationList = () => async (dispatch, getState) => {
 		})
 		.catch(error => {
 			printError(error);
-			dispatch(createFail(NOTIFICATIONS_FAIL, error.response.status));
+			dispatch(createFail(NOTIFICATIONS_FAIL, getErrorCode(error)));
 		});
 };
 
@@ -686,7 +684,7 @@ export const suggestionList = () => async (dispatch, getState) => {
         })
         .catch(error => {
             printError(error);
-            dispatch(createFail(SUGGESTION_FAIL, error.response.status));
+            dispatch(createFail(SUGGESTION_FAIL, getErrorCode(error)));
         });
 };
 
@@ -714,7 +712,7 @@ export const getLikeRetTweet = (tweetId) => async (dispatch, getState) => {
         })
         .catch(error => {
             printError(error);
-            dispatch(createFail(GET_LIKE_RET_TWEET_FAIL,error.response.status));
+            dispatch(createFail(GET_LIKE_RET_TWEET_FAIL,getErrorCode(error)));
         });
 };
 

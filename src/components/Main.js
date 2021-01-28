@@ -25,7 +25,7 @@ import {
     Person as ProfileIcon,
 } from '@material-ui/icons';
 import {MainStyle} from "./MainStyle";
-import {Link, Route, Switch, useRouteMatch} from 'react-router-dom';
+import {Link, Redirect, Route, Switch, useRouteMatch} from 'react-router-dom';
 import Home from "./Home";
 import Messages from "./Messages";
 import Explore from "./Explore";
@@ -42,6 +42,7 @@ import Badge from "@material-ui/core/Badge";
 import {notificationList} from "../redux/actions";
 import GroupAddIcon from '@material-ui/icons/GroupAdd';
 import Suggestion from "./Suggestion";
+import {isStatePresent} from "../redux/stateUtils";
 
 const menu = ["Home", "Explore", "Notifications", "Messages", "Bookmarks", "Profile", "Suggestion"];
 const icons = [<HomeIcon/>, <ExploreIcon/>, <NotificationsIcon/>, <MessageIcon/>, <BookmarksIcon/>, <ProfileIcon/>, <GroupAddIcon/>];
@@ -56,6 +57,7 @@ function Main({userState, notifications, window, getNotifications}) {
     const classes = MainStyle();
     const theme = useTheme();
     let {url} = useRouteMatch();
+    const logged = isStatePresent(userState);
     
     console.log("in main ", userState);
     
@@ -147,13 +149,13 @@ function Main({userState, notifications, window, getNotifications}) {
                 <Grid item xs={11} md={9} lg={7} xl={5} className={classes.timeline}>
                     <Switch>
                         <Route exact path={"/"} component={Home}/>
-                        <Route path={`${url}${menu[0].toLowerCase()}`} component={Home}/>
+                        <Route path={`${url}${menu[0].toLowerCase()}`}>{logged ? <Home/> : <Redirect to={"/auth/sign-in"}/>}</Route>
                         <Route path={`${url}${menu[1].toLowerCase()}`} component={Explore}/>
-                        <Route path={`${url}${menu[2].toLowerCase()}`}><Notifications /></Route>
-                        <Route path={`${url}${menu[3].toLowerCase()}`} component={Messages}/>
-                        <Route path={`${url}${menu[4].toLowerCase()}`} component={Bookmarks}/>
+                        <Route path={`${url}${menu[2].toLowerCase()}`}>{logged ? <Notifications /> : <Redirect to={"/auth/sign-in"}/>}</Route>
+                        <Route path={`${url}${menu[3].toLowerCase()}`}>{logged ? <Messages/> : <Redirect to={"/auth/sign-in"}/>}</Route>
+                        <Route path={`${url}${menu[4].toLowerCase()}`}>{logged ? <Bookmarks/> : <Redirect to={"/auth/sign-in"}/>}</Route>
                         <Route path={`${url}${menu[5].toLowerCase()}/:username`}><Profile/></Route>
-                        <Route path={`${url}${menu[6].toLowerCase()}`}><Suggestion/></Route>
+                        <Route path={`${url}${menu[6].toLowerCase()}`}>{logged ? <Suggestion/> : <Redirect to={"/auth/sign-in"}/>}</Route>
                         <Route path={`${url}tweet-detail/:id`}><TweetDetail/></Route>
                     </Switch>
                 </Grid>

@@ -73,7 +73,7 @@ function SignUp({userState, signupUser}) {
                         </Grid>
                         <Grid item xs={12}>
                             <TextField variant="outlined" required fullWidth id="email"
-                                       label="Email Address" name="email" autoComplete="email"
+                                       label="Email Address" name="email" autoComplete="email" inputMode={"email"}
                                        onChange={event => setEmail(event.target.value)}/>
                         </Grid>
                         <Grid item xs={12}>

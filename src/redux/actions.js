@@ -162,9 +162,6 @@ export const getTweet = (tweetId) => async (dispatch, getState) => {
         baseURL: BASE_URL,
         method: 'get',
         url: `/tweets/${tweetId}`,
-        headers: {
-            "Authorization": `Token ${user.token}`
-        }
     })
         .then(value => {
             const result = {
@@ -331,15 +328,11 @@ export const GET_TWEETS_SUCCESS = "GET_TWEETS_SUCCESS";
 export const GET_TWEETS_FAIL = "GET_TWEETS_FAIL";
 export const getTweets = (tweetsIds) => async (dispatch, getState) => {
     dispatch(createInit(GET_TWEETS_INIT));
-    const {user} = getState();
 
     await axios({
         baseURL: BASE_URL,
         method: 'post',
         url: `/tweets/get`,
-        headers: {
-            "Authorization": `Token ${user.token}`
-        },
         data: {
             tweets: tweetsIds
         }
@@ -383,14 +376,13 @@ export const getUserProfileFail = code => ({
 	}
 });
 
-export const getProfile = (token, username) => async (dispatch, getState) => {
+export const getProfile = (username) => async (dispatch, getState) => {
 	dispatch(getUserProfileInit());
 	await axios({
 		baseURL: BASE_URL,
 		method: 'get',
 		url: '/profiles/' + username,
 		contentType: 'application/json',
-        headers: {"Authorization": "Token " + token},
 	}).then(value => {
 		const result = {
 			profile: value.data.profile,
@@ -556,9 +548,6 @@ export const followList = (username) => async (dispatch, getState) => {
         baseURL: BASE_URL,
         method: 'get',
         url: `/profiles/${username}/list`,
-        headers: {
-            "Authorization": `Token ${user.token}`
-        }
     })
         .then(value => {
             const result = {
@@ -723,12 +712,14 @@ function printError(error) {
 		console.log(error.response.data);
 		console.log(error.response.status);
 		console.log(error.response.headers);
-	} else if (error.request) {
+	}
+	else if (error.request) {
 		// The request was made but no response was received
 		// `error.request` is an instance of XMLHttpRequest in the browser and an instance of
 		// http.ClientRequest in node.js
 		console.log(error.request);
-	} else {
+	}
+	else {
 		// Something happened in setting up the request that triggered an Error
 		console.log('Error', error.message);
 	}

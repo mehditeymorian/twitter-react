@@ -45,7 +45,7 @@ function Profile({profileState, userState,followUser, unfollowUser, tweets, getU
 
 
     useEffect(() => {
-        getUserProfile(userState.token, username);
+        getUserProfile(username);
         getFollowList(username);
         getLogs(username);
     }, [username]);
@@ -154,7 +154,7 @@ const mapStateToProp = state => ({
 });
 
 const mapActionsToProp = dispatch => ({
-    getUserProfile: (token, username) => dispatch(getProfile(token, username)),
+    getUserProfile: (username) => dispatch(getProfile(username)),
     getFollowList: (username) => dispatch(followList(username)),
     followUser: (username) => dispatch(follow(username)),
     unfollowUser: (username) => dispatch(unfollow(username)),

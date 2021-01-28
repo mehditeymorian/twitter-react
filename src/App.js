@@ -18,7 +18,7 @@ function App({userState}) {
                 <Switch>
                     <Route exact path={"/auth"}><Redirect to={"/auth/sign-in"}/></Route>
                     <Route path={"/auth/"}>{logged ? <Redirect to={"/"}/>: <Auth/>}</Route>
-                    <Route path={`/`}>{logged ? <Main/> : <Redirect to={"/auth/sign-in"}/>}</Route>
+                    <Route path={`/`}><Main/></Route>
                 </Switch>
             </div>
         </Router>

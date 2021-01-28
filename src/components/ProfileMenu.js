@@ -63,7 +63,7 @@ function ProfileMenu({userState, logout}) {
                                     to={profileMenuLinks[1]}>Settings</MenuItem> : null}
                 {logged ? <MenuItem onClick={() => handleProfileMenuClose(2)} component={Link}
                                     to={profileMenuLinks[2]}>Logout</MenuItem> : null}
-                {!logged ? <MenuItem component={Link} to={profileMenuLinks[3]}>Sign in</MenuItem> : null}
+                {!logged ? <MenuItem onClick={() => setProfileMenuAnchor(null)} component={Link} to={"/auth/sign-in"}>Sign in</MenuItem> : null}
 
             </Menu>
         </>

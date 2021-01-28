@@ -69,7 +69,7 @@ import {
     NOTIFICATIONS_INIT,
     NOTIFICATIONS_SUCCESS,
     NOTIFICATIONS_FAIL,
-    SUGGESTION_INIT, SUGGESTION_SUCCESS, SUGGESTION_FAIL,
+    SUGGESTION_INIT, SUGGESTION_SUCCESS, SUGGESTION_FAIL, TRENDS_INIT, TRENDS_SUCCESS, TRENDS_FAIL,
 } from "./actions";
 
 const createDefault = () => ({
@@ -172,7 +172,9 @@ export const authReducer = (userState = initUser, action) => {
     }
 };
 
-
+export const trendsReducer = (trendsState = createDefault(), action) => {
+    return generalReducer(trendsState, action, [TRENDS_INIT, TRENDS_SUCCESS, TRENDS_FAIL]);
+};
 
 export const createTweetReducer = (createTweet = initCreateTweet, action) => {
     const {type, payload} = action;
@@ -306,22 +308,6 @@ export const getLikeRetTweetReducer = (likeRetTweetState = initLikeRetTweet, act
 export const tweetActionsReducer = (tweetActionsReducer = createDefault(), action) =>{
     return generalReducer(tweetActionsReducer, action, [TWEET_ACTION_INIT, TWEET_ACTION_SUCCESS, TWEET_ACTION_FAIL]);
 }
-//todo: clear like unlike ret delete_ret reducers
-export const likeTweetReducer = (likeTweetState = createDefault(), action) => {
-    return generalReducer(likeTweetState, action, [LIKE_TWEET_INIT, LIKE_TWEET_SUCCESS, LIKE_TWEET_FAIL]);
-};
-
-export const unlikeTweetReducer = (unlikeTweetState = createDefault(), action) => {
-    return generalReducer(unlikeTweetState, action, [UNLIKE_TWEET_INIT, UNLIKE_TWEET_SUCCESS, UNLIKE_TWEET_FAIL]);
-};
-
-export const retweetReducer = (retweetState = createDefault(), action) => {
-    return generalReducer(retweetState, action, [RETWEET_INIT, RETWEET_SUCCESS, RETWEET_FAIL]);
-};
-
-export const deleteRetweetReducer = (deleteRetweetState = createDefault(), action) => {
-    return generalReducer(deleteRetweetState, action, [DEL_RETWEET_INIT, DEL_RETWEET_SUCCESS, DEL_RETWEET_FAIL]);
-};
 
 export const updateProfileReducer = (updateProfileState = createDefault(), action) => {
     return generalReducer(updateProfileState, action, [UPDATE_PROFILE_INIT, UPDATE_PROFILE_SUCCESS, UPDATE_PROFILE_FAIL]);

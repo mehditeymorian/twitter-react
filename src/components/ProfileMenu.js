@@ -7,9 +7,9 @@ import MenuItem from "@material-ui/core/MenuItem";
 import {Link} from "react-router-dom";
 import {logoutUser} from "../redux/actions";
 import {connect} from "react-redux";
-import {getUserProfileImg} from "../redux/stateUtils";
+import {getUserProfileImg, isStatePresent} from "../redux/stateUtils";
 
-const profileMenuLinks = ["/profile","/settings"];
+const profileMenuLinks = ["/profile", "/settings","/auth/sign-in"];
 
 const style = makeStyles((theme) => ({
     profileMenuLayout: {
@@ -31,11 +31,12 @@ const style = makeStyles((theme) => ({
 
 function ProfileMenu({userState, logout}) {
     const classes = style();
+    const logged = isStatePresent(userState);
     const [profileMenuAnchor, setProfileMenuAnchor] = React.useState(null);
     const handleProfileClick = (event) => setProfileMenuAnchor(event.currentTarget);
-    const handleProfileMenuClose = (which=-1) => {
+    const handleProfileMenuClose = (which = -1) => {
         setProfileMenuAnchor(null);
-        if (which === 2){ // logout
+        if (which === 2) { // logout
             logout();
         }
     }
@@ -46,7 +47,8 @@ function ProfileMenu({userState, logout}) {
             <Card elevation={0} className={classes.profileMenuLayout} onClick={handleProfileClick}>
                 <CardActionArea className={classes.profileMenuActionArea}>
                     <Avatar src={getUserProfileImg(userState.profile_picture)} alt={userState.username}/>
-                    <Typography display={"inline"} className={classes.profileMenuTitle}>{userState.username}</Typography>
+                    <Typography display={"inline"}
+                                className={classes.profileMenuTitle}>{logged ? userState.username : "Sign In"}</Typography>
                 </CardActionArea>
             </Card>
             <Menu
@@ -55,9 +57,14 @@ function ProfileMenu({userState, logout}) {
                 keepMounted
                 open={Boolean(profileMenuAnchor)}
                 onClose={() => handleProfileMenuClose()}>
-                <MenuItem onClick={() => handleProfileMenuClose(0)} component={Link} to={`${profileMenuLinks[0]}/${userState.username}`}>Profile</MenuItem>
-                <MenuItem onClick={() => handleProfileMenuClose(1)} component={Link} to={profileMenuLinks[1]}>Settings</MenuItem>
-                <MenuItem onClick={() => handleProfileMenuClose(2)} component={Link} to={profileMenuLinks[2]}>Logout</MenuItem>
+                {logged ? <MenuItem onClick={() => handleProfileMenuClose(0)} component={Link}
+                                    to={`${profileMenuLinks[0]}/${userState.username}`}>Profile</MenuItem> : null}
+                {logged ? <MenuItem onClick={() => handleProfileMenuClose(1)} component={Link}
+                                    to={profileMenuLinks[1]}>Settings</MenuItem> : null}
+                {logged ? <MenuItem onClick={() => handleProfileMenuClose(2)} component={Link}
+                                    to={profileMenuLinks[2]}>Logout</MenuItem> : null}
+                {!logged ? <MenuItem component={Link} to={profileMenuLinks[3]}>Sign in</MenuItem> : null}
+
             </Menu>
         </>
     );
@@ -72,4 +79,4 @@ const mapActionsToProp = dispatch => ({
     logout: () => dispatch(logoutUser())
 });
 
-export default connect(mapStateToProp,mapActionsToProp)(ProfileMenu);
+export default connect(mapStateToProp, mapActionsToProp)(ProfileMenu);

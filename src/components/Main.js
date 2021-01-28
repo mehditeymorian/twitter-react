@@ -67,6 +67,7 @@ function Main({userState, notifications, window, getNotifications}) {
     }, []);
     
     if ("events" in notifications) {
+        if (notifications.events != null)
         TOTAL_COUNT = notifications.events.length;
     }
     

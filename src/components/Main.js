@@ -59,13 +59,13 @@ function Main({userState, notifications, window, getNotifications}) {
     
     console.log("in main ", userState);
     
-    useEffect(() => {
-        console.log(notifications);
-        setInterval(() => {
-            console.log("getting notif.");
-            getNotifications();
-        }, 5000);
-    }, []);
+    // useEffect(() => {
+    //     console.log(notifications);
+    //     setInterval(() => {
+    //         console.log("getting notif.");
+    //         getNotifications();
+    //     }, 5000);
+    // }, []);
 
     const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -149,7 +149,7 @@ function Main({userState, notifications, window, getNotifications}) {
                         <Route path={`${url}${menu[4].toLowerCase()}`} component={Bookmarks}/>
                         <Route path={`${url}${menu[5].toLowerCase()}/:username`}><Profile/></Route>
                         <Route path={`${url}${menu[6].toLowerCase()}`}><Suggestion/></Route>
-                        <Route path={`${url}tweet-detail/:id`} component={TweetDetail} />
+                        <Route path={`${url}tweet-detail/:id`}><TweetDetail/></Route>
                     </Switch>
                 </Grid>
                 <Grid item md={false} lg={3} xl={3}><PopHashtagList/></Grid>

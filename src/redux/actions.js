@@ -167,38 +167,11 @@ export const getTweet = (tweetId) => async (dispatch, getState) => {
                 ...value.data.tweet
             }
             dispatch(createSuccess(GET_TWEET_SUCCESS,result));
+            dispatch(getLikeRetTweet(tweetId));
         })
         .catch(error => {
             printError(error);
             dispatch(createFail(GET_TWEET_FAIL,getErrorCode(error)));
-        });
-};
-
-// ****************** GET LIKE RETWEET of TWEET ************************
-export const GET_LIKE_RET_TWEET_INIT = "GET_LIKE_RET_TWEET_INIT";
-export const GET_LIKE_RET_TWEET_SUCCESS = "GET_LIKE_RET_TWEET_SUCCESS";
-export const GET_LIKE_RET_TWEET_FAIL = "GET_LIKE_RET_TWEET_FAIL";
-export const getLikeRetTweet = (tweetId) => async (dispatch, getState) => {
-    dispatch(createInit(GET_LIKE_RET_TWEET_INIT));
-    const {user} = getState();
-
-    await axios({
-        baseURL: BASE_URL,
-        method: 'get',
-        url: `/tweets/${tweetId}/list`,
-        headers: {
-            "Authorization": `Token ${user.token}`
-        }
-    })
-        .then(value => {
-            const result = {
-                ...value.data
-            }
-            dispatch(createSuccess(GET_LIKE_RET_TWEET_SUCCESS,result));
-        })
-        .catch(error => {
-            printError(error);
-            dispatch(createFail(GET_LIKE_RET_TWEET_FAIL,error.response.status));
         });
 };
 
@@ -708,6 +681,34 @@ export const suggestionList = () => async (dispatch, getState) => {
         .catch(error => {
             printError(error);
             dispatch(createFail(SUGGESTION_FAIL, error.response.status));
+        });
+};
+
+// ****************** GET LIKE RETWEET of TWEET ************************
+export const GET_LIKE_RET_TWEET_INIT = "GET_LIKE_RET_TWEET_INIT";
+export const GET_LIKE_RET_TWEET_SUCCESS = "GET_LIKE_RET_TWEET_SUCCESS";
+export const GET_LIKE_RET_TWEET_FAIL = "GET_LIKE_RET_TWEET_FAIL";
+export const getLikeRetTweet = (tweetId) => async (dispatch, getState) => {
+    dispatch(createInit(GET_LIKE_RET_TWEET_INIT));
+    const {user} = getState();
+    
+    await axios({
+        baseURL: BASE_URL,
+        method: 'get',
+        url: `/tweets/${tweetId}/list`,
+        headers: {
+            "Authorization": `Token ${user.token}`
+        }
+    })
+        .then(value => {
+            const result = {
+                ...value.data
+            }
+            dispatch(createSuccess(GET_LIKE_RET_TWEET_SUCCESS,result));
+        })
+        .catch(error => {
+            printError(error);
+            dispatch(createFail(GET_LIKE_RET_TWEET_FAIL,error.response.status));
         });
 };
 

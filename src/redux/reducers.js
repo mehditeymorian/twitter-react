@@ -355,6 +355,6 @@ export const notificationsReducer = (notificationsState = createDefault(), actio
     return generalReducer(notificationsState, action, [NOTIFICATIONS_INIT, NOTIFICATIONS_SUCCESS, NOTIFICATIONS_FAIL]);
 };
 
-export const suggestionReducer = (suggestionReducer = createDefault(), action) => {
-    return generalReducer(suggestionReducer, action, [SUGGESTION_INIT, SUGGESTION_SUCCESS, SUGGESTION_FAIL]);
+export const suggestionReducer = (suggestionState = createDefault(), action) => {
+    return generalReducer(suggestionState, action, [SUGGESTION_INIT, SUGGESTION_SUCCESS, SUGGESTION_FAIL]);
 };

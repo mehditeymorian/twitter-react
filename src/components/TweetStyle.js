@@ -38,5 +38,8 @@ export const TweetStyle = makeStyles((theme) => ({
     media: {
         width: "200px",
         height: "200px",
+    },
+    list: {
+        paddingRight: theme.spacing(2)
     }
 }));

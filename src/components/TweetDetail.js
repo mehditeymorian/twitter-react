@@ -1,6 +1,6 @@
 import React, {useEffect} from "react";
 import {useParams} from 'react-router-dom';
-import {getTweet} from "../redux/actions";
+import {getLikeRetTweet, getTweet} from "../redux/actions";
 import {connect} from "react-redux";
 import Tweet, {TWEET_DETAIL, TWEET_NORMAL, TWEET_REPLY} from "./Tweet";
 import {isStatePresent} from "../redux/stateUtils";
@@ -16,18 +16,18 @@ const TweetDetailStyle = makeStyles((theme) => ({
 }));
 
 
-function TweetDetail({userState,tweetState,getTweetById}) {
+function TweetDetail({userState,tweetState,getTweetById, list}) {
     const classes = TweetDetailStyle();
     const {id} = useParams();
 
     useEffect(() => {
         getTweetById(id);
     }, [id]);
-
+    
     return (
         <Card>
             {isStatePresent(tweetState) ? tweetState.parents.map(each=> <Tweet username={userState.username} tweet={each} /> ) : null}
-            {isStatePresent(tweetState) ? <Tweet type={TWEET_DETAIL} username={userState.username} tweet={tweetState} /> : null}
+            {isStatePresent(tweetState) ? <Tweet type={TWEET_DETAIL} username={userState.username} tweet={tweetState} list={list} /> : null}
             <Typography className={classes.commentTitle} variant={"h6"}>Comments</Typography>
             <Divider/>
             {isStatePresent(tweetState) ? tweetState.comments.map(each=> <Tweet type={TWEET_REPLY} username={userState.username} tweet={each} /> ) : null}
@@ -38,7 +38,8 @@ function TweetDetail({userState,tweetState,getTweetById}) {
 
 const mapStateToProp = state => ({
     userState: state.user,
-    tweetState: state.getTweet
+    tweetState: state.getTweet,
+    list: state.likeRetTweet,
 });
 
 const mapActionsToProp = dispatch => ({

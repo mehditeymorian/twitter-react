@@ -1,14 +1,22 @@
-import React from "react";
+import React, {useEffect} from "react";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import Paper from "@material-ui/core/Paper";
 import {PopHashtagListStyle} from "./PopHashtagListStyle";
 import Divider from "@material-ui/core/Divider";
 import PopHashtag from "./PopHashtag";
+import {getTrends, notificationList} from "../redux/actions";
+import {connect} from "react-redux";
+import {isStatePresent} from "../redux/stateUtils";
 
 
-export default function PopHashtagList() {
+function PopHashtagList({trendsState,getTrends}) {
     const style = PopHashtagListStyle();
+
+    useEffect(() => {
+        getTrends();
+    }, []);
+
     return (
         <Paper className={style.root}>
             <Grid container>
@@ -17,15 +25,19 @@ export default function PopHashtagList() {
                     <Grid item><Divider/></Grid>
                 </Grid>
 
-                <Grid item xs={12} className={style.hashtag}><PopHashtag /></Grid>
-                <Grid item xs={12} className={style.hashtag}><PopHashtag /></Grid>
-                <Grid item xs={12} className={style.hashtag}><PopHashtag /></Grid>
-                <Grid item xs={12} className={style.hashtag}><PopHashtag /></Grid>
-                <Grid item xs={12} className={style.hashtag}><PopHashtag /></Grid>
-
-
+                {isStatePresent(trendsState) ? trendsState.trends.map(each => <Grid item xs={12} className={style.hashtag}><PopHashtag hashtag={each}/></Grid>) : null}
             </Grid>
         </Paper>
     );
 
 };
+
+const mapStateToProp = state => ({
+    trendsState: state.trends
+});
+
+const mapActionsToProp = dispatch => ({
+    getTrends: () => dispatch(getTrends()),
+});
+
+export default connect(mapStateToProp, mapActionsToProp)(PopHashtagList);

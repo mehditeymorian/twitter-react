@@ -16,13 +16,13 @@ const classes = makeStyles((theme) => ({
 }));
 
 
-export default function PopHashtag() {
+export default function PopHashtag({hashtag}) {
     const style = classes();
     return (
-        <Card elevation={0} component={Link} to={"#"} className={style.root}>
+        <Card elevation={0} component={Link} to={`/explore?query=${hashtag.name}`} className={style.root}>
             <CardActionArea className={style.content}>
-            <Typography>12.3k</Typography>
-            <Typography>Biden is Fucked up!</Typography>
+                <Typography>#{hashtag.name}</Typography>
+                <Typography>count:{hashtag.count}</Typography>
             </CardActionArea>
             <Divider/>
         </Card>

@@ -47,5 +47,8 @@ export const ProfileStyle =  makeStyles((theme) => ({
         marginRight: theme.spacing(1),
         width: theme.typography.body1.fontSize,
         height: theme.typography.body1.fontSize
+    },
+    invis: {
+        visibility: "hidden"
     }
 }));

@@ -89,7 +89,7 @@ function Main({userState, notifications, window, getNotifications}) {
                 {
                     text === "Notifications" ?
                         <Badge color="secondary" badgeContent={TOTAL_COUNT - READ_COUNT} onClick={() => {return READ_COUNT = TOTAL_COUNT}}>
-                            <ListItemText primary={text}/>
+                            <ListItemText  primary={text}/>
                         </Badge>
                         : <ListItemText primary={text}/>
                 }

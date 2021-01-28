@@ -12,7 +12,7 @@ import {isStatePresent} from "./redux/stateUtils";
 const theme = createMuiTheme({
     palette: {
         primary: {
-            main: "#D63230",
+            main: "#010667",
         },
         secondary: {
             main: "#88D5E7",

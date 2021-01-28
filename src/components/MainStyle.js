@@ -53,6 +53,6 @@ export const MainStyle = makeStyles((theme) => ({
     },
     sideMenu:{
         height: "100%",
-        backgroundColor: "#1DA1F2"
+        backgroundColor: "#DDF3F8"
     }
 }));

@@ -1,5 +1,6 @@
 import axios from "axios";
 import {createFail, createInit, createSuccess} from "./stateUtils";
+import {READ_COUNT, TOTAL_COUNT} from "../components/Main";
 
 export const STATE_NULL = -1;
 export const STATE_LOADING = 0;

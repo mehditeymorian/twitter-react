@@ -66,9 +66,8 @@ function Main({userState, notifications, window, getNotifications}) {
         }, 5000);
     }, []);
     
-    if ("events" in notifications) {
-        if (notifications.events != null)
-        TOTAL_COUNT = notifications.events.length;
+    if ("events" in notifications && notifications.events !== null) {
+        if (notifications.events != null) TOTAL_COUNT = notifications.events.length;
     }
     
     
@@ -85,7 +84,7 @@ function Main({userState, notifications, window, getNotifications}) {
                 <ListItemIcon>{icons[index]}</ListItemIcon>
                 {
                     text === "Notifications" ?
-                        <Badge color="secondary" badgeContent={TOTAL_COUNT - READ_COUNT} onClick={() => {READ_COUNT = TOTAL_COUNT}}>
+                        <Badge color="secondary" badgeContent={TOTAL_COUNT - READ_COUNT} onClick={() => {return READ_COUNT = TOTAL_COUNT}}>
                             <ListItemText primary={text}/>
                         </Badge>
                         : <ListItemText primary={text}/>

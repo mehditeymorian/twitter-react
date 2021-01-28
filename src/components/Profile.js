@@ -130,7 +130,7 @@ function Profile({profileState, userState,followUser, unfollowUser, tweets, getU
                         <Divider/>
                         <Switch>
                             <Route exact path={`${url}`}>
-                                {isStatePresent(tweets) ? tweets.tweets.map(each => <Tweet username={username} profilePic={userProfile.profilePicture}
+                                {isStatePresent(tweets) ? tweets.tweets.map(each => <Tweet fallback="profile" shit={{token: userState.token, target: username}} username={username} profilePic={userProfile.profilePicture}
                                                                                            tweet={each}/>) : null}
                             </Route>
                             <Route path={`${url}/with_replies`}><h1>With Replies</h1></Route>

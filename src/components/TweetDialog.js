@@ -6,7 +6,7 @@ import DialogContent from "@material-ui/core/DialogContent";
 import TweetWriter from "./TweetWriter";
 
 
-export default function TweetDialog({open,setOpen, parent}) {
+export default function TweetDialog({open,setOpen, parent, fallback, shit}) {
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -23,7 +23,7 @@ export default function TweetDialog({open,setOpen, parent}) {
             aria-labelledby="responsive-dialog-title">
             <DialogTitle id="responsive-dialog-title">{"Tweet"}</DialogTitle>
             <DialogContent>
-                <TweetWriter parent={parent} setDialogClose={handleClose} />
+                <TweetWriter fallback={fallback} shit={shit} parent={parent} setDialogClose={handleClose} />
             </DialogContent>
         </Dialog>
     );

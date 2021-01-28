@@ -48,25 +48,29 @@ const icons = [<HomeIcon/>, <ExploreIcon/>, <NotificationsIcon/>, <MessageIcon/>
 
 
 
-
+export let READ_COUNT = 0;
+export let TOTAL_COUNT = 0;
 
 
 function Main({userState, notifications, window, getNotifications}) {
     const classes = MainStyle();
     const theme = useTheme();
     let {url} = useRouteMatch();
-    let unreadCount = () => "events" in notifications ? notifications.events.length : 0;
     
     console.log("in main ", userState);
     
-    // useEffect(() => {
-    //     console.log(notifications);
-    //     setInterval(() => {
-    //         console.log("getting notif.");
-    //         getNotifications();
-    //     }, 5000);
-    // }, []);
-
+    useEffect(() => {
+        console.log(notifications);
+        setInterval(() => {
+            getNotifications();
+        }, 5000);
+    }, []);
+    
+    if ("events" in notifications) {
+        TOTAL_COUNT = notifications.events.length;
+    }
+    
+    
     const [mobileOpen, setMobileOpen] = useState(false);
 
     const handleDrawerToggle = () => setMobileOpen(!mobileOpen);
@@ -80,7 +84,7 @@ function Main({userState, notifications, window, getNotifications}) {
                 <ListItemIcon>{icons[index]}</ListItemIcon>
                 {
                     text === "Notifications" ?
-                        <Badge color="secondary" badgeContent={unreadCount()}>
+                        <Badge color="secondary" badgeContent={TOTAL_COUNT - READ_COUNT} onClick={() => {READ_COUNT = TOTAL_COUNT}}>
                             <ListItemText primary={text}/>
                         </Badge>
                         : <ListItemText primary={text}/>
@@ -144,7 +148,7 @@ function Main({userState, notifications, window, getNotifications}) {
                         <Route exact path={"/"} component={Home}/>
                         <Route path={`${url}${menu[0].toLowerCase()}`} component={Home}/>
                         <Route path={`${url}${menu[1].toLowerCase()}`} component={Explore}/>
-                        <Route path={`${url}${menu[2].toLowerCase()}`}><Notifications unreadCount={unreadCount()}/></Route>
+                        <Route path={`${url}${menu[2].toLowerCase()}`}><Notifications /></Route>
                         <Route path={`${url}${menu[3].toLowerCase()}`} component={Messages}/>
                         <Route path={`${url}${menu[4].toLowerCase()}`} component={Bookmarks}/>
                         <Route path={`${url}${menu[5].toLowerCase()}/:username`}><Profile/></Route>

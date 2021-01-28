@@ -9,8 +9,8 @@ export default function Logs({events}) {
 	return (
 		<Paper className={style.root}>
 			{
-				events.length > 0 ? events.map(l =>
-					<Log type={l.mode} tweetText={l.content} targetName={l.target.name}/>
+				events !== null && events.length > 0 ? events.map(l =>
+					<Log type={l.mode} tweetText={l.content} target={l.target}/>
 				)
 				: null
 			}

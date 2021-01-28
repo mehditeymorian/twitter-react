@@ -85,7 +85,7 @@ export const logoutUser = () => ({
 export const CREATE_TWEET_INIT = "CREATE_TWEET_INIT";
 export const CREATE_TWEET_SUCCESS = "CREATE_TWEET_SUCCESS";
 export const CREATE_TWEET_FAIL = "CREATE_TWEET_FAIL";
-export const createTweet = (tweet) => async (dispatch, getState) => {
+export const createTweet = (tweet, fallback = "", props = {}) => async (dispatch, getState) => {
     dispatch(createInit(CREATE_TWEET_INIT));
     const {user} = getState();
 
@@ -109,7 +109,12 @@ export const createTweet = (tweet) => async (dispatch, getState) => {
                 ...value.data.tweet
             }
             dispatch(createSuccess(CREATE_TWEET_SUCCESS,result));
-            if (tweet.parent != null) dispatch(getTweet(tweet.parent));
+	        console.log("fallback and shit: ", fallback, props);
+            if (fallback === "detail" && "id" in props) dispatch(getTweet(props.id));
+            else if (fallback === "timeline") dispatch(getTimeline());
+            else if (fallback === "profile" && "target" in props) dispatch(getProfile(user.token, props.target));
+            else if (fallback === "explore" && "type" in props && "query" in props) dispatch(search(props.type, props.query));
+            else if (tweet.parent != null) dispatch(getTweet(tweet.parent));
             else dispatch(getTimeline());
         })
         .catch(error => {
@@ -122,7 +127,7 @@ export const createTweet = (tweet) => async (dispatch, getState) => {
 export const DEL_TWEET_INIT = "DEL_TWEET_INIT";
 export const DEL_TWEET_SUCCESS = "DEL_TWEET_SUCCESS";
 export const DEL_TWEET_FAIL = "DEL_TWEET_FAIL";
-export const deleteTweet = (tweetId) => async (dispatch, getState) => {
+export const deleteTweet = (tweetId, loc) => async (dispatch, getState) => {
     dispatch(createInit(DEL_TWEET_INIT));
     const {user} = getState();
 
@@ -139,6 +144,7 @@ export const deleteTweet = (tweetId) => async (dispatch, getState) => {
                 ...value.data.tweet
             }
             dispatch(createSuccess(DEL_TWEET_SUCCESS,result));
+            loc === "timeline" ? dispatch(getTimeline()) : dispatch(getProfile(user.token, user.username));
         })
         .catch(error => {
             printError(error);

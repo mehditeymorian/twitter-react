@@ -6,9 +6,12 @@ import Grid from "@material-ui/core/Grid";
 import {notificationList} from "../redux/actions";
 import {connect} from "react-redux";
 import {isStatePresent} from "../redux/stateUtils";
+import {READ_COUNT} from "./Main";
 
 function Notifications({notifications, getNotifications}) {
     const style = NotificationsStyle();
+	
+	// READ_COUNT = "events" in notifications ? notifications.events.length : 0;
  
 	if (notifications.state === -1) {
 		// console.log("getting notifs");

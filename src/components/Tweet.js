@@ -1,4 +1,4 @@
-import React, {useRef, useState} from "react";
+import React, {useState} from "react";
 import Grid from "@material-ui/core/Grid";
 import Avatar from "@material-ui/core/Avatar";
 import Divider from "@material-ui/core/Divider";
@@ -6,26 +6,26 @@ import Typography from "@material-ui/core/Typography";
 import {TweetStyle} from "./TweetStyle";
 import IconButton from "@material-ui/core/IconButton";
 import {
-    Comment as CommentIcon,
-    Repeat as RetweetIcon,
-    FavoriteBorder as LikeIcon,
-    Favorite as LikeFilledIcon,
-    BookmarkBorder as BookmarkIcon,
-    Bookmark as BookmarkFilledIcon,
     BarChart as StatIcon,
-    DeleteForever as DeleteIcon
+    Bookmark as BookmarkFilledIcon,
+    BookmarkBorder as BookmarkIcon,
+    Comment as CommentIcon,
+    DeleteForever as DeleteIcon,
+    Favorite as LikeFilledIcon,
+    FavoriteBorder as LikeIcon,
+    Repeat as RetweetIcon
 } from '@material-ui/icons';
 import TweetText from "./TweetText";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
-import {Link, Route, useRouteMatch} from "react-router-dom";
+import {Link, useRouteMatch} from "react-router-dom";
 import TweetDialog from "./TweetDialog";
 import {
     BASE_URL,
     deleteLike,
     deleteRetweet,
     deleteTweet,
-    getLikeRetTweet, getProfile,
+    getProfile,
     likeTweet,
     retweet
 } from "../redux/actions";
@@ -36,11 +36,8 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
-import {getLikeRetTweetReducer as likeRetTweet} from "../redux/reducers";
 import {Link as UILink} from "@material-ui/core";
-import FollowDialog from "./FollowDialog";
 import ListDialog from "./ListDialog";
-import Profile from "./Profile";
 
 export const TWEET_NORMAL = 0;
 export const TWEET_DETAIL = 1;
@@ -54,7 +51,7 @@ const getTopDateVisibility = (type) => type === TWEET_DETAIL ? "none" : "block";
 
 function Tweet({type = TWEET_NORMAL, tweet, username,
                    actionResult,deleteTweet,userState,profilePic,
-                   likeTweet, unlikeTweet, retweet, deleteRetweet, list, getProfile}) {
+                   likeTweet, unlikeTweet, retweet, deleteRetweet, list, getProfile, loc, fallback, shit}) {
     const classes = TweetStyle();
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
     const [openLikeDialog, setOpenLikeDialog] = useState(false);
@@ -124,7 +121,7 @@ function Tweet({type = TWEET_NORMAL, tweet, username,
     const onDeleteCancel = ev => setDeleteDialogOpen(false);
     const onDeleteConfirm = ev => {
         setDeleteDialogOpen(false);
-        deleteTweet(tweet.id);
+        deleteTweet(tweet.id, loc);
     }
     
     
@@ -202,7 +199,7 @@ function Tweet({type = TWEET_NORMAL, tweet, username,
                     </Button>
                 </DialogActions>
             </Dialog>
-            <TweetDialog open={commentDialogOpen} setOpen={setCommentDialogOpen} parent={tweet.id} />
+            <TweetDialog open={commentDialogOpen} setOpen={setCommentDialogOpen} parent={tweet.id} fallback={fallback} shit={shit} />
             {type !== TWEET_DETAIL ? <CardActionArea component={Link} to={`/tweet-detail/${tweet.id}`}>{content}</CardActionArea> : content}
             <Divider/>
         </Card>
@@ -220,7 +217,7 @@ const mapActionsToProp = dispatch => ({
     unlikeTweet: (id) => dispatch(deleteLike(id)),
     retweet: (id) => dispatch(retweet(id)),
     deleteRetweet: (id) => dispatch(deleteRetweet(id)),
-    deleteTweet: (id) => dispatch(deleteTweet(id)),
+    deleteTweet: (id, loc) => dispatch(deleteTweet(id, loc)),
     getProfile: (token, username) => dispatch(getProfile(token, username)),
 });
 

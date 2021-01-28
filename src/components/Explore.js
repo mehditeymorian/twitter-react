@@ -25,6 +25,8 @@ function Explore({searchState, userState, searchQuery}) {
 		}
 	};
 	
+	const type = () => {return textInput.startsWith('#') ? "hashtag" : !textInput.startsWith('@') ? "tweet" : null};
+	
 	return (
 		<Paper className={classes.root}>
 			<Grid item className={classes.header}>Explore</Grid>
@@ -49,7 +51,10 @@ function Explore({searchState, userState, searchQuery}) {
 			</AppBar>
 			<Fragment>
 				{"tweets" in searchState ? searchState.tweets.map(t => {
-					return <Tweet tweet={t} username={userState.username}/>
+					return <Tweet fallback="explore" shit={{
+						type: type(),
+						query: type() === "hashtag" ? textInput.slice(1) : type() === "tweet" ? textInput : null,
+					}} tweet={t} username={userState.username}/>
 				}) : null}
 				{"users" in searchState ? searchState.users.map(u => {
 					return <Identity identity={u}/>

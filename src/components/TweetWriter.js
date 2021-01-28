@@ -19,7 +19,7 @@ import {connect} from "react-redux";
 import LinearProgress from "@material-ui/core/LinearProgress";
 import {getUserProfileImg, isStateLoading} from "../redux/stateUtils";
 
-function TweetWriter({userState, createState, createTweet, parent, setDialogClose}) {
+function TweetWriter({userState, createState, createTweet, parent, setDialogClose, fallback, shit}) {
     const style = TweetWriterStyle();
     const tweetText = useRef(null);
     const [media, setMedia] = useState(null);
@@ -44,7 +44,7 @@ function TweetWriter({userState, createState, createTweet, parent, setDialogClos
         };
 
         // tweetText.current.value = "";
-        createTweet(tweet);
+        createTweet(tweet, fallback, shit);
         if (setDialogClose != null) setDialogClose();
 
         setMediaPrev("");
@@ -87,7 +87,7 @@ const mapStateToProp = state => ({
 });
 
 const mapActionsToProp = dispatch => ({
-    createTweet: tweet => dispatch(createTweet(tweet)),
+    createTweet: (tweet, fallback, shit) => dispatch(createTweet(tweet, fallback, shit)),
 });
 
 export default connect(mapStateToProp, mapActionsToProp)(TweetWriter);

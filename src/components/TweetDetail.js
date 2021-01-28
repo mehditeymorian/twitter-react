@@ -27,7 +27,7 @@ function TweetDetail({userState,tweetState,getTweetById, list}) {
     return (
         <Card>
             {isStatePresent(tweetState) ? tweetState.parents.map(each=> <Tweet username={userState.username} tweet={each} /> ) : null}
-            {isStatePresent(tweetState) ? <Tweet type={TWEET_DETAIL} username={userState.username} tweet={tweetState} list={list} /> : null}
+            {isStatePresent(tweetState) ? <Tweet type={TWEET_DETAIL} username={userState.username} tweet={tweetState} list={list} fallback="detail" shit={{id}} /> : null}
             <Typography className={classes.commentTitle} variant={"h6"}>Comments</Typography>
             <Divider/>
             {isStatePresent(tweetState) ? tweetState.comments.map(each=> <Tweet type={TWEET_REPLY} username={userState.username} tweet={each} /> ) : null}

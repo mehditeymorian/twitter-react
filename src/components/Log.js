@@ -21,13 +21,10 @@ function isRTL(s) {
 export default function Log(props) {
 	const classes = LogsStyle();
 	
-	// need to change these to actual input
 	const avatarURLs = [
-		"https://uifaces.co/our-content/donated/gPZwCbdS.jpg",
-		"https://uifaces.co/our-content/donated/gPZwCbdS.jpg",
-		"https://uifaces.co/our-content/donated/gPZwCbdS.jpg"
+		props.target.profile_picture,
 	];
-	const targetName = props.targetName;
+	const targetName = props.target.name;
 	const regex = props.tweetText.toString().match(new RegExp("Tweet (.*) at"));
 	const tweetText = regex !== null ? regex[1] : "";
 	const dir = isRTL(tweetText.toString().split(' ')[0]) ? "rtl" : "ltr";

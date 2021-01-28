@@ -44,7 +44,9 @@ import GroupAddIcon from '@material-ui/icons/GroupAdd';
 import Suggestion from "./Suggestion";
 import {isStatePresent} from "../redux/stateUtils";
 
+const loginAddress = "/auth/sign-in";
 const menu = ["Home", "Explore", "Notifications", "Messages", "Bookmarks", "Profile", "Suggestion"];
+const notLogged = [loginAddress, "/Explore", loginAddress, loginAddress, loginAddress, loginAddress, loginAddress];
 const icons = [<HomeIcon/>, <ExploreIcon/>, <NotificationsIcon/>, <MessageIcon/>, <BookmarksIcon/>, <ProfileIcon/>, <GroupAddIcon/>];
 
 
@@ -83,7 +85,7 @@ function Main({userState, notifications, window, getNotifications}) {
     const generateMenuItems = ()=> {
         return menu.map((text, index) => (
             <ListItem button key={text} component={Link}
-                      to={`/${menu[index].toLowerCase()}${index === 5 ? `/${userState.username}` : ''}`}>
+                      to={logged ? `/${menu[index].toLowerCase()}${index === 5 ? `/${userState.username}` : ''}` : notLogged[index].toLowerCase()}>
                 <ListItemIcon>{icons[index]}</ListItemIcon>
                 {
                     text === "Notifications" ?
@@ -104,8 +106,8 @@ function Main({userState, notifications, window, getNotifications}) {
             <Divider/>
             <List>{generateMenuItems()}</List>
             <Divider/>
-            <Button className={classes.tweetButton} variant={"contained"} fullWidth
-                    color={"primary"} onClick={() => setOpenTweetDialog(true)}>Tweet</Button>
+            {logged ?<Button className={classes.tweetButton} variant={"contained"} fullWidth
+                    color={"primary"} onClick={() => setOpenTweetDialog(true)}>Tweet</Button> : null}
         </div>);
 
     const container = window !== undefined ? () => window().document.body : undefined;

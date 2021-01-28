@@ -136,9 +136,9 @@ export const authReducer = (userState = initUser, action) => {
             };
         }
         case SIGNUP_SUCCESS: {
-            const {user} = payload;
+            const {result} = payload;
             return {
-                ...user,
+                ...result,
                 state: STATE_SUCCESS
             };
         }

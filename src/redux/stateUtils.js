@@ -1,4 +1,4 @@
-import {SIGNIN_INIT, STATE_LOADING, STATE_SUCCESS} from "./actions";
+import {BASE_URL, SIGNIN_INIT, STATE_LOADING, STATE_SUCCESS} from "./actions";
 
 
 export const isStatePresent = parent => parent.state === STATE_SUCCESS
@@ -29,4 +29,4 @@ export const createFail = (type,failCode) => ({
 });
 
 
-export const getUserProfileImg = (link) => `http://127.0.0.1:8080/${link}`;
+export const getUserProfileImg = (link) => `${BASE_URL}/${link}`;

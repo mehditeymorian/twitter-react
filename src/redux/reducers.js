@@ -66,6 +66,10 @@ import {
     SEARCH_INIT,
     SEARCH_SUCCESS,
     SEARCH_FAIL,
+    NOTIFICATIONS_INIT,
+    NOTIFICATIONS_SUCCESS,
+    NOTIFICATIONS_FAIL,
+    SUGGESTION_INIT, SUGGESTION_SUCCESS, SUGGESTION_FAIL,
 } from "./actions";
 
 const createDefault = () => ({
@@ -80,6 +84,8 @@ const initDeleteTweet = createDefault();
 const initGetTweet = createDefault();
 const initLikeRetTweet = createDefault();
 
+// let prevLength = 0;
+
 const generalReducer = (initState, action, types) => {
     const {type, payload} = action;
 
@@ -92,8 +98,10 @@ const generalReducer = (initState, action, types) => {
         }
         case types[1]:{ // success
             const {result} = payload;
+            // prevLength = "events" in result ? result.events.length - prevLength : 0;
             return {
                 ...result,
+                // prevLength: prevLength,
                 state: STATE_SUCCESS
             };
         }
@@ -111,6 +119,7 @@ const generalReducer = (initState, action, types) => {
 
 export const authReducer = (userState = initUser, action) => {
     const {type, payload} = action;
+    console.log("res ", type, payload);
 
     switch (type) {
         case SIGNUP_INIT: {
@@ -340,4 +349,12 @@ export const logsReducer = (logsState = createDefault(), action) => {
 
 export const searchReducer = (searchState = createDefault(), action) => {
     return generalReducer(searchState, action, [SEARCH_INIT, SEARCH_SUCCESS, SEARCH_FAIL]);
+};
+
+export const notificationsReducer = (notificationsState = createDefault(), action) => {
+    return generalReducer(notificationsState, action, [NOTIFICATIONS_INIT, NOTIFICATIONS_SUCCESS, NOTIFICATIONS_FAIL]);
+};
+
+export const suggestionReducer = (suggestionReducer = createDefault(), action) => {
+    return generalReducer(suggestionReducer, action, [SUGGESTION_INIT, SUGGESTION_SUCCESS, SUGGESTION_FAIL]);
 };

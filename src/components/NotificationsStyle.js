@@ -5,7 +5,6 @@ export const NotificationsStyle = makeStyles((theme) => ({
 	root: {},
 	header: {
 		borderRadius: "15px 15px 0 0",
-		backgroundColor: "#000000",
 		paddingTop: theme.spacing(1),
 		paddingLeft: theme.spacing(1),
 		fontSize: "20px",

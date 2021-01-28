@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {useTheme} from '@material-ui/core/styles';
 import {
     AppBar,
@@ -19,13 +19,13 @@ import {
     Bookmark as BookmarksIcon,
     Explore as ExploreIcon,
     Home as HomeIcon,
+    Menu as MenuIcon,
     Message as MessageIcon,
     Notifications as NotificationsIcon,
     Person as ProfileIcon,
-    Menu as MenuIcon,
 } from '@material-ui/icons';
 import {MainStyle} from "./MainStyle";
-import {Switch, Route, Link, useRouteMatch} from 'react-router-dom';
+import {Link, Route, Switch, useRouteMatch} from 'react-router-dom';
 import Home from "./Home";
 import Messages from "./Messages";
 import Explore from "./Explore";
@@ -38,31 +38,53 @@ import Hidden from "@material-ui/core/Hidden";
 import TweetDetail from "./TweetDetail";
 import TweetDialog from "./TweetDialog";
 import {connect} from "react-redux";
+import Badge from "@material-ui/core/Badge";
+import {notificationList} from "../redux/actions";
+import GroupAddIcon from '@material-ui/icons/GroupAdd';
+import Suggestion from "./Suggestion";
 
-const menu = ["Home", "Explore", "Notifications", "Messages", "Bookmarks", "Profile"];
-const icons = [<HomeIcon/>, <ExploreIcon/>, <NotificationsIcon/>, <MessageIcon/>, <BookmarksIcon/>, <ProfileIcon/>];
+const menu = ["Home", "Explore", "Notifications", "Messages", "Bookmarks", "Profile", "Suggestion"];
+const icons = [<HomeIcon/>, <ExploreIcon/>, <NotificationsIcon/>, <MessageIcon/>, <BookmarksIcon/>, <ProfileIcon/>, <GroupAddIcon/>];
 
 
 
 
 
 
-function Main({userState,window}) {
+function Main({userState, notifications, window, getNotifications}) {
     const classes = MainStyle();
     const theme = useTheme();
     let {url} = useRouteMatch();
+    let unreadCount = () => "events" in notifications ? notifications.events.length : 0;
+    
+    console.log("in main ", userState);
+    
+    useEffect(() => {
+        console.log(notifications);
+        setInterval(() => {
+            console.log("getting notif.");
+            getNotifications();
+        }, 5000);
+    }, []);
 
-    const [mobileOpen, setMobileOpen] = React.useState(false);
+    const [mobileOpen, setMobileOpen] = useState(false);
 
     const handleDrawerToggle = () => setMobileOpen(!mobileOpen);
 
-    const [openTweetDialog, setOpenTweetDialog] = React.useState(false);
+    const [openTweetDialog, setOpenTweetDialog] = useState(false);
 
     const generateMenuItems = ()=> {
         return menu.map((text, index) => (
-            <ListItem button key={text} component={Link} to={`/${menu[index].toLowerCase()}${index === 5 ? `/${userState.username}` : ''}`}>
+            <ListItem button key={text} component={Link}
+                      to={`/${menu[index].toLowerCase()}${index === 5 ? `/${userState.username}` : ''}`}>
                 <ListItemIcon>{icons[index]}</ListItemIcon>
-                <ListItemText primary={text}/>
+                {
+                    text === "Notifications" ?
+                        <Badge color="secondary" badgeContent={unreadCount()}>
+                            <ListItemText primary={text}/>
+                        </Badge>
+                        : <ListItemText primary={text}/>
+                }
             </ListItem>
         ));
     }
@@ -122,10 +144,11 @@ function Main({userState,window}) {
                         <Route exact path={"/"} component={Home}/>
                         <Route path={`${url}${menu[0].toLowerCase()}`} component={Home}/>
                         <Route path={`${url}${menu[1].toLowerCase()}`} component={Explore}/>
-                        <Route path={`${url}${menu[2].toLowerCase()}`} component={Notifications}/>
+                        <Route path={`${url}${menu[2].toLowerCase()}`}><Notifications unreadCount={unreadCount()}/></Route>
                         <Route path={`${url}${menu[3].toLowerCase()}`} component={Messages}/>
                         <Route path={`${url}${menu[4].toLowerCase()}`} component={Bookmarks}/>
                         <Route path={`${url}${menu[5].toLowerCase()}/:username`}><Profile/></Route>
+                        <Route path={`${url}${menu[6].toLowerCase()}`}><Suggestion/></Route>
                         <Route path={`${url}tweet-detail/:id`} component={TweetDetail} />
                     </Switch>
                 </Grid>
@@ -138,10 +161,12 @@ function Main({userState,window}) {
 
 
 const mapStateToProp = state => ({
-    userState: state.user
+    userState: state.user,
+    notifications: state.notifications,
 });
 
 const mapActionsToProp = dispatch => ({
+    getNotifications: () => dispatch(notificationList()),
 });
 
 export default connect(mapStateToProp, mapActionsToProp)(Main);

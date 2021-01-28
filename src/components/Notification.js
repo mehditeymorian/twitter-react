@@ -20,56 +20,61 @@ function isRTL(s) {
 
 export default function Notification(props) {
 	const classes = NotificationsStyle();
-	
 	// need to change these to actual input
 	const avatarURLs = [
 		"https://uifaces.co/our-content/donated/gPZwCbdS.jpg",
 		"https://uifaces.co/our-content/donated/gPZwCbdS.jpg",
 		"https://uifaces.co/our-content/donated/gPZwCbdS.jpg"
-	];
-	const srcName = props.srcName
-	const tweetText = props.tweetText;
-	const dir = isRTL(tweetText.toString().split(' ')[0]) ? "rtl" : "ltr";
-	const type = props.type;
+		];
+	const n = props.n;
+	const blueShade = props.unread;
+	const srcName = n.source.name;
+	const type = n.mode;
+	const regex = n.content.toString().match(new RegExp("Tweet (.*) at"));
+	const tweetText = regex !== null ? regex[1] : "";
+	const dir = isRTL(tweetText.split(' ')[0]) ? "rtl" : "ltr";
 	const typeMap = {
-		"like": <FavoriteIcon className={classes.icon}
+		"Like": <FavoriteIcon className={classes.icon}
 		                      style={{color: "#ff0000"}}/>,
-		"follow": <PersonIcon className={classes.icon}
+		"Follow": <PersonIcon className={classes.icon}
 		                      style={{color: "#0099ff"}}/>,
-		"retweet": <RepeatIcon className={classes.icon}
+		"Retweet": <RepeatIcon className={classes.icon}
 		                       style={{color: "#2ae000"}}/>,
 	}
 	const remainingText = {
-		"like": avatarURLs.length > 1 ? <Grid item><Typography
+		"Like": avatarURLs.length > 1 ? <Grid item><Typography
 			display={"inline"}>and {avatarURLs.length - 1} others liked your
 			tweet.</Typography></Grid> : <Grid item><Typography
 			display={"inline"}>liked your tweet.</Typography></Grid>,
-		"follow": <Grid item><Typography display={"inline"}>followed
+		"Follow": <Grid item><Typography display={"inline"}>followed
 			you.</Typography></Grid>,
-		"retweet": <Grid item><Typography display={"inline"}>retweeted your
+		"Retweet": <Grid item><Typography display={"inline"}>retweeted your
 			tweet.</Typography></Grid>,
 	}
 	
 	return (
 		<Card square className={classes.root}>
 			<CardActionArea>
-				<Grid container className={classes.notification}>
+				<Grid container className={classes.notification} style={blueShade ? {backgroundColor: "#d6edff"} : null}>
 					{typeMap[type]}
 					<div className={classes.profilePictures}>
 						{
 							avatarURLs.map((url) => {
-								return <Avatar item src={url}
-								               className={classes.picture}/>
+								return <Avatar item src={url} className={classes.picture}/>
 							})
 						}
 					</div>
 					<Grid container className={classes.text}>
-						<Grid item><Typography display={"inline"}
-						                       className={classes.sourceName}>{srcName} </Typography></Grid>
+						<Grid item>
+							<Typography display={"inline"} className={classes.sourceName}>
+								{srcName}
+							</Typography>
+						</Grid>
 						{remainingText[type]}
 					</Grid>
-					<Grid container className={classes.tweet}
-					      style={{direction: dir}}>{tweetText}</Grid>
+					<Grid container className={classes.tweet} style={{direction: dir}}>
+						{tweetText}
+					</Grid>
 				</Grid>
 			</CardActionArea>
 		</Card>

@@ -4,7 +4,7 @@ import {createFail, createInit, createSuccess} from "./stateUtils";
 export const STATE_NULL = -1;
 export const STATE_LOADING = 0;
 export const STATE_SUCCESS = 1;
-const BASE_URL = "http://127.0.0.1:8080";
+export const BASE_URL = "http://127.0.0.1:8585";
 
 // ****************** SIGN UP ************************
 export const SIGNUP_INIT = "SIGN_UP_INIT";
@@ -18,7 +18,7 @@ export const signup = (user) => async (dispatch, getState) => {
         method: 'post',
         url: '/signup',
         contentType: 'application/json',
-        accept: '*/*',
+        // accept: '*/*',
         data: {
             user: {
                 name: `${user.firstName} ${user.lastName}`,
@@ -29,6 +29,7 @@ export const signup = (user) => async (dispatch, getState) => {
         }
     })
         .then(value => {
+            console.log("value ", value);
             const result = {
                 ...value.data.user
             };
@@ -649,6 +650,64 @@ export const search = (type, query) => async (dispatch, getState) => {
         .catch(error => {
             printError(error);
             dispatch(createFail(SEARCH_FAIL, error.response.status));
+        });
+};
+
+// ******************** NOTIFICATION LIST **************************
+export const NOTIFICATIONS_INIT = "NOTIFICATION_INIT";
+export const NOTIFICATIONS_SUCCESS = "NOTIFICATION_SUCCESS";
+export const NOTIFICATIONS_FAIL = "NOTIFICATION_FAIL";
+
+export const notificationList = () => async (dispatch, getState) => {
+	dispatch(createInit(NOTIFICATIONS_INIT));
+	const {user} = getState();
+	await axios({
+		baseURL: BASE_URL,
+		method: "get",
+		url: `/profiles/${user.username}/notifications`,
+		headers: {
+			"Authorization": `Token ${user.token}`
+		},
+	})
+		.then(value => {
+			const result = {
+				...value.data,
+			};
+			console.log(result);
+			dispatch(createSuccess(NOTIFICATIONS_SUCCESS, result));
+		})
+		.catch(error => {
+			printError(error);
+			dispatch(createFail(NOTIFICATIONS_FAIL, error.response.status));
+		});
+};
+
+// ********************* SUGGESTION LIST **************************
+export const SUGGESTION_INIT = "SUGGESTION_INIT";
+export const SUGGESTION_SUCCESS = "SUGGESTION_SUCCESS";
+export const SUGGESTION_FAIL = "SUGGESTION_FAIL";
+
+export const suggestionList = () => async (dispatch, getState) => {
+    dispatch(createInit(SUGGESTION_INIT));
+    const {user} = getState();
+    await axios({
+        baseURL: BASE_URL,
+        method: "get",
+        url: `/suggestions`,
+        headers: {
+            "Authorization": `Token ${user.token}`
+        },
+    })
+        .then(value => {
+            const result = {
+                ...value.data,
+            };
+            console.log(result);
+            dispatch(createSuccess(SUGGESTION_SUCCESS, result));
+        })
+        .catch(error => {
+            printError(error);
+            dispatch(createFail(SUGGESTION_FAIL, error.response.status));
         });
 };
 

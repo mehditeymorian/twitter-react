@@ -29,7 +29,7 @@ export default function Log(props) {
 	];
 	const targetName = props.targetName;
 	const regex = props.tweetText.toString().match(new RegExp("Tweet (.*) at"));
-	const tweetText = regex !== null ? regex[1] : "Sample Tweet";
+	const tweetText = regex !== null ? regex[1] : "";
 	const dir = isRTL(tweetText.toString().split(' ')[0]) ? "rtl" : "ltr";
 	const type = props.type;
 	const typeMap = {

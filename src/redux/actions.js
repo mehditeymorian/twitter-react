@@ -726,6 +726,30 @@ export const getLikeRetTweet = (tweetId) => async (dispatch, getState) => {
         });
 };
 
+// ****************** GET TRENDS ************************
+export const TRENDS_INIT = "TRENDS_INIT";
+export const TRENDS_SUCCESS = "TRENDS_SUCCESS";
+export const TRENDS_FAIL = "TRENDS_FAIL";
+export const getTrends = () => async (dispatch, getState) => {
+    dispatch(createInit(TRENDS_INIT));
+
+    await axios({
+        baseURL: BASE_URL,
+        method: 'get',
+        url: `/trends`,
+    })
+        .then(value => {
+            const result = {
+                ...value.data
+            }
+            dispatch(createSuccess(TRENDS_SUCCESS,result));
+        })
+        .catch(error => {
+            printError(error);
+            dispatch(createFail(TRENDS_FAIL,getErrorCode(error)));
+        });
+}
+
 function printError(error) {
 	if (error.response) {
 		// The request was made and the server responded with a status code

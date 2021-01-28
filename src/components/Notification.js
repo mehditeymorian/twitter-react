@@ -8,6 +8,16 @@ import FavoriteIcon from '@material-ui/icons/Favorite';
 import RepeatIcon from '@material-ui/icons/Repeat';
 import PersonIcon from '@material-ui/icons/Person';
 import Typography from "@material-ui/core/Typography";
+import {
+	deleteLike,
+	deleteRetweet,
+	deleteTweet, getProfile, getTweet,
+	likeTweet,
+	retweet
+} from "../redux/actions";
+import {connect} from "react-redux";
+import {Link, useRouteMatch} from "react-router-dom";
+import Tweet from "./Tweet";
 
 function isRTL(s) {
 	const ltrChars = 'A-Za-z\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u02B8\u0300-\u0590\u0800-\u1FFF'
@@ -18,16 +28,16 @@ function isRTL(s) {
 	return rtlDirCheck.test(s);
 }
 
-export default function Notification(props) {
+function Notification({n, userState, unread, getT}) {
 	const classes = NotificationsStyle();
 	// need to change these to actual input
+	let {url} = useRouteMatch();
 	const avatarURLs = [
 		"https://uifaces.co/our-content/donated/gPZwCbdS.jpg",
 		"https://uifaces.co/our-content/donated/gPZwCbdS.jpg",
 		"https://uifaces.co/our-content/donated/gPZwCbdS.jpg"
-		];
-	const n = props.n;
-	const blueShade = props.unread;
+	];
+	const blueShade = unread;
 	const srcName = n.source.name;
 	const type = n.mode;
 	const regex = n.content.toString().match(new RegExp("Tweet (.*) at"));
@@ -52,6 +62,13 @@ export default function Notification(props) {
 			tweet.</Typography></Grid>,
 	}
 	
+	const showTweet = () => {
+		if (n !== undefined && "tweet" in n && n.tweet.id !== undefined && type !== "Follow") {
+			getT(n.tweet.id);
+			return <Tweet tweet={n.tweet} fallback="timeline"/>
+		}
+	}
+	
 	return (
 		<Card square className={classes.root}>
 			<CardActionArea>
@@ -72,7 +89,7 @@ export default function Notification(props) {
 						</Grid>
 						{remainingText[type]}
 					</Grid>
-					<Grid container className={classes.tweet} style={{direction: dir}}>
+					<Grid container component={Link} to={`${url.slice(0, -url.indexOf('/'))}/tweet-detail/${n.tweet.id}`} className={classes.tweet} style={{direction: dir}} onClick={showTweet}>
 						{tweetText}
 					</Grid>
 				</Grid>
@@ -80,3 +97,13 @@ export default function Notification(props) {
 		</Card>
 	);
 };
+
+const mapStateToProp = state => ({
+	userState: state.user,
+});
+
+const mapActionsToProp = dispatch => ({
+	getT: (id) => dispatch(getTweet(id)),
+});
+
+export default connect(mapStateToProp, mapActionsToProp)(Notification);

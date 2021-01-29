@@ -17,5 +17,5 @@ You can go to our website or clone the project and execute `npm start` to run th
 
 ### Booby Team
 - Myself | [Booby Account](https://booobier.herokuapp.com/profile/mehdi)
-- [Mh Zarei](https://github.com/mhezarei) | [Booby Account](https://booobier.herokuapp.com/profile/arman)
-- [Arman Aminian](https://github.com/arman-aminian) | [Booby Account](https://booobier.herokuapp.com/profile/goodol'man)
+- [Mh Zarei](https://github.com/mhezarei) | [Booby Account](https://booobier.herokuapp.com/profile/goodol'man)
+- [Arman Aminian](https://github.com/arman-aminian) | [Booby Account](https://booobier.herokuapp.com/profile/arman)

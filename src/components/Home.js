@@ -18,7 +18,7 @@ function Home({user, timeline, getTimeline}) {
     return (
         <Paper>
             <TweetWriter fallback="timeline"/>
-            {isStatePresent(timeline) ? timeline.tweets.map(each => <Tweet loc={"timeline"} profilePic={getUserProfileImg(user.profile_picture)} tweet={each} username={user.username}/>):<LinearProgress/>}
+            {isStatePresent(timeline) ? timeline.tweets.map(each => <Tweet loc={"timeline"} profilePic={getUserProfileImg(each.owner.profile_picture)} tweet={each} username={user.username}/>):<LinearProgress/>}
         </Paper>
     );
 }

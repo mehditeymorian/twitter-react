@@ -19,7 +19,7 @@ function Notifications({notifications, getNotifications}) {
 	}
 	
 	const comeOn = () => {
-		console.log("i am here, ", notifications);
+		// console.log("i am here, ", notifications);
 		return notifications.events.map(n => <Notification n={n} unread={true}/>);
 	}
     

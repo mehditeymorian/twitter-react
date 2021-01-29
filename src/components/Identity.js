@@ -27,7 +27,7 @@ const IdentityStyle = makeStyles((theme) => ({
 export default function Identity({logged = false, closeDialog, identity}) {
     const classes = IdentityStyle();
 
-    const profileImg = identity.profile_picture === "" ? "https://i.stack.imgur.com/34AD2.jpg" : getUserProfileImg(identity.profile_picture);
+    const profileImg = identity.profile_picture === "" ? "https://i.stack.imgur.com/34AD2.jpg" : identity.profile_picture;
 
     const onIdentityClick = ev => {
         if (closeDialog != null)

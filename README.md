@@ -2,7 +2,7 @@
 ![Hell Yes](images/header_img.jpg)
 
 ### Final Project of Internet Engineering lecture.
-This is a twitter like social media with pretty much everything Twitter has and more (you can set gif as header😎).
+This is a Twitter-like social media with pretty much everything Twitter has and more (you can set gif as header😎).
 find the backend [here](https://github.com/arman-aminian/twitter-backend). 
 
 ### Nomenclature

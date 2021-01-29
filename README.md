@@ -1,7 +1,7 @@
 # ~~Twitter~~ Booby Frontend React
 ![Hell Yes](images/header_img.jpg)
 
-### Final Project of Internet Engineering lecture.
+### Final Project of Internet Engineering lecture. (Jan, 2021)
 This is a Twitter-like social media with pretty much everything Twitter has and more (you can set gif as header😎).
 find the backend [here](https://github.com/arman-aminian/twitter-backend). 
 

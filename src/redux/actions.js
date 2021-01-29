@@ -1,11 +1,10 @@
 import axios from "axios";
 import {createFail, createInit, createSuccess, isStatePresent} from "./stateUtils";
-import {READ_COUNT, TOTAL_COUNT} from "../components/Main";
 
 export const STATE_NULL = -1;
 export const STATE_LOADING = 0;
 export const STATE_SUCCESS = 1;
-export const BASE_URL = "http://127.0.0.1:8080";
+export const BASE_URL = "https://immense-earth-01771.herokuapp.com";
 
 // ****************** SIGN UP ************************
 export const SIGNUP_INIT = "SIGN_UP_INIT";
@@ -436,7 +435,7 @@ export const updateProfile = (profile) => async (dispatch, getState) => {
                 ...value.data.profile
             }
             dispatch(createSuccess(UPDATE_PROFILE_SUCCESS,result));
-            dispatch(getProfile(user.token, user.username));
+            dispatch(getProfile(user.username));
             dispatch(updateProfilePic(result.profile_picture));
         })
         .catch(error => {

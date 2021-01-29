@@ -12,7 +12,7 @@ here is a cute picture of booby:
 ![Booby](images/booby_img.jpg)
 
 ### How to See the result | [Official Website](https://booobier.herokuapp.com)
-You can go to our website or clone the project and use `npm start` to run the app.
+You can go to our website or clone the project and execute `npm start` to run the app.
 
 
 ### Booby Team

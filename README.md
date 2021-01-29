@@ -6,7 +6,7 @@ This is a Twitter-like social media with pretty much everything Twitter has and 
 find the backend [here](https://github.com/arman-aminian/twitter-backend). 
 
 ### Nomenclature
-According to Wikipedia, A booby is a seabird in the genus Sula, part of the family Sulidae. Boobies are closely related to the gannets (Morus), which were formerly included in Sula. It has nothing to do with ...
+According to Wikipedia, A booby is a seabird in the genus Sula, part of the family Sulidae. Boobies are closely related to the gannets (Morus), which were formerly included in Sula. It has nothing to do with ...😈
 here is a cute picture of booby:
 
 ![Booby](images/booby_img.jpg)

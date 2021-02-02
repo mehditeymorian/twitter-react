@@ -1,21 +1,21 @@
 # ~~Twitter~~ Booby Frontend React
 ![Hell Yes](images/header_img.jpg)
 
-### Final Project of Internet Engineering lecture.
-This is a twitter like social media with pretty much everything Twitter has and more (you can set gif as header😎).
-find the backend [here](https://github.com/arman-aminian/twitter-backend). it has nothing to do with ...
+### Final Project of Internet Engineering lecture. (Jan, 2021)
+This is a Twitter-like social media with pretty much everything Twitter has and more (you can set gif as header😎).
+find the backend [here](https://github.com/arman-aminian/twitter-backend). 
 
 ### Nomenclature
-According to Wikipedia, A booby is a seabird in the genus Sula, part of the family Sulidae. Boobies are closely related to the gannets (Morus), which were formerly included in Sula.
+According to Wikipedia, A booby is a seabird in the genus Sula, part of the family Sulidae. Boobies are closely related to the gannets (Morus), which were formerly included in Sula. It has nothing to do with ...😈
 here is a cute picture of booby:
 
 ![Booby](images/booby_img.jpg)
 
 ### How to See the result | [Official Website](https://booobier.herokuapp.com)
-You can go to our website or clone the project and use `npm start` to run the app.
+You can go to our website or clone the project and execute `npm start` to run the app.
 
 
 ### Booby Team
-- Myself
-- [Mh Zarei](https://github.com/mhezarei)
-- [Arman Aminian](https://github.com/arman-aminian)
+- Myself | [Booby Account](https://booobier.herokuapp.com/profile/mehdi)
+- [Mh Zarei](https://github.com/mhezarei) | [Booby Account](https://booobier.herokuapp.com/profile/goodol'man)
+- [Arman Aminian](https://github.com/arman-aminian) | [Booby Account](https://booobier.herokuapp.com/profile/arman)
